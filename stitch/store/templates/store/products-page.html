@@ -1,0 +1,50 @@
+<!-- Extends base template  -->
+{% extends "store/base.html" %}
+<!-- Loads static content to access content in static directory -->
+{% load static %}
+<!-- Page title for window tab -->
+{% block page %}Shop{% endblock page%}
+<!-- Custom page styles -->
+{% block styles %}
+<link href="{% static 'store/css/products-page-styles.css' %}" rel="stylesheet">{% endblock styles %}
+<!-- fills content block in base template -->
+{% block content %}
+<div class="container">
+    <br>
+    <div class="row">
+        {% for product in products %}
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100 rounded-0  border-0">
+                <!-- Form to get the itemID into view -->
+                <form method="post" action="{% url 'store-view-item' %}">
+                    {% csrf_token %}
+                    <button type="submit" name="get-prod-info{{product.productID}}" id="hidden-button">
+                        <div class="img-wrapper">
+                            <!-- <a href="{% url 'store-view-item' %}"> -->
+                                <img class="card-img-top rounded-0" src="{% static 'store/media/'%}{{product.productImage}}" id="card-image" alt="Product Image">
+                                <div class="img-overlay">
+                                    <div class="btn" id="btn-view-item">VIEW</div>
+                                </div>
+                            <!-- </a> -->
+                        </div>
+                        <div class="card-body text-center">
+                            <h4 class="card-title">
+                                <a href="{% url 'store-view-item' %}" id="product-name">{{ product.productName }}</a>
+                            </h4>
+                            <p id="item-number">#{{ product.productID }}</p>
+                            <p class="card-text" id="product-description">{{ product.description }}</p>
+                            <h5 id="product-price">${{ product.price | floatformat:2 }}</h5>
+                        </div>
+                    </button>
+                    <!-- ./hidden button to submit form and send productID to view -->
+                </form>
+                <!-- ./form -->
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div>
+        <hr>
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,81 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Stitch | {% block page %}{% endblock page%}</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'store/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'store/css/base-styles.css' %}" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Darker Grotesque' rel='stylesheet'>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Allows templates to apply custom styles -->
+    {% block styles %}{% endblock styles %}
+    <!-- Custom styles for this template -->
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-sm navbar-dark sticky-top">
+        <a class="navbar-brand " href="{% url 'store-home' %} ">Stitch</a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon "></span>
+        </button>
+        <div class="collapse navbar-collapse " id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <!-- <li class="nav-item dropdown">
+                    {% if user.is_authenticated %}
+                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">{{ user.first_name }}</a>
+                    <div class="dropdown-menu rounded-0 bg-secondary">
+                        <a class="dropdown-item rounded-0 text-white bg-secondary" href="/accounts/logout">Sign out</a>
+                    </div>
+                    {% else %}
+                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">Account</a>
+                    <div class="dropdown-menu rounded-0 bg-secondary">
+                        <a class="dropdown-item rounded-0 text-white bg-secondary" href="{% url 'accounts-login' %}">Sign in</a>
+                    </div>
+                    {% endif %}
+                </li> -->
+                <li class="nav-item">
+                    <a class="nav-link " href="{% url 'store-products-page' %} ">Shopping</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="{% url 'store-contact' %} ">Contact</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="{% url 'store-cart' %} ">
+                        <i class="fa fa-shopping-cart" id="cart-icon"></i>
+                        <span class="badge badge-pill badge-danger" id="cart-badge">{{ request.session.cart_items_total }}</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    {% block content %} {% endblock content %}
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="{% static 'store/vendor/jquery/jquery.min.js' %} "></script>
+    <script src="{% static 'store/vendor/bootstrap/js/bootstrap.bundle.min.js' %} "></script>
+
+</body>
+<!-- Footer -->
+<footer class="py-5 ">
+    <p class="m-0 text-center text-white ">Copyright &copy; Your Website 2019</p>
+    <!-- /.container -->
+</footer>
+
+</html>

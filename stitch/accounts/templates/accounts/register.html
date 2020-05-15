@@ -1,0 +1,31 @@
+<!-- Extends base template  -->
+{% extends "store/base.html" %}
+<!-- Loads static content to access content in static directory -->
+{% load static %}
+<!-- Crispy forms for styling -->
+{% load crispy_forms_tags %}
+<!-- Page title for window tab -->
+{% block page %}Account{% endblock page%}
+<!-- Custom page styles -->
+{% block styles %}
+<link href="{% static 'accounts/css/login-register-styles.css' %}" rel="stylesheet"> {% endblock styles %}
+<!-- fills content block in base template -->
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-10 mx-auto">
+            <div class="card card-signin flex-row my-5 rounded-0 border-0">
+                <div class="card-body">
+                    <h5 class="card-title text-center">SIGN UP</h5>
+                    <form class="form-register" method="POST">
+                        {% csrf_token %} {{ form|crispy }}
+                        <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Register</button>
+                        <a class="d-block text-center mt-2 small" href="{% url 'accounts-login' %}">Sign In</a>
+                        <hr class="my-4">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

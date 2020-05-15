@@ -1,0 +1,91 @@
+<!-- Extends base template  -->
+{% extends "store/base.html" %}
+<!-- Loads static content to access content in static directory -->
+{% load static %}
+<!-- Page title for window tab -->
+{% block page %}Shop{% endblock page%}
+<!-- Custom page styles -->
+{% block styles %}
+<link href="{% static 'store/css/view-item-styles.css' %}" rel="stylesheet">{% endblock styles %}
+<!-- fills content block in base template -->
+{% block content %}
+
+<div class="container">
+    <br> {% for p in product %}
+    <div class="card">
+        <div class="row">
+            <aside class="col-sm">
+                <div class="align-middle">
+                    <img id="product-image" src="{% static 'store/media/'%}{{p.productImage}}">
+                </div>
+            </aside>
+        </div>
+        <div class="row">
+            <aside class="col-sm">
+                <article class="card-body p-5 text-left">
+                    <h3 class="title mb-3">{{ p.name }}</h3>
+                    <!-- Price -->
+                    <p class="price-detail-wrap">
+                        <span class="price h3 text-warning"> 
+		                    <span class="num">${{ p.price }}</span>
+                        </span>
+                    </p>
+                    <!-- Description -->
+                    <dl class="item-property">
+                        <dt>Description</dt>
+                        <dd>
+                            <p>{{ p.description }}</p>
+                        </dd>
+                    </dl>
+                    <!-- Item number -->
+                    <dl class="param param-feature">
+                        <dt>Item#</dt>
+                        <dd>{{ p.productID }}</dd>
+                    </dl>
+                    <!-- Color -->
+                    <dl class="param param-feature">
+                        <dt>Color</dt>
+                        <dd>Black and white</dd>
+                    </dl>
+                    <hr>
+                    <!-- Quantity -->
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <dl class="param param-inline">
+                                <dt>Quantity: </dt>
+                                <dd>
+                                    <select class="form-control form-control-sm" id="quantity_menu" onChange="getSelectedQuantity(this);" style="width:70px;">
+                                        <option value='1'> 1 </option>
+                                        <option value='2'> 2 </option>
+                                        <option value='3'> 3 </option>
+                                        <option value='4'> 4 </option>
+                                        <option value='5'> 5 </option>
+                                    </select>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="text-right">
+                        <!-- Form to add product to cart -->
+                        <form method="post" action="{% url 'add_to_cart' %}">
+                            {% csrf_token %}
+                            <input type="hidden" id="selected_quantity" name="selected_quantity">
+                            <button type="submit" class="btn" id="btn-add-to-cart" name="get-prod-info{{p.productID}}" id="hidden-button">
+                                ADD TO CART
+                            </button>
+                        </form>
+                    </div>
+                </article>
+            </aside>
+        </div>
+    </div>
+    {% endfor %}
+    <br>
+</div>
+<script>
+    function getSelectedQuantity(sel) {
+        document.getElementById("selected_quantity").value = sel.options[sel.selectedIndex].value;
+    }
+</script>
+{% endblock content %}
