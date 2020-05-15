@@ -29,10 +29,12 @@
 
 <body>
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-sm navbar-dark sticky-top">
-        <a class="navbar-brand " href="{% url 'store-home' %} ">Stitch</a>
-        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon "></span>
+    <nav class="navbar navbar-expand-sm sticky-top">
+        <a class="navbar-brand" href="{% url 'store-home' %} ">
+            <img src="{% static 'store/media/brand/stitch-logo.jpg' %}" alt="Stitch logo">
+        </a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-hidden="true" Toggle navigation>
+                ☰
         </button>
         <div class="collapse navbar-collapse " id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
@@ -56,15 +58,14 @@
                     <a class="nav-link " href="{% url 'store-contact' %} ">Contact</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="{% url 'store-cart' %} ">
+                    <a class="nav-link " href="{% url 'store-cart' %} "><span class="badge badge-pill badge-danger" id="cart-badge">{{ request.session.cart_items_total }}</span>
                         <i class="fa fa-shopping-cart" id="cart-icon"></i>
-                        <span class="badge badge-pill badge-danger" id="cart-badge">{{ request.session.cart_items_total }}</span>
+                        
                     </a>
                 </li>
             </ul>
         </div>
     </nav>
-
     {% block content %} {% endblock content %}
 
     <!-- Bootstrap core JavaScript -->

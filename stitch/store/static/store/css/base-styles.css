@@ -5,12 +5,44 @@ body {
     height: 100vh;
 }
 
+.button:active,
+button:active,
+.button:focus,
+button:focus,
+.button:hover,
+button:hover {
+    border: none !important;
+    outline: none !important;
+}
+
 form {
     background-color: transparent;
 }
 
 .navbar {
-    background-color: rgb(26, 26, 26);
+    background-color: rgb(255, 255, 255);
+    color: #000 !important;
+}
+
+.navbar-toggler:active {
+    outline: none;
+}
+
+.navbar .navbar-brand {
+    transform: translateX(-50%);
+    left: 50%;
+    position: absolute;
+}
+
+.navbar .navbar-brand img {
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+    width: 140px;
+    height: auto;
+}
+
+.navbar a {
+    color: #000 !important;
 }
 
 #cart-icon {
