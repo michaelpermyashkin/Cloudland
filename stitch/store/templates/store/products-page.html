@@ -13,17 +13,18 @@
     <div class="text-center" id="category-menu-list">
         <h2><b>Shop by Category</b></h2>
         <ul class="list-inline" id="category-menu-items">
-            <li class="list-inline-item"><a href="#" id="all" onclick="setActiveCategory('all')">All</a></li>
-            <li class="list-inline-item"><a href="#" id="headwear" onclick="setActiveCategory('headwear')">Headwear</a></li>
-            <li class="list-inline-item"><a href="#" id="jewelry" onclick="setActiveCategory('jewelry')">Jewelry</a></li>
-            <li class="list-inline-item"><a href="#" id="accessories" onclick="setActiveCategory('accessories')">Accessories</a></li>
-            <li class="list-inline-item"><a href="#" id="craft" onclick="setActiveCategory('craft')">Craft</a></li>
+            <li class="list-inline-item active"><a href="{% url 'store-products-page-all' %}" id="all" onclick="setActiveCategory('all')">All</a></li>
+            <li class="list-inline-item"><a href="{% url 'store-products-page-accessories' %}" id="accessories" onclick="setActiveCategory('accessories')">Accessories</a></li>
+            <li class="list-inline-item"><a href="{% url 'store-products-page-craft' %}" id="craft" onclick="setActiveCategory('craft')">Craft</a></li>
+            <li class="list-inline-item"><a href="{% url 'store-products-page-jewelry' %}" id="jewelry" onclick="setActiveCategory('jewelry')">Jewelry</a></li>
         </ul>
     </div>
     <br>
+    <h2>{{ category | capfirst }}</h2>
+    <hr>
     <div class="row">
         {% for product in products %}
-        <div class="col-lg-4 col-md-6 mb-4">
+        <div class="col-lg-3 col-md-6 mb-4">
             <div class="card h-100 rounded-0  border-0">
                 <!-- Form to get the itemID into view -->
                 <form method="post" action="{% url 'store-view-item' %}">
@@ -31,7 +32,7 @@
                     <button type="submit" name="get-prod-info{{product.productID}}" id="hidden-button">
                         <div class="img-wrapper">
                             <!-- <a href="{% url 'store-view-item' %}"> -->
-                                <img class="card-img-top rounded-0" src="{% static 'store/media/'%}{{product.productImage}}" id="card-image" alt="Product Image">
+                                <img class="card-img-top rounded-0" src="{% static 'store/media/products/'%}{{product.productImage}}" id="card-image" alt="Product Image">
                                 <div class="img-overlay">
                                     <div class="btn" id="btn-view-item">VIEW</div>
                                 </div>

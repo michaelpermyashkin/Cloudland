@@ -8,6 +8,7 @@ from django.utils.datetime_safe import datetime
 class Product(models.Model):
     productID = models.AutoField(primary_key=True)
     productName = models.CharField(max_length=25)
+    category = models.CharField(max_length=30, default="")
     price = models.DecimalField(max_digits=6, decimal_places=2)
     description = models.TextField(max_length=30)
     productImage = models.CharField(max_length=15)
