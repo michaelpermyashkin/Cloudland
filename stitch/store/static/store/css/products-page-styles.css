@@ -1,3 +1,21 @@
+#category-menu-list .list-inline-item a {
+    text-decoration: none;
+    font-size: 1.2rem;
+    color: rgb(123, 123, 123);
+}
+
+#category-menu-list .list-inline-item a:hover {
+    text-decoration: none;
+    font-size: 1.2rem;
+    color: rgb(92, 92, 92);
+}
+
+#category-menu-list .list-inline-item a:active {
+    text-decoration: none;
+    font-size: 1.2rem;
+    color: rgb(181, 95, 95);
+}
+
 .card {
     border-radius: 0;
 }

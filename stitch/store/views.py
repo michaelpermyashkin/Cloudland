@@ -120,4 +120,4 @@ def contact(request):
 # ]
 
 # for product in products:
-#     Products.objects.create(**product)
+#     Product.objects.create(**product)

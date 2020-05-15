@@ -35,8 +35,8 @@ form {
 }
 
 .navbar .navbar-brand img {
-    padding-top: 1vh;
-    padding-bottom: 1vh;
+    padding-top: 2vh;
+    padding-bottom: 2vh;
     width: 140px;
     height: auto;
 }
@@ -53,6 +53,10 @@ form {
     float: right;
     margin-left: 0.5em;
     margin-top: 0.35em;
+}
+
+.body-content-buffer {
+    margin-top: 5vh;
 }
 
 .card {
