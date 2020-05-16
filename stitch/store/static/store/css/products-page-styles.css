@@ -1,19 +1,47 @@
+/* Collapsing window display settings */
+
+@media screen and (max-width: 767px) {
+    #category-menu-list {
+        display: none;
+    }
+    #category-menu-list-collapsing {
+        display: inherit;
+    }
+}
+
+
+/* Expanded window display settings */
+
+@media screen and (min-width: 768px) {
+    #category-menu-list {
+        display: inherit;
+    }
+    #category-menu-list-collapsing {
+        display: none;
+    }
+}
+
 #category-menu-list .list-inline-item a {
     text-decoration: none;
     font-size: 1.2rem;
     color: rgb(123, 123, 123);
 }
 
-#category-menu-list .list-inline-item a:hover {
+#category-menu-list-collapsing .list-inline-item a {
     text-decoration: none;
     font-size: 1.2rem;
-    color: rgb(92, 92, 92);
+    color: rgb(123, 123, 123);
 }
 
-#category-menu-list .list-inline-item a:active {
+#filter-collapse-label {
+    color: #000;
     text-decoration: none;
-    font-size: 1.2rem;
-    color: rgb(181, 95, 95);
+}
+
+#plus-icon {
+    font-size: 0.65em;
+    font-weight: 100;
+    padding-bottom: 3px;
 }
 
 .card {
@@ -25,8 +53,8 @@
 }
 
 .img-wrapper img {
-    transition: all .4s ease-in-out;
-    -webkit-transition: .3s ease-in-out;
+    transition: all .5s ease-in-out;
+    -webkit-transition: .5s ease-in-out;
 }
 
 .img-overlay {
@@ -55,6 +83,7 @@
     /* blur image when hovering */
     -webkit-filter: blur(5px);
     filter: blur(5px);
+    transition: all .5s ease-in-out;
 }
 
 .img-wrapper:hover #btn-view-item {

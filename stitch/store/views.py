@@ -14,11 +14,6 @@ def updateProductList(filterCategory):
     }
     return args
 
-# Landing home page
-def home(request):
-    args = updateProductList('all')
-    return render(request, 'store/index.html', args)
-
 # Products page to view all items
 def products_page_all(request):
     args = updateProductList('all')
@@ -70,6 +65,7 @@ def contact(request):
 #     {
 #         # 'productID': 999999,
 #         'productName': 'Item name',
+        
 #         'category': 'jewelry',
 #         'price': 7.98,
 #         'description': 'Some discription',

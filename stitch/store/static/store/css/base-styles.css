@@ -1,5 +1,4 @@
 body {
-    padding-top: 2vh;
     font-family: 'Darker Grotesque' !important;
     /* font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif !important; */
     height: 100vh;
@@ -20,12 +19,17 @@ form {
 }
 
 .navbar {
-    background-color: rgb(255, 255, 255);
+    background-color: #FFF;
     color: #000 !important;
+    min-height: 70px !important;
 }
 
 .navbar-toggler:active {
     outline: none;
+}
+
+.navbar-toggler:hover {
+    text-decoration: none;
 }
 
 .navbar .navbar-brand {
@@ -56,6 +60,12 @@ form {
     float: right;
     margin-left: 0.5em;
     margin-top: 0.35em;
+}
+
+@media screen and (max-width: 767px) {
+    .navbar .nav-item {
+        width: 50px;
+    }
 }
 
 .body-content-buffer {

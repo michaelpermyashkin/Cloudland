@@ -10,14 +10,58 @@
 <!-- fills content block in base template -->
 {% block content %}
 <div class="container body-content-buffer">
+    <!-- Filter display when window is wide and nothing is collapsed -->
     <div class="text-center" id="category-menu-list">
-        <h2><b>Shop by Category</b></h2>
-        <ul class="list-inline" id="category-menu-items">
-            <li class="list-inline-item active"><a href="{% url 'store-products-page-all' %}" id="all" onclick="setActiveCategory('all')">All</a></li>
-            <li class="list-inline-item"><a href="{% url 'store-products-page-accessories' %}" id="accessories" onclick="setActiveCategory('accessories')">Accessories</a></li>
-            <li class="list-inline-item"><a href="{% url 'store-products-page-craft' %}" id="craft" onclick="setActiveCategory('craft')">Craft</a></li>
-            <li class="list-inline-item"><a href="{% url 'store-products-page-jewelry' %}" id="jewelry" onclick="setActiveCategory('jewelry')">Jewelry</a></li>
-        </ul>
+        <div class="row text-center">
+            <div class="col-6">
+                <h2><b>Shop by Category</b></h2>
+                <ul class="list-inline" id="category-menu-items">
+                    <li class="list-inline-item active"><a href="{% url 'store-products-page-all' %}" id="all" onclick="setActiveCategory('all')">All</a></li>
+                    <li class="list-inline-item"><a href="{% url 'store-products-page-accessories' %}" id="accessories" onclick="setActiveCategory('accessories')">Accessories</a></li>
+                    <li class="list-inline-item"><a href="{% url 'store-products-page-craft' %}" id="craft" onclick="setActiveCategory('craft')">Craft</a></li>
+                    <li class="list-inline-item"><a href="{% url 'store-products-page-jewelry' %}" id="jewelry" onclick="setActiveCategory('jewelry')">Jewelry</a></li>
+                </ul>
+            </div>
+            <div class="col-6">
+                <h2><b>Shop by Seller</b></h2>
+                <ul class="list-inline" id="category-menu-items">
+                    <li class="list-inline-item active"><a href="{% url 'store-products-page-all' %}" id="all" onclick="setActiveCategory('all')">All</a></li>
+                    <li class="list-inline-item active"><a href="{% url 'store-products-page-all' %}" id="all" onclick="setActiveCategory('all')">Seller 1</a></li>
+                    <li class="list-inline-item"><a href="{% url 'store-products-page-accessories' %}" id="accessories" onclick="setActiveCategory('accessories')">Seller 2</a></li>
+                    <li class="list-inline-item"><a href="{% url 'store-products-page-craft' %}" id="craft" onclick="setActiveCategory('craft')">Seller 3</a></li>
+                    <li class="list-inline-item"><a href="{% url 'store-products-page-jewelry' %}" id="jewelry" onclick="setActiveCategory('jewelry')">Seller 4</a></li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+    <!-- Filter display when window is collapsed -->
+    <div class="panel-group" id="category-menu-list-collapsing">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" href="#collapse1" id="filter-collapse-label">Filters <li class="fa fa-plus" id="plus-icon"></li></a>
+                </h4>
+            </div>
+            <div id="collapse1" class="panel-collapse collapse">
+                <div class="text-center">
+                    <h2><b>Shop by Category</b></h2>
+                    <ul class="list-inline" id="category-menu-items">
+                        <li class="list-inline-item active"><a href="{% url 'store-products-page-all' %}" id="all" onclick="setActiveCategory('all')">All</a></li>
+                        <li class="list-inline-item"><a href="{% url 'store-products-page-accessories' %}" id="accessories" onclick="setActiveCategory('accessories')">Accessories</a></li>
+                        <li class="list-inline-item"><a href="{% url 'store-products-page-craft' %}" id="craft" onclick="setActiveCategory('craft')">Craft</a></li>
+                        <li class="list-inline-item"><a href="{% url 'store-products-page-jewelry' %}" id="jewelry" onclick="setActiveCategory('jewelry')">Jewelry</a></li>
+                    </ul>
+                    <h2><b>Shop by Seller</b></h2>
+                    <ul class="list-inline" id="category-menu-items">
+                        <li class="list-inline-item active"><a href="{% url 'store-products-page-all' %}" id="all" onclick="setActiveCategory('all')">Seller 1</a></li>
+                        <li class="list-inline-item"><a href="{% url 'store-products-page-accessories' %}" id="accessories" onclick="setActiveCategory('accessories')">Seller 2</a></li>
+                        <li class="list-inline-item"><a href="{% url 'store-products-page-craft' %}" id="craft" onclick="setActiveCategory('craft')">Seller 3</a></li>
+                        <li class="list-inline-item"><a href="{% url 'store-products-page-jewelry' %}" id="jewelry" onclick="setActiveCategory('jewelry')">Seller 4</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
     <br>
     <h2>{{ category | capfirst }}</h2>
