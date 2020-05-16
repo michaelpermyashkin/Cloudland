@@ -45,7 +45,7 @@ def add_to_cart(request):
             selectedProductID = int(key[13:])
 
     # We try to add the product to the cart
-    product = Product.objects.get(productID=selectedProductID)
+    product = Product.objects.get(product_id=selectedProductID)
     cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product) # return tuple (<model object>, true/false)
 
     try:
@@ -72,7 +72,7 @@ def remove_from_cart(request):
     session_ID = request.session['cart_id']     
     cart = Cart.objects.get(id=session_ID)
     # We try to add the product to the cart
-    product = Product.objects.get(productID=selectedProductID)
+    product = Product.objects.get(product_id=selectedProductID)
     cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product) # return tuple (<model object>, true/false)
     
     cart_item.delete()

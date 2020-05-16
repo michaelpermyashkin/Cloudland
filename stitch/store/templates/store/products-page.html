@@ -73,20 +73,22 @@
                 <!-- Form to get the itemID into view -->
                 <form method="post" action="{% url 'store-view-item' %}">
                     {% csrf_token %}
-                    <button type="submit" name="get-prod-info{{product.productID}}" id="hidden-button">
+                    <button type="submit" name="get-prod-info{{product.product_id}}" id="hidden-button">
                         <div class="img-wrapper">
-                            <!-- <a href="{% url 'store-view-item' %}"> -->
-                                <img class="card-img-top rounded-0" src="{% static 'store/media/products/'%}{{product.productImage}}" id="card-image" alt="Product Image">
-                                <div class="img-overlay">
-                                    <div class="btn" id="btn-view-item">VIEW</div>
-                                </div>
-                            <!-- </a> -->
+                            <div class="image">
+                                <img class="card-img-top rounded-0" src="{% static 'store/media/products/'%}{{product.product_image}}" id="card-image" alt="Product Image">
+                            </div>
+                            <div class="img-overlay">
+                                <div class="btn" id="btn-view-item">VIEW</div>
+                            </div>
                         </div>
                         <div class="card-body text-center">
                             <h4 class="card-title">
-                                <a href="{% url 'store-view-item' %}" id="product-name">{{ product.productName }}</a>
+                                <a href="{% url 'store-view-item' %}" id="product-name">{{ product.product_name }}</a>
                             </h4>
-                            <p id="item-number">#{{ product.productID }}</p>
+                            <p id="seller-name">// {{product.seller.seller_listing_name }} //</p> 
+                            
+                            <p id="item-number">#{{ product.product_id }}</p>
                             <p class="card-text" id="product-description">{{ product.description }}</p>
                             <h5 id="product-price">${{ product.price | floatformat:2 }}</h5>
                         </div>

@@ -6,7 +6,7 @@ import random # to shuffle product order for display
 
 def updateProductList(filterCategory):
     if filterCategory == 'all':
-        products = Product.objects.values().order_by('?')
+        products = Product.objects.order_by('?')
     else:
         products = Product.objects.filter(category=filterCategory)
     args = {
@@ -48,7 +48,7 @@ def view_item(request):
 
     # we successfully found product
     if selectedProductID != None:
-        product = Product.objects.filter(productID=selectedProductID)
+        product = Product.objects.filter(product_id=selectedProductID)
         args = {
             'product': product,
         }
@@ -60,6 +60,7 @@ def view_item(request):
 # Contact page
 def contact(request):
     return render(request, 'store/contact.html')
+
 
 # products = [
 #     {

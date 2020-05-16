@@ -4,17 +4,28 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.datetime_safe import datetime
 
-# Create your models here.
-class Product(models.Model):
-    productID = models.AutoField(primary_key=True)
-    productName = models.CharField(max_length=25)
-    category = models.CharField(max_length=30, default="")
-    price = models.DecimalField(max_digits=6, decimal_places=2)
-    description = models.TextField(max_length=30)
-    productImage = models.CharField(max_length=15)
-    is_featured = models.BooleanField(default=False)
-    dateListed = models.DateTimeField(auto_now_add=True)
-    quantity = models.PositiveIntegerField()
+class Seller(models.Model):
+    seller_full_name = models.CharField(max_length=50)
+    seller_listing_name = models.CharField(max_length=50)
+    email = models.EmailField(max_length=50)
+    date_added = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return self.productName
+        return self.seller_listing_name
+
+# Create your models here.
+class Product(models.Model):
+    product_id = models.AutoField(primary_key=True)
+    product_name = models.CharField(max_length=30, help_text="Limit 30 characters")
+    seller = models.ForeignKey(Seller, on_delete=models.CASCADE, null=True, blank=True)
+    category = models.CharField(max_length=30, default="", help_text="Select the categories you would like the product to appear in")
+    price = models.DecimalField(max_digits=6, decimal_places=2)
+    description_short = models.CharField(max_length=30, default="", help_text="Limit 30 characters: Brief product description on item card")
+    description_full = models.TextField(max_length=500, default="", help_text="Your full item description when item details are viewed")
+    product_image = models.CharField(max_length=60, help_text="Upload product image")
+    is_featured = models.BooleanField(default=False)
+    date_listed = models.DateTimeField(auto_now_add=True)
+    quantity = models.PositiveIntegerField(help_text="Quantity available - Default 1", default=1)
+
+    def __str__(self):
+        return self.product_name

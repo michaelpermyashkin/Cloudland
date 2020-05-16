@@ -16,14 +16,14 @@
         <div class="row">
             <aside class="col-sm">
                 <div class="align-middle">
-                    <img id="product-image" src="{% static 'store/media/'%}{{p.productImage}}">
+                    <img id="product-image" src="{% static 'store/media/products/'%}{{p.product_image}}">
                 </div>
             </aside>
         </div>
         <div class="row">
             <aside class="col-sm">
                 <article class="card-body p-5 text-left">
-                    <h3 class="title mb-3">{{ p.name }}</h3>
+                    <h3 class="title mb-3">{{ p.product_name }}</h3>
                     <!-- Price -->
                     <p class="price-detail-wrap">
                         <span class="price h3 text-warning"> 
@@ -34,13 +34,13 @@
                     <dl class="item-property">
                         <dt>Description</dt>
                         <dd>
-                            <p>{{ p.description }}</p>
+                            <p>{{ p.description_full }}</p>
                         </dd>
                     </dl>
                     <!-- Item number -->
                     <dl class="param param-feature">
                         <dt>Item#</dt>
-                        <dd>{{ p.productID }}</dd>
+                        <dd>{{ p.product_id }}</dd>
                     </dl>
                     <!-- Color -->
                     <dl class="param param-feature">
@@ -71,7 +71,7 @@
                         <form method="post" action="{% url 'add_to_cart' %}">
                             {% csrf_token %}
                             <input type="hidden" id="selected_quantity" name="selected_quantity">
-                            <button type="submit" class="btn" id="btn-add-to-cart" name="get-prod-info{{p.productID}}" id="hidden-button">
+                            <button type="submit" class="btn" id="btn-add-to-cart" name="get-prod-info{{p.product_id}}" id="hidden-button">
                                 ADD TO CART
                             </button>
                         </form>
