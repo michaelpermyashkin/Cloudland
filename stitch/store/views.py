@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
-from django.shortcuts import render, HttpResponseRedirect
+from django.shortcuts import render, HttpResponseRedirect, reverse
+from django.urls import reverse
 from datetime import datetime
 from store.models import Product, Seller, Category
 import random # to shuffle product order for display
@@ -7,13 +8,13 @@ import random # to shuffle product order for display
 # Products page to view all items
 def products_page_all(request):
     products = Product.objects.order_by('?')
-    categories = getCategoryList
+    categories = getCategoryList()
     sellers = getSellerList()
     args = {
         'products': products,
         'sellers': sellers,
         'categories': categories,
-        'active_filter': 'all',
+        'active': 'All',
     }
     return render(request, 'store/products-page.html', args)
 
@@ -22,15 +23,35 @@ def products_by_category(request):
     if request.method == 'POST':
         for key in request.POST.keys():
             if key.startswith('category_'):
-                selectedCategory = str(key[9:]).lower()
+                selectedCategory = str(key[9:])
         products = getProductsByCategory(selectedCategory)
-        categories = getCategoryList
+        categories = getCategoryList()
         sellers = getSellerList()
         args = {
             'products': products,
             'sellers': sellers,
             'categories': categories,
-            'active': selectedCategory,
+            'active': 'category_' + selectedCategory,
+        }
+        return render(request, 'store/products-page.html', args)
+    return HttpResponseRedirect(reverse('store-products-page-all-home'))
+
+# Filter products by selected category
+def products_by_price(request):
+    if request.method == 'POST':
+        for key in request.POST.keys():
+            if key.startswith('price_'):
+                selectedPriceRange = str(key[6:])
+                lower = selectedPriceRange.split('-')[0]
+                upper = selectedPriceRange.split('-')[1]
+        products = getProductsByPrice(lower, upper)
+        categories = getCategoryList()
+        sellers = getSellerList()
+        args = {
+            'products': products,
+            'sellers': sellers,
+            'categories': categories,
+            'active': 'price_' + selectedPriceRange,
         }
         return render(request, 'store/products-page.html', args)
     return HttpResponseRedirect(reverse('store-products-page-all-home'))
@@ -40,18 +61,19 @@ def products_by_seller(request):
     if request.method == 'POST':
         for key in request.POST.keys():
             if key.startswith('seller_'):
-                selectedSeller = str(key[7:]).lower()
+                selectedSeller = str(key[7:])
         products = getProductsBySeller(selectedSeller)
-        categories = getCategoryList
+        categories = getCategoryList()
         sellers = getSellerList()
         args = {
             'products': products,
             'sellers': sellers,
             'categories': categories,
-            'active': selectedSeller,
+            'active': 'seller_'+selectedSeller,
         }
         return render(request, 'store/products-page.html', args)
     return HttpResponseRedirect(reverse('store-products-page-all-home'))
+
 
 def getProductsByCategory(filterCategory):
     filterCategory = filterCategory.lower()
@@ -64,9 +86,9 @@ def getProductsByCategory(filterCategory):
                 products = Product.objects.filter(category__name=category).order_by('?')
     return products
 
+
 def getProductsBySeller(filterSeller):
     filterSeller = filterSeller.lower()
-    print(filterSeller)
     if filterSeller == 'all':
         products = Product.objects.order_by('?')
     else:
@@ -74,6 +96,12 @@ def getProductsBySeller(filterSeller):
         for seller in seller_list:
             if seller.lower() == filterSeller:
                 products = Product.objects.filter(seller__seller_listing_name=seller).order_by('?')
+    return products
+
+def getProductsByPrice(lower, upper):
+    lower = float(lower)
+    upper = float(upper)
+    products = Product.objects.filter(price__gte=lower, price__lte=upper).order_by('?')
     return products
 
 

@@ -54,21 +54,23 @@ form {
 
 .navbar a {
     color: #000 !important;
+    font-size: 1.2rem !important;
 }
 
 #cart-icon {
     margin-top: 0.25em;
+    font-size: 0.8em;
 }
 
 #cart-badge {
-    float: right;
     margin-left: 0.5em;
-    margin-top: 0.35em;
+    padding-bottom: 5px;
+    font-size: 0.7rem;
 }
 
 @media screen and (max-width: 767px) {
     .navbar .nav-item {
-        width: 50px;
+        width: 90px;
     }
 }
 
@@ -88,7 +90,7 @@ form {
     color: #000;
     text-decoration: none;
     font-weight: bold;
-    font-size: 1.2em;
+    font-size: 1em;
 }
 
 #product-description {

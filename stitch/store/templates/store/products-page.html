@@ -21,34 +21,33 @@
                             <ul class="list-inline text-left" id="category-menu-items">
                                 <form type="hidden" method="post" action="{% url 'store-products-page-filter-category' %}">
                                     <li class="list-inline-item active">
-                                        <button type="submit" name="category_All">All</button>
+                                        <button type="submit" id="category_All" name="category_All">All</button>
                                     </li>
                                     {% csrf_token %} {% for category in categories %}
                                     <li class="list-inline-item">
-                                        <button type="submit" name="category_{{category}}">{{ category | capfirst }}</button>
+                                        <button type="submit" id="category_{{category}}" name="category_{{category}}">{{ category | capfirst }}</button>
                                     </li>
                                     {% endfor %}
                                 </form>
                             </ul>
                         </div>
                         <div class="col-3 text-right">
-                            <h4 class="panel-title text-right">
+                            <h4 class="panel-title text-right  text-light pt-2">
                                 <a data-toggle="collapse" href="#collapse1" id="filter-collapse-label">Filters <li class="fa fa-plus" id="plus-icon"></li></a>
                             </h4>
                         </div>
                     </div>
                 </div>
-                <hr>
                 <div id="collapse1" class="panel-collapse collapse">
                     <div class="row">
                         <!-- Filter by seller -->
                         <div class="col-3 float-left">
-                            <h2><b>Shop by Seller</b></h2>
+                            <h4><b>Shop by Seller</b></h4>
                             <ul class="list-group" id="category-menu-items" style="list-style-type: none;">
                                 <form type="hidden" method="post" action="{% url 'store-products-page-filter-seller' %}">
                                     {% csrf_token %} {% for seller in sellers %}
                                     <li>
-                                        <button type="submit" name="seller_{{seller}}">{{ seller | capfirst }}</button>
+                                        <button type="submit" id="seller_{{seller}}" name="seller_{{seller}}">{{ seller | capfirst }}</button>
                                     </li>
                                     {% endfor %}
                                 </form>
@@ -56,25 +55,23 @@
                         </div>
                         <!-- Filter by print -->
                         <div class="col-3 float-left">
-                            <h2><b>Shop by Price</b></h2>
+                            <h4><b>Shop by Price</b></h4>
                             <ul class="list-group" id="category-menu-items" style="list-style-type: none;">
-                                <form type="hidden" method="post" action="{% url 'store-products-page-filter-seller' %}">
+                                <form type="hidden" method="post" action="{% url 'store-products-page-filter-price' %}">
                                     {% csrf_token %}
-                                    <li><button type="submit" name="price_0-5">$0.00 - $5.00</button></li>
-                                    <li><button type="submit" name="price_5-10">$5.00 - $10.00</button></li>
-                                    <li><button type="submit" name="price_10-20">$10.00 - $20.00</button></li>
+                                    <li><button type="submit" id="price_0-5" name="price_0-5">$0.00 - $5.00</button></li>
+                                    <li><button type="submit" id="price_5-10" name="price_5-10">$5.00 - $10.00</button></li>
+                                    <li><button type="submit" id="price_10-20" name="price_10-20">$10.00 - $20.00</button></li>
                                 </form>
                             </ul>
                         </div>
                     </div>
                     <br>
-                    <hr>
                     <br>
                 </div>
             </div>
         </div>
     </div>
-
 
     <!-- Filter display when window is collapsed -->
     <div id="category-menu-list-collapsing">
@@ -86,25 +83,82 @@
             </div>
             <div id="collapse1" class="panel-collapse collapse">
                 <div class="accordion md-accordion" id="accordion" role="tablist" aria-multiselectable="true">
+                    <!-- Categories card -->
                     <div class="card">
                         <div class="card-header" role="tab" id="categoriesHeading">
                             <a data-toggle="collapse" data-parent="#accordion" href="#categoriesCollapse" aria-expanded="true" aria-controls="categoriesCollapse">
-                                <h5 class="mb-0">
-                                    Categories
-                                </h5>
+                                <div class="row">
+                                    <div class="col-9">
+                                        <h5 class="mb-0" id="collapsed-accordion-label"><b>Categories</b></h5>
+                                    </div>
+                                    <div class="col-3 text-right text-dark">
+                                        <li class="fa fa-plus" id="plus-icon"></li>
+                                    </div>
+                                </div>
                             </a>
                         </div>
-                        <div id="categoriesCollapse" class="collapse show" role="tabpanel" aria-labelledby="categoriesHeading" data-parent="#accordion">
-                            <ul class="text-left" id="category-menu-items" style="list-style: none;">
+                        <div id="categoriesCollapse" class="collapse" role="tabpanel" aria-labelledby="categoriesHeading" data-parent="#accordion">
+                            <ul class="text-left" id="category-menu-items">
                                 <form type="hidden" method="post" action="{% url 'store-products-page-filter-category' %}">
                                     <li>
-                                        <button type="submit" name="category_All">All</button>
+                                        <button type="submit" id="category_All" name="category_All">All</button>
                                     </li>
                                     {% csrf_token %} {% for category in categories %}
                                     <li>
-                                        <button type="submit" name="category_{{category}}">{{ category | capfirst }}</button>
+                                        <button type="submit" id="category_{{category}}" name="category_{{category}}">{{ category | capfirst }}</button>
                                     </li>
                                     {% endfor %}
+                                </form>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Sellers card -->
+                    <div class="card">
+                        <div class="card-header" role="tab" id="sellerHeading">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#sellerCollapse" aria-expanded="true" aria-controls="categoriesCollapse">
+                                <div class="row">
+                                    <div class="col-9">
+                                        <h5 class="mb-0" id="collapsed-accordion-label"><b>Sellers</b></h5>
+                                    </div>
+                                    <div class="col-3 text-right text-dark">
+                                        <li class="fa fa-plus" id="plus-icon"></li>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div id="sellerCollapse" class="collapse" role="tabpanel" aria-labelledby="sellerHeading" data-parent="#accordion">
+                            <ul class="text-left" id="category-menu-items">
+                                <form type="hidden" method="post" action="{% url 'store-products-page-filter-seller' %}">
+                                    {% csrf_token %} {% for seller in sellers %}
+                                    <li>
+                                        <button type="submit" id="seller_{{seller}}" name="seller_{{seller}}">{{ seller | capfirst }}</button>
+                                    </li>
+                                    {% endfor %}
+                                </form>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Prices card -->
+                    <div class="card">
+                        <div class="card-header" role="tab" id="pricesHeading">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#pricesCollapse" aria-expanded="true" aria-controls="pricesCollapse">
+                                <div class="row">
+                                    <div class="col-9">
+                                        <h5 class="mb-0" id="collapsed-accordion-label"><b>Price</b></h5>
+                                    </div>
+                                    <div class="col-3 text-right text-dark">
+                                        <li class="fa fa-plus" id="plus-icon"></li>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div id="pricesCollapse" class="collapse" role="tabpanel" aria-labelledby="sellerHeading" data-parent="#accordion">
+                            <ul class="text-left" id="category-menu-items">
+                                <form type="hidden" method="post" action="{% url 'store-products-page-filter-price' %}">
+                                    {% csrf_token %}
+                                    <li><button type="submit" id="price_0-5" name="price_0-5">$0.00 - $5.00</button></li>
+                                    <li><button type="submit" id="price_5-10" name="price_5-10">$5.00 - $10.00</button></li>
+                                    <li><button type="submit" id="price_10-20" name="price_10-20">$10.00 - $20.00</button></li>
                                 </form>
                             </ul>
                         </div>
@@ -113,17 +167,15 @@
             </div>
         </div>
         <br>
-        <br>
     </div>
-
-    <div class="row">
+    <hr>
+    <div class="card-columns col-md">
         {% for product in products %}
-        <div class="col-lg-3 col-md-6 mb-4">
-            <div class="card h-100 rounded-0  border-0">
-                <!-- Form to get the itemID into view -->
-                <form method="post" action="{% url 'store-view-item' %}">
-                    {% csrf_token %}
-                    <button type="submit" name="get-prod-info{{product.product_id}}" id="hidden-button">
+        <div class="card h-100 rounded-0  border-0">
+            <!-- Form to get the itemID into view -->
+            <form method="post" action="{% url 'store-view-item' %}">
+                {% csrf_token %}
+                <button type="submit" name="get-prod-info{{product.product_id}}" id="hidden-button">
                         <div class="img-wrapper">
                             <div class="image">
                                 <img class="card-img-top rounded-0" src="{% static 'store/media/products/'%}{{product.product_image}}" id="card-image" alt="Product Image">
@@ -143,10 +195,9 @@
                             <h5 id="product-price">${{ product.price | floatformat:2 }}</h5>
                         </div>
                     </button>
-                    <!-- ./hidden button to submit form and send productID to view -->
-                </form>
-                <!-- ./form -->
-            </div>
+                <!-- ./hidden button to submit form and send productID to view -->
+            </form>
+            <!-- ./form -->
         </div>
         {% endfor %}
     </div>
