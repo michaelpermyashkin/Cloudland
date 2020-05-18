@@ -7,6 +7,12 @@
     #category-menu-list-collapsing {
         display: inherit;
     }
+    .list-group li button:hover {
+        color: rgb(77, 77, 77) !important;
+    }
+    .list-inline li button:hover {
+        color: rgb(77, 77, 77) !important;
+    }
 }
 
 
@@ -21,13 +27,28 @@
     }
 }
 
-#category-menu-list .list-inline-item a {
+#category-menu-list li button {
+    background: none!important;
+    border: none;
     text-decoration: none;
     font-size: 1.2rem;
     color: rgb(123, 123, 123);
 }
 
-#category-menu-list-collapsing .list-inline-item a {
+.list-group li button:hover {
+    color: rgb(77, 77, 77) !important;
+    padding-left: 0.9rem;
+}
+
+.list-inline li button:hover {
+    transition: all .1s ease-in-out;
+    color: rgb(77, 77, 77) !important;
+    padding-left: 0.7rem;
+}
+
+#category-menu-list-collapsing li button {
+    background: none!important;
+    border: none;
     text-decoration: none;
     font-size: 1.2rem;
     color: rgb(123, 123, 123);
@@ -110,4 +131,22 @@
 
 #hidden-button:focus {
     outline: none;
+}
+
+.active button {
+    color: rgb(70, 183, 136) !important;
+    font-weight: 900 !important;
+    font-weight: bold !important;
+    font-size: 1.7em !important;
+}
+
+.accordion .card .card-header h5 {
+    color: #000;
+    text-decoration: none !important;
+    background: none;
+}
+
+.accordion .card-body {
+    margin: 0 !important;
+    padding: 0 !important;
 }
