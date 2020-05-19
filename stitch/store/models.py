@@ -33,7 +33,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=6, decimal_places=2)
     description_short = models.CharField(max_length=30, default="", help_text="Limit 30 characters: Brief product description on item card")
     description_full = models.TextField(max_length=500, default="", help_text="Your full item description when item details are viewed")
-    product_image = models.CharField(max_length=60, help_text="Upload product image")
+    product_image = models.ImageField(upload_to='product_images', help_text="Upload product image")
     is_featured = models.BooleanField(default=False)
     date_listed = models.DateTimeField(auto_now_add=True)
     quantity = models.PositiveIntegerField(help_text="Quantity available - Default 1", default=1)

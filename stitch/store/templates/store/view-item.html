@@ -16,7 +16,7 @@
         <div class="row">
             <aside class="col-sm">
                 <div class="align-middle">
-                    <img id="product-image" src="{% static 'store/media/products/'%}{{p.product_image}}">
+                    <img id="product-image" src="{{ p.product_image.url }}">
                 </div>
             </aside>
         </div>

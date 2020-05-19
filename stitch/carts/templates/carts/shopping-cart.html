@@ -33,7 +33,7 @@
         {% for item in cart.cartitem_set.all %}
         <div class="product">
             <div class="product-image">
-                <img src="{% static 'store/media/products/'%}{{item.product.product_image}}">
+                <img src="{{ item.product.product_image.url }}">
             </div>
             <div class="product-details">
                 <div class="product-title">{{ item.product.product_name }}</div>

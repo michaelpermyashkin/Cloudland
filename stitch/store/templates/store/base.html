@@ -44,11 +44,14 @@
                     <a class="nav-link " href="{% url 'store-products-page-all' %} ">Shopping</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link " href="{% url 'store-contact' %} ">Contact</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link " href="{% url 'store-cart' %} ">
-                        My Cart<span class="badge badge-pill badge-danger" id="cart-badge">{{ request.session.cart_items_total }}</span>
+                        My Cart <span class="badge badge-pill badge-danger">{{ request.session.cart_items_total }}</span>
                     </a>
                 </li>
             </ul>

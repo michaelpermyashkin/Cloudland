@@ -83,7 +83,14 @@ form {
 }
 
 .card-body {
+    margin: 0 !important;
+    padding: 0 !important;
     margin-top: -1.2em;
+}
+
+.card-body a {
+    padding: inherit 0 !important;
+    margin: inherit 0 !important;
 }
 
 #product-name {

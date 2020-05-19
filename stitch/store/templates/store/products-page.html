@@ -20,7 +20,7 @@
                         <div class="col-9">
                             <ul class="list-inline text-left" id="category-menu-items">
                                 <form type="hidden" method="post" action="{% url 'store-products-page-filter-category' %}">
-                                    <li class="list-inline-item active">
+                                    <li class="list-inline-item">
                                         <button type="submit" id="category_All" name="category_All">All</button>
                                     </li>
                                     {% csrf_token %} {% for category in categories %}
@@ -72,7 +72,6 @@
             </div>
         </div>
     </div>
-
     <!-- Filter display when window is collapsed -->
     <div id="category-menu-list-collapsing">
         <div class="panel panel-default">
@@ -178,7 +177,7 @@
                 <button type="submit" name="get-prod-info{{product.product_id}}" id="hidden-button">
                         <div class="img-wrapper">
                             <div class="image">
-                                <img class="card-img-top rounded-0" src="{% static 'store/media/products/'%}{{product.product_image}}" id="card-image" alt="Product Image">
+                                <img class="card-img-top rounded-0" src="{{ product.product_image.url }}" id="card-image" alt="Product Image">
                             </div>
                             <div class="img-overlay">
                                 <div class="btn" id="btn-view-item">VIEW</div>
@@ -201,4 +200,10 @@
         </div>
         {% endfor %}
     </div>
-    {% endblock content %}
+    <script>
+        var activeFilterID = "{{active}}";
+        var activeElement = document.getElementById(activeFilterID);
+        activeElement.classList.add("active");
+    </script>
+</div>
+{% endblock content %}

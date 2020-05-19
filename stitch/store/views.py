@@ -14,7 +14,7 @@ def products_page_all(request):
         'products': products,
         'sellers': sellers,
         'categories': categories,
-        'active': 'All',
+        'active': 'category_All',
     }
     return render(request, 'store/products-page.html', args)
 
