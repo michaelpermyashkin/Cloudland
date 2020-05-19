@@ -29,7 +29,7 @@ class Product(models.Model):
     product_id = models.AutoField(primary_key=True)
     product_name = models.CharField(max_length=30, help_text="Limit 30 characters")
     seller = models.ForeignKey(Seller, on_delete=models.CASCADE, null=True, blank=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, help_text="Select the categories you would like the product to appear in")
+    category = models.ManyToManyField(Category, help_text="Select the categories you would like the product to appear in")
     price = models.DecimalField(max_digits=6, decimal_places=2)
     description_short = models.CharField(max_length=30, default="", help_text="Limit 30 characters: Brief product description on item card")
     description_full = models.TextField(max_length=500, default="", help_text="Your full item description when item details are viewed")
