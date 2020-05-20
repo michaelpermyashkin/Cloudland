@@ -36,7 +36,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="collapse-filters" class="panel-collapse collapse" data-parent="filter-collapse-label">
+                <div id="collapse-filters" class="panel-collapse collapse show" data-parent="filter-collapse-label">
                     <div class="row">
                         <!-- Filter by seller -->
                         <div class="col-3 float-left">
@@ -87,7 +87,7 @@
                     <a data-toggle="collapse" href="#collapse1" id="filter-collapse-label">Filters <li class="fa fa-plus" id="plus-icon"></li></a>
                 </h4>
             </div>
-            <div id="collapse1" class="panel-collapse collapse" data-parent="filter-collapse-label">
+            <div id="collapse1" class="panel-collapse collapse show" data-parent="filter-collapse-label">
                 <div class="accordion md-accordion" id="accordion" role="tablist" aria-multiselectable="true">
                     <!-- Categories card -->
                     <div class="card">
@@ -173,31 +173,34 @@
     <br>
     <h2 class="text-center">Oops, we didn't find any products matching your search!</h2>
     {% endif %}
-    <div class="card-columns col-md">
+    <div class="row">
         {% for product in products %}
         <a href="{% url 'store-view-item' product.product_id %}" style="text-decoration: none !important;">
-            <div class="card h-100 rounded-0  border-0">
-                <div class="img-wrapper">
-                    <div class="image">
-                        <img class="card-img-top rounded-0" src="{{ product.product_image.url }}" id="card-image" alt="Product Image">
+            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-4">
+                <div class="card h-100 rounded-0 border-0">
+                    <div class="img-wrapper">
+                        <div class="image">
+                            <img class="card-img-top rounded-0" src="{{ product.product_image.url }}" id="card-image" alt="Product Image">
+                        </div>
+                        <div class="img-overlay">
+                            <div class="btn" id="btn-view-item">VIEW</div>
+                        </div>
                     </div>
-                    <div class="img-overlay">
-                        <div class="btn" id="btn-view-item">VIEW</div>
+                    <div class="card-body text-center">
+                        <h4 class="card-title">
+                            <a id="product-name">{{ product.product_name }}</a>
+                        </h4>
+                        <p id="seller-name">// {{product.seller.seller_listing_name }} //</p>
+                        <!-- <p id="item-number">#{{ product.product_id }}</p> -->
+                        <p class="card-text" id="product-description">{{ product.description }}</p>
+                        <h5 id="product-price">${{ product.price | floatformat:2 }}</h5>
                     </div>
-                </div>
-                <div class="card-body text-center">
-                    <h4 class="card-title">
-                        <a id="product-name">{{ product.product_name }}</a>
-                    </h4>
-                    <p id="seller-name">// {{product.seller.seller_listing_name }} //</p>
-                    <!-- <p id="item-number">#{{ product.product_id }}</p> -->
-                    <p class="card-text" id="product-description">{{ product.description }}</p>
-                    <h5 id="product-price">${{ product.price | floatformat:2 }}</h5>
                 </div>
             </div>
         </a>
         {% endfor %}
     </div>
+
     <script>
         var activeFilterID = "{{active}}";
         var activeElement = document.getElementById(activeFilterID);

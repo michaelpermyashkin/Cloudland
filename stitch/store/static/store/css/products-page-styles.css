@@ -164,14 +164,6 @@
     padding: 0 !important;
 }
 
-@media (max-width: 20em) {
-    .card-columns {
-        -webkit-column-count: 2;
-        -moz-column-count: 2;
-        column-count: 2;
-    }
-}
-
 @media (min-width: 34em) {
     .card-columns {
         -webkit-column-count: 2;
