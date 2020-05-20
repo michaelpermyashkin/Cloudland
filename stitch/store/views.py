@@ -18,6 +18,20 @@ def products_page_all(request):
     }
     return render(request, 'store/products-page.html', args)
 
+# Products page to view all items
+def products_order_by(request, order_by):
+    print(order_by)
+    products = Product.objects.order_by(order_by)
+    categories = getCategoryList()
+    sellers = getSellerList()
+    args = {
+        'products': products,
+        'sellers': sellers,
+        'categories': categories,
+        'active': 'category_All',
+    }
+    return render(request, 'store/products-page.html', args)
+
 # Filter products by selected category
 def products_by_category(request, slug):
     products = getProductsByCategory(slug)

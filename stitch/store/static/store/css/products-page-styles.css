@@ -66,6 +66,7 @@
 
 .card {
     border-radius: 0;
+    display: inline-block;
 }
 
 .img-wrapper {
