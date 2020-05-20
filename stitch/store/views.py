@@ -20,7 +20,6 @@ def products_page_all(request):
 
 # Products page to view all items
 def products_order_by(request, order_by):
-    print(order_by)
     products = Product.objects.order_by(order_by)
     categories = getCategoryList()
     sellers = getSellerList()
