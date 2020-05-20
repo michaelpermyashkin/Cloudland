@@ -14,4 +14,7 @@ class SellerAdmin(admin.ModelAdmin):
     list_display = ('seller_full_name', 'seller_listing_name', 'email', 'date_added')
 admin.site.register(Seller, SellerAdmin)
 
-admin.site.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+    prepopulated_fields = {'slug': ('name',)}
+admin.site.register(Category, CategoryAdmin)

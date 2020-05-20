@@ -9,6 +9,7 @@ class Seller(models.Model):
     seller_listing_name = models.CharField(max_length=50)
     email = models.EmailField(max_length=50)
     date_added = models.DateField(auto_now_add=True)
+    slug = models.SlugField(null=True, unique=True)
 
     def __str__(self):
         return self.seller_listing_name
@@ -16,12 +17,13 @@ class Seller(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=30)
+    slug = models.SlugField(null=False, unique=True)
 
     def __str__(self):
         return self.name
     
     class Meta:
-            verbose_name_plural = "Categories"
+        verbose_name_plural = "Categories"
 
 
 # Create your models here.

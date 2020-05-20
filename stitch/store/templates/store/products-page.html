@@ -19,16 +19,14 @@
                     <div class="row">
                         <div class="col-9">
                             <ul class="list-inline text-left" id="category-menu-items">
-                                <form type="hidden" method="post" action="{% url 'store-products-page-filter-category' %}">
-                                    <li class="list-inline-item">
-                                        <button type="submit" id="category_All" name="category_All">All</button>
-                                    </li>
-                                    {% csrf_token %} {% for category in categories %}
-                                    <li class="list-inline-item">
-                                        <button type="submit" id="category_{{category}}" name="category_{{category}}">{{ category | capfirst }}</button>
-                                    </li>
-                                    {% endfor %}
-                                </form>
+                                <li class="list-inline-item">
+                                    <a href="{% url 'store-products-page-all' %}">All</a>
+                                </li>
+                                {% for category in categories %}
+                                <li class="list-inline-item">
+                                    <a href="{% url 'store-products-page-filter-category' category.slug %}">{{ category.name }}</a>
+                                </li>
+                                {% endfor %}
                             </ul>
                         </div>
                         <div class="col-3 text-right">
@@ -44,25 +42,21 @@
                         <div class="col-3 float-left">
                             <h4><b>Shop by Seller</b></h4>
                             <ul class="list-group" id="category-menu-items" style="list-style-type: none;">
-                                <form type="hidden" method="post" action="{% url 'store-products-page-filter-seller' %}">
-                                    {% csrf_token %} {% for seller in sellers %}
-                                    <li>
-                                        <button type="submit" id="seller_{{seller}}" name="seller_{{seller}}">{{ seller | capfirst }}</button>
-                                    </li>
-                                    {% endfor %}
-                                </form>
+                                {% for seller in sellers %}
+                                <li>
+                                    <a href="{% url 'store-products-page-filter-seller' seller.slug %}">{{ seller.seller_listing_name | capfirst}}</a>
+                                </li>
+                                {% endfor %}
                             </ul>
                         </div>
                         <!-- Filter by print -->
                         <div class="col-3 float-left">
                             <h4><b>Shop by Price</b></h4>
                             <ul class="list-group" id="category-menu-items" style="list-style-type: none;">
-                                <form type="hidden" method="post" action="{% url 'store-products-page-filter-price' %}">
-                                    {% csrf_token %}
-                                    <li><button type="submit" id="price_0-5" name="price_0-5">$0.00 - $5.00</button></li>
-                                    <li><button type="submit" id="price_5-10" name="price_5-10">$5.00 - $10.00</button></li>
-                                    <li><button type="submit" id="price_10-20" name="price_10-20">$10.00 - $20.00</button></li>
-                                </form>
+                                <li><a href="{% url 'store-products-page-filter-price' 0 5 %}">$0.00 - $5.00</a></li>
+                                <li><a href="{% url 'store-products-page-filter-price' 5 10 %}">$5.00 - $10.00</a></li>
+                                <li><a href="{% url 'store-products-page-filter-price' 10 15 %}">$10.00 - $15.00</a></li>
+                                <li><a href="{% url 'store-products-page-filter-price' 15  %}">$15.00+</a></li>
                             </ul>
                         </div>
                     </div>
@@ -98,16 +92,11 @@
                         </div>
                         <div id="categoriesCollapse" class="collapse" role="tabpanel" aria-labelledby="categoriesHeading" data-parent="#accordion">
                             <ul class="text-left" id="category-menu-items">
-                                <form type="hidden" method="post" action="{% url 'store-products-page-filter-category' %}">
-                                    <li>
-                                        <button type="submit" id="category_All" name="category_All">All</button>
-                                    </li>
-                                    {% csrf_token %} {% for category in categories %}
-                                    <li>
-                                        <button type="submit" id="category_{{category}}" name="category_{{category}}">{{ category | capfirst }}</button>
-                                    </li>
-                                    {% endfor %}
-                                </form>
+                                {% for category in categories %}
+                                <li class="list-inline-item">
+                                    <a href="{% url 'store-products-page-filter-category' category.slug %}">{{ category.name }}</a>
+                                </li>
+                                {% endfor %}
                             </ul>
                         </div>
                     </div>
@@ -127,13 +116,11 @@
                         </div>
                         <div id="sellerCollapse" class="collapse" role="tabpanel" aria-labelledby="sellerHeading" data-parent="#accordion">
                             <ul class="text-left" id="category-menu-items">
-                                <form type="hidden" method="post" action="{% url 'store-products-page-filter-seller' %}">
-                                    {% csrf_token %} {% for seller in sellers %}
-                                    <li>
-                                        <button type="submit" id="seller_{{seller}}" name="seller_{{seller}}">{{ seller | capfirst }}</button>
-                                    </li>
-                                    {% endfor %}
-                                </form>
+                                {% for seller in sellers %}
+                                <li>
+                                    <a href="{% url 'store-products-page-filter-seller' seller.slug %}">{{ seller.seller_listing_name | capfirst}}</a>
+                                </li>
+                                {% endfor %}
                             </ul>
                         </div>
                     </div>
@@ -153,12 +140,7 @@
                         </div>
                         <div id="pricesCollapse" class="collapse" role="tabpanel" aria-labelledby="sellerHeading" data-parent="#accordion">
                             <ul class="text-left" id="category-menu-items">
-                                <form type="hidden" method="post" action="{% url 'store-products-page-filter-price' %}">
-                                    {% csrf_token %}
-                                    <li><button type="submit" id="price_0-5" name="price_0-5">$0.00 - $5.00</button></li>
-                                    <li><button type="submit" id="price_5-10" name="price_5-10">$5.00 - $10.00</button></li>
-                                    <li><button type="submit" id="price_10-20" name="price_10-20">$10.00 - $20.00</button></li>
-                                </form>
+                                <li><a href="{% url 'store-products-page-filter-price' 0 5 %}">$0.00 - $5.00</a></li>
                             </ul>
                         </div>
                     </div>
@@ -168,36 +150,36 @@
         <br>
     </div>
     <hr>
+    <h4 class="text-center"><b class="text-danger">{{ products.count }}</b> Products found</h4>
+    <br>
+    <!-- If no products in query set display message -->
+    {% if products.count == 0 %}
+    <br>
+    <h2 class="text-center">Oops, we didn't find any products matching your search!</h2>
+    {% endif %}
     <div class="card-columns col-md">
         {% for product in products %}
-        <div class="card h-100 rounded-0  border-0">
-            <!-- Form to get the itemID into view -->
-            <form method="post" action="{% url 'store-view-item' %}">
-                {% csrf_token %}
-                <button type="submit" name="get-prod-info{{product.product_id}}" id="hidden-button">
-                        <div class="img-wrapper">
-                            <div class="image">
-                                <img class="card-img-top rounded-0" src="{{ product.product_image.url }}" id="card-image" alt="Product Image">
-                            </div>
-                            <div class="img-overlay">
-                                <div class="btn" id="btn-view-item">VIEW</div>
-                            </div>
-                        </div>
-                        <div class="card-body text-center">
-                            <h4 class="card-title">
-                                <a href="{% url 'store-view-item' %}" id="product-name">{{ product.product_name }}</a>
-                            </h4>
-                            <p id="seller-name">// {{product.seller.seller_listing_name }} //</p>
-
-                            <!-- <p id="item-number">#{{ product.product_id }}</p> -->
-                            <p class="card-text" id="product-description">{{ product.description }}</p>
-                            <h5 id="product-price">${{ product.price | floatformat:2 }}</h5>
-                        </div>
-                    </button>
-                <!-- ./hidden button to submit form and send productID to view -->
-            </form>
-            <!-- ./form -->
-        </div>
+        <a href="{% url 'store-view-item' product.product_id %}" style="text-decoration: none !important;">
+            <div class="card h-100 rounded-0  border-0">
+                <div class="img-wrapper">
+                    <div class="image">
+                        <img class="card-img-top rounded-0" src="{{ product.product_image.url }}" id="card-image" alt="Product Image">
+                    </div>
+                    <div class="img-overlay">
+                        <div class="btn" id="btn-view-item">VIEW</div>
+                    </div>
+                </div>
+                <div class="card-body text-center">
+                    <h4 class="card-title">
+                        <a id="product-name">{{ product.product_name }}</a>
+                    </h4>
+                    <p id="seller-name">// {{product.seller.seller_listing_name }} //</p>
+                    <!-- <p id="item-number">#{{ product.product_id }}</p> -->
+                    <p class="card-text" id="product-description">{{ product.description }}</p>
+                    <h5 id="product-price">${{ product.price | floatformat:2 }}</h5>
+                </div>
+            </div>
+        </a>
         {% endfor %}
     </div>
     <script>

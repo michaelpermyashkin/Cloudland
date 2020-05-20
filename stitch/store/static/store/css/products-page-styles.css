@@ -7,10 +7,10 @@
     #category-menu-list-collapsing {
         display: inherit;
     }
-    .list-group li button:hover {
+    .list-group li a:hover {
         color: rgb(77, 77, 77) !important;
     }
-    .list-inline li button:hover {
+    .list-inline li a:hover {
         color: rgb(77, 77, 77) !important;
     }
 }
@@ -27,7 +27,7 @@
     }
 }
 
-#category-menu-list li button {
+#category-menu-list li a {
     background: none!important;
     border: none;
     text-decoration: none;
@@ -35,17 +35,17 @@
     color: rgb(123, 123, 123);
 }
 
-.list-group li button:not(.active):hover {
+.list-group li a:not(.active):hover {
     color: rgb(0, 0, 0) !important;
     padding-left: 0.9rem;
 }
 
-.list-inline li button:not(.active):hover {
+.list-inline li a:not(.active):hover {
     transition: all .1s ease-in-out;
     color: rgb(0, 0, 0) !important;
 }
 
-#category-menu-list-collapsing li button {
+#category-menu-list-collapsing li a {
     background: none!important;
     border: none;
     text-decoration: none;
@@ -97,13 +97,6 @@
 .img-wrapper #btn-view-item {
     /* dont display button while not hovering */
     display: none;
-}
-
-.img-wrapper:hover img {
-    /* blur image when hovering */
-    -webkit-filter: blur(5px);
-    filter: blur(5px);
-    transition: all .5s ease-in-out;
 }
 
 .img-wrapper:hover #btn-view-item {
