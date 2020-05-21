@@ -12,44 +12,46 @@
 <div class="container mt-2">
     {% for p in product %}
     <div class="row m-auto">
-        <div class="col-md-6 text-center">
+        <div class="col-md-6" id="image-container">
             <img src="{{ p.product_image.url }}" alt="Product image">
         </div>
-        <div class="col-xl-6">
-            <div class="col-sm-12">
-                <h1>{{ p.product_name }}</h1>
-                <h5 class="text-muted">// {{ p.seller.seller_listing_name }} //</h5>
-                <h1><b>${{ p.price }}</b></h1>
-                <br>
-                <hr>
-                <p>{{ p.description_short }}</p>
-                <br>
-                <!-- Quantity -->
-                <dl class="param param-inline">
-                    <dt>Quantity: </dt>
-                    <dd>
-                        <select class="form-control form-control-sm" id="quantity_menu" onChange="getSelectedQuantity(this);">
-                            <option value='1'> 1 </option>
-                            <option value='2'> 2 </option>
-                            <option value='3'> 3 </option>
-                            <option value='4'> 4 </option>
-                            <option value='5'> 5 </option>
-                        </select>
-                    </dd>
-                </dl>
-                <div style="margin-top: -1.5rem;">
-                    <!-- Form to add product to cart -->
-                    <form method="post" action="{% url 'add_to_cart' %}">
-                        {% csrf_token %}
-                        <input type="hidden" id="selected_quantity" name="selected_quantity">
-                        <button type="submit" class="btn border-0 rounded-0 mt-4" id="btn-add-to-cart" name="get-prod-info{{p.product_id}}" id="hidden-button">
-                            ADD TO CART
-                        </button>
-                    </form>
-                </div>
-                <hr>
+        <div class="col-md-6 pt-5" id="product-details-aside">
+            <h1>{{ p.product_name }}</h1>
+            <h5 class="text-muted">// {{ p.seller.seller_listing_name }} //</h5>
+            <h1><b>${{ p.price }}</b></h1>
+            <hr>
+            <p>{{ p.description_short }}</p>
+            <br>
+            <!-- Quantity -->
+            <dl class="param param-inline">
+                <dt>Quantity: </dt>
+                <dd>
+                    <select class="form-control form-control-sm rounded-0" id="quantity_menu" onChange="getSelectedQuantity(this);">
+                        <option value='1'> 1 </option>
+                        <option value='2'> 2 </option>
+                        <option value='3'> 3 </option>
+                        <option value='4'> 4 </option>
+                        <option value='5'> 5 </option>
+                    </select>
+                </dd>
+            </dl>
+            <div style="margin-top: -1.5rem;">
+                <!-- Form to add product to cart -->
+                <form method="post" action="{% url 'add_to_cart' %}">
+                    {% csrf_token %}
+                    <input type="hidden" id="selected_quantity" name="selected_quantity">
+                    <button type="submit" class="btn border-0 rounded-0 mt-4" id="btn-add-to-cart" name="get-prod-info{{p.product_id}}" id="hidden-button">
+                        ADD TO CART
+                    </button>
+                </form>
             </div>
         </div>
+    </div>
+    <div class="col-12 m-auto">
+        <h1>Details</h1>
+        <p>{{ p.description_full }}</p>
+        <br>
+        <br>
     </div>
     {% endfor %}
 </div>

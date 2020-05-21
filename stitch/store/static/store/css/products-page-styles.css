@@ -65,7 +65,13 @@
 }
 
 #clear-filters-label {
-    color: rgb(157, 56, 56);
+    color: rgb(123, 123, 123);
+    transition: none !important;
+    -webkit-transition: none !important;
+}
+
+#clear-filters-label:hover {
+    color: rgb(201, 6, 6);
     text-decoration: none;
 }
 

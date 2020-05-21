@@ -5,9 +5,24 @@ body {
     font-size: 1.2rem;
 }
 
-img {
-    max-width: 500px;
-    max-height: 50vh;
+#image-container {
+    padding: 0;
+    margin: auto;
+    height: 50vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden
+}
+
+#image-container img {
+    width: 100%;
+    height: auto;
+    object-fit: cover
+}
+
+#product-details-aside {
+    height: 50vh;
 }
 
 .btn {
@@ -17,6 +32,11 @@ img {
 dl,
 .btn {
     max-width: 325px;
+}
+
+.btn:hover {
+    color: #FFF;
+    background: #545454;
 }
 
 CSS .number-input input[type="number"] {

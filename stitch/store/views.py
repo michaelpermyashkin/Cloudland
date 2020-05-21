@@ -14,7 +14,6 @@ def products_page_all(request):
         'products': products,
         'sellers': sellers,
         'categories': categories,
-        'active': 'category_All',
     }
     return render(request, 'store/products-page.html', args)
 
@@ -27,7 +26,6 @@ def products_order_by(request, order_by):
         'products': products,
         'sellers': sellers,
         'categories': categories,
-        'active': 'category_All',
     }
     return render(request, 'store/products-page.html', args)
 
@@ -40,7 +38,6 @@ def products_by_category(request, slug):
         'products': products,
         'sellers': sellers,
         'categories': categories,
-        'active': 'category_' + slug,
     }
     return render(request, 'store/products-page.html', args)
 
@@ -53,7 +50,6 @@ def products_by_price(request, min_price, max_price):
         'products': products,
         'sellers': sellers,
         'categories': categories,
-        'active': 'price_' + str(min_price) + '_' + str(max_price),
     }
     return render(request, 'store/products-page.html', args)
 
@@ -66,7 +62,6 @@ def products_by_price_min(request, min_price):
         'products': products,
         'sellers': sellers,
         'categories': categories,
-        'active': 'price_' + str(min_price) + '_',
     }
     return render(request, 'store/products-page.html', args)
 
@@ -79,7 +74,6 @@ def products_by_seller(request, slug):
         'products': products,
         'sellers': sellers,
         'categories': categories,
-        'active': 'seller_'+slug,
     }
     return render(request, 'store/products-page.html', args)
 
