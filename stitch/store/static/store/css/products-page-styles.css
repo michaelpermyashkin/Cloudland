@@ -64,6 +64,16 @@
     padding-bottom: 3px;
 }
 
+#clear-filters-label {
+    color: rgb(157, 56, 56);
+    text-decoration: none;
+}
+
+#close-icon {
+    font-size: 11pt;
+    font-weight: lighter;
+}
+
 .card {
     border-radius: 0;
 }

@@ -53,27 +53,33 @@
                         <div class="col-3 float-left">
                             <h4><b>Shop by Price</b></h4>
                             <ul class="list-group" id="category-menu-items" style="list-style-type: none;">
-                                <li><a href="{% url 'store-products-page-filter-price' 0 5 %}">$0.00 - $5.00</a></li>
-                                <li><a href="{% url 'store-products-page-filter-price' 5 10 %}">$5.00 - $10.00</a></li>
-                                <li><a href="{% url 'store-products-page-filter-price' 10 15 %}">$10.00 - $15.00</a></li>
-                                <li><a href="{% url 'store-products-page-filter-price' 15  %}">$15.00+</a></li>
+                                <li><a href="{% url 'store-products-page-filter-price' 0 5 %}" id="price_0-5">$0.00 - $5.00</a></li>
+                                <li><a href="{% url 'store-products-page-filter-price' 5 10 %}" id="price_5-10">$5.00 - $10.00</a></li>
+                                <li><a href="{% url 'store-products-page-filter-price' 10 15 %}" id="price_10-15">$10.00 - $15.00</a></li>
+                                <li><a href="{% url 'store-products-page-filter-price' 15  %}" id="price-15">$15.00+</a></li>
                             </ul>
                         </div>
                         <!-- Order by -->
                         <div class="col-3 float-left">
                             <h4><b>Order By</b></h4>
                             <ul class="list-group" id="category-menu-items" style="list-style-type: none;">
-                                <li><a href="{% url 'store-products-order-by' '?' %}">Default</a></li>
+                                <li><a href="{% url 'store-products-order-by' '?' %}" id="order_default">Default</a></li>
                             </ul>
                             <ul class="list-group" id="category-menu-items" style="list-style-type: none;">
-                                <li><a href="{% url 'store-products-order-by' 'price' %}">Price: low to high</a></li>
+                                <li><a href="{% url 'store-products-order-by' '-date_listed' %}" id="order_latest">Latest</a></li>
                             </ul>
                             <ul class="list-group" id="category-menu-items" style="list-style-type: none;">
-                                <li><a href="{% url 'store-products-order-by' '-price' %}">Price: high to low</a></li>
+                                <li><a href="{% url 'store-products-order-by' 'price' %}" id="order_asc">Price: low to high</a></li>
+                            </ul>
+                            <ul class="list-group" id="category-menu-items" style="list-style-type: none;">
+                                <li><a href="{% url 'store-products-order-by' '-price' %}" id="order_desc">Price: high to low</a></li>
                             </ul>
                         </div>
                     </div>
                     <br>
+                    <!-- <h5>
+                        <a href="" class="" id="clear-filters-label">Clear Filters <li class="fa fa-times" id="close-icon"></li></a>
+                    </h5> -->
                     <br>
                 </div>
             </div>
@@ -153,10 +159,10 @@
                         </div>
                         <div id="pricesCollapse" class="collapse" role="tabpanel" aria-labelledby="pricesHeading" data-parent="#accordion">
                             <ul class="list-group text-left" id="category-menu-items">
-                                <li><a href="{% url 'store-products-page-filter-price' 0 5 %}">$0.00 - $5.00</a></li>
-                                <li><a href="{% url 'store-products-page-filter-price' 5 10 %}">$5.00 - $10.00</a></li>
-                                <li><a href="{% url 'store-products-page-filter-price' 10 15 %}">$10.00 - $15.00</a></li>
-                                <li><a href="{% url 'store-products-page-filter-price' 15 %}">$15.00+</a></li>
+                                <li><a href="{% url 'store-products-page-filter-price' 0 5 %}" id="price_0-5">$0.00 - $5.00</a></li>
+                                <li><a href="{% url 'store-products-page-filter-price' 5 10 %}" id="price_5-10">$5.00 - $10.00</a></li>
+                                <li><a href="{% url 'store-products-page-filter-price' 10 15 %}" id="price_10-15">$10.00 - $15.00</a></li>
+                                <li><a href="{% url 'store-products-page-filter-price' 15 %}" id="price_15">$15.00+</a></li>
                             </ul>
                         </div>
                     </div>
@@ -166,7 +172,7 @@
         <br>
     </div>
     <hr>
-    <h4 class="text-center"><b class="text-danger">{{ products.count }}</b> Products found</h4>
+    <h4 class="text-center"><b class="text-danger">{{ products.count }}</b> Products found | <a href="" class="" id="clear-filters-label">Clear Filters <li class="fa fa-times" id="close-icon"></li></a></h4>
     <br>
     <!-- If no products in query set display message -->
     {% if products.count == 0 %}
@@ -176,7 +182,7 @@
     <div class="row">
         {% for product in products %}
         <a href="{% url 'store-view-item' product.product_id %}" style="text-decoration: none !important;">
-            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-4">
+            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-4 my-auto">
                 <div class="card h-100 rounded-0 border-0">
                     <div class="img-wrapper">
                         <div class="image">
@@ -200,11 +206,12 @@
         </a>
         {% endfor %}
     </div>
-
+    {% for a in active %}
     <script>
-        var activeFilterID = "{{active}}";
+        var activeFilterID = "{{a}}";
         var activeElement = document.getElementById(activeFilterID);
         activeElement.classList.add("active");
     </script>
+    {% endfor %}
 </div>
 {% endblock content %}
