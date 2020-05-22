@@ -5,107 +5,130 @@ from datetime import datetime
 from store.models import Product, Seller, Category
 import random # to shuffle product order for display
 
+categories = Category.objects.order_by('name')
+sellers = Seller.objects.order_by('seller_listing_name') 
+
+active_filters = {
+    'category': 'category_All',
+    'seller': '',
+    'price': '',
+    'min_price': '',
+    'max_price': '',
+    'order_by': '?',
+}
+active = []
+
+def resetDefaultFilters():
+    global active_filters
+    active_filters = {
+        'seller': '',
+        'category': 'category_All',
+        'min_price': '',
+        'max_price': '',
+        'order_by': '?',
+    }
+    getActiveList()
+
+def getActiveList():
+    active.clear()
+    for key in active_filters:
+        if active_filters[key] != '':
+            active.append(active_filters[key])
+    print(active)
+
+
+def getProductsWithActiveFilters():
+    products = Product.objects.order_by('?')
+    getActiveList()
+    if active_filters['min_price'] != '' and active_filters['max_price'] != '':
+        products = products.filter(price__gte=active_filters['min_price'], price__lte=active_filters['max_price'])
+    if active_filters['min_price'] != '' and active_filters['max_price'] == '':
+        products = products.filter(price__gte=active_filters['min_price'])
+    if active_filters['seller'] != '':
+        products = products.filter(seller__slug = active_filters['seller'])
+    if active_filters['category'] != 'category_All' and active_filters['category'] != '':
+        products = products.filter(category__slug = active_filters['category'])
+    if active_filters['order_by'] != '':
+        products = products.order_by(active_filters['order_by'])
+    return products
+
+
 # Products page to view all items
 def products_page_all(request):
-    products = Product.objects.order_by('?')
-    categories = getCategoryList()
-    sellers = getSellerList()
+    resetDefaultFilters()
+    products = getProductsWithActiveFilters()
     args = {
         'products': products,
         'sellers': sellers,
         'categories': categories,
-    }
-    return render(request, 'store/products-page.html', args)
-
-# Products page to view all items
-def products_order_by(request, order_by):
-    products = Product.objects.order_by(order_by)
-    categories = getCategoryList()
-    sellers = getSellerList()
-    args = {
-        'products': products,
-        'sellers': sellers,
-        'categories': categories,
-    }
-    return render(request, 'store/products-page.html', args)
-
-# Filter products by selected category
-def products_by_category(request, slug):
-    products = getProductsByCategory(slug)
-    categories = getCategoryList()
-    sellers = getSellerList()
-    args = {
-        'products': products,
-        'sellers': sellers,
-        'categories': categories,
-    }
-    return render(request, 'store/products-page.html', args)
-
-# Filter products by selected category
-def products_by_price(request, min_price, max_price):
-    products = getProductsByPrice(min_price, max_price)
-    categories = getCategoryList()
-    sellers = getSellerList()
-    args = {
-        'products': products,
-        'sellers': sellers,
-        'categories': categories,
-    }
-    return render(request, 'store/products-page.html', args)
-
-# Filter products by price where only lower bound is defined
-def products_by_price_min(request, min_price):
-    products = getProductsByPrice_min(min_price)
-    categories = getCategoryList()
-    sellers = getSellerList()
-    args = {
-        'products': products,
-        'sellers': sellers,
-        'categories': categories,
+        'active': active,
     }
     return render(request, 'store/products-page.html', args)
 
 # Filter products by selected seller
 def products_by_seller(request, slug):
-    products = getProductsBySeller(slug)
-    categories = getCategoryList()
-    sellers = getSellerList()
+    active_filters['seller'] = slug
+    products = getProductsWithActiveFilters()
     args = {
         'products': products,
         'sellers': sellers,
         'categories': categories,
+        'active': active,
+    }
+    return render(request, 'store/products-page.html', args)
+
+# Filter products by selected category
+def products_by_category(request, slug):
+    print(slug)
+    active_filters['category'] = slug
+    products = getProductsWithActiveFilters()
+    args = {
+        'products': products,
+        'sellers': sellers,
+        'categories': categories,
+        'active': active,
+    }
+    return render(request, 'store/products-page.html', args)
+
+# Products page to view all items
+def products_order_by(request, order_by):
+    active_filters['order_by'] = order_by
+    products = getProductsWithActiveFilters()
+    args = {
+        'products': products,
+        'sellers': sellers,
+        'categories': categories,
+        'active': active,
     }
     return render(request, 'store/products-page.html', args)
 
 
-def getProductsByCategory(slug):
-    products = Product.objects.filter(category__slug=slug).order_by('?')
-    return products
+# Filter products by selected category
+def products_by_price(request, min_price, max_price):
+    active_filters['price'] = 'price_'+str(min_price)+'-'+str(max_price)
+    active_filters['min_price'] = min_price
+    active_filters['max_price'] = max_price
+    products = getProductsWithActiveFilters()
+    args = {
+        'products': products,
+        'sellers': sellers,
+        'categories': categories,
+        'active': active,
+    }
+    return render(request, 'store/products-page.html', args)
 
-
-def getProductsBySeller(slug):
-    products = Product.objects.filter(seller__slug=slug).order_by('?')
-    return products
-
-def getProductsByPrice(min_price, max_price):
-    lower = float(min_price)
-    upper = float(max_price)
-    products = Product.objects.filter(price__gte=min_price, price__lte=max_price).order_by('?')
-    return products
-
-def getProductsByPrice_min(min_price):
-    lower = float(min_price)
-    products = Product.objects.filter(price__gte=min_price).order_by('?')
-    return products
-
-def getCategoryList():
-    categories = Category.objects.order_by('name')
-    return categories
-
-
-def getSellerList():
-    sellers = Seller.objects.order_by('seller_listing_name') 
-    return sellers
+# Filter products by price where only lower bound is defined
+def products_by_price_min(request, min_price):
+    active_filters['price'] = 'price_'+str(min_price)
+    active_filters['min_price'] = min_price
+    products = getProductsWithActiveFilters()
+    args = {
+        'products': products,
+        'sellers': sellers,
+        'categories': categories,
+        'active': active,
+    }
+    return render(request, 'store/products-page.html', args)
 
 # View when an item is selected to display item detail
 def view_item(request, id):

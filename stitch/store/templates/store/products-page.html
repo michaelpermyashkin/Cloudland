@@ -18,13 +18,14 @@
                 <div class="panel-heading">
                     <div class="row">
                         <div class="col-9">
+                            <h4><b>Shop by Category</b></h4>
                             <ul class="list-inline text-left" id="category-menu-items">
                                 <li class="list-inline-item">
                                     <a id="category_All" href="{% url 'store-products-page-all' %}">All</a>
                                 </li>
                                 {% for category in categories %}
                                 <li class="list-inline-item">
-                                    <a id="category_{{ category.slug}}" href="{% url 'store-products-page-filter-category' category.slug %}">{{ category.name }}</a>
+                                    <a id="{{ category.slug }}" href="{% url 'store-products-page-filter-category' category.slug %}">{{ category.name }}</a>
                                 </li>
                                 {% endfor %}
                             </ul>
@@ -44,7 +45,7 @@
                             <ul class="list-group" id="category-menu-items" style="list-style-type: none;">
                                 {% for seller in sellers %}
                                 <li>
-                                    <a id="seller_{{ seller.slug}}" href="{% url 'store-products-page-filter-seller' seller.slug %}">{{ seller.seller_listing_name | capfirst}}</a>
+                                    <a id="{{ seller.slug}}" href="{% url 'store-products-page-filter-seller' seller.slug %}">{{ seller.seller_listing_name | capfirst}}</a>
                                 </li>
                                 {% endfor %}
                             </ul>
@@ -63,23 +64,14 @@
                         <div class="col-3 float-left">
                             <h4><b>Order By</b></h4>
                             <ul class="list-group" id="category-menu-items" style="list-style-type: none;">
-                                <li><a href="{% url 'store-products-order-by' '?' %}" id="order_default">Default</a></li>
-                            </ul>
-                            <ul class="list-group" id="category-menu-items" style="list-style-type: none;">
-                                <li><a href="{% url 'store-products-order-by' '-date_listed' %}" id="order_latest">Latest</a></li>
-                            </ul>
-                            <ul class="list-group" id="category-menu-items" style="list-style-type: none;">
-                                <li><a href="{% url 'store-products-order-by' 'price' %}" id="order_asc">Price: low to high</a></li>
-                            </ul>
-                            <ul class="list-group" id="category-menu-items" style="list-style-type: none;">
-                                <li><a href="{% url 'store-products-order-by' '-price' %}" id="order_desc">Price: high to low</a></li>
+                                <li><a href="{% url 'store-products-order-by' '?' %}" id="?">Default</a></li>
+                                <li><a href="{% url 'store-products-order-by' '-date_listed' %}" id="-date_listed">Latest</a></li>
+                                <li><a href="{% url 'store-products-order-by' 'price' %}" id="price">Price: low to high</a></li>
+                                <li><a href="{% url 'store-products-order-by' '-price' %}" id="-price">Price: high to low</a></li>
                             </ul>
                         </div>
                     </div>
                     <br>
-                    <!-- <h5>
-                        <a href="" class="" id="clear-filters-label">Clear Filters <li class="fa fa-times" id="close-icon"></li></a>
-                    </h5> -->
                     <br>
                 </div>
             </div>
@@ -113,7 +105,7 @@
                             <ul class="list-group text-left" id="category-menu-items">
                                 {% for category in categories %}
                                 <li>
-                                    <a id="category_{{category.slug}}" href="{% url 'store-products-page-filter-category' category.slug %}">{{ category.name }}</a>
+                                    <a id="{{category.slug}}" href="{% url 'store-products-page-filter-category' category.slug %}">{{ category.name }}</a>
                                 </li>
                                 {% endfor %}
                             </ul>
@@ -137,7 +129,7 @@
                             <ul class="list-group text-left" id="category-menu-items">
                                 {% for seller in sellers %}
                                 <li>
-                                    <a id="seller_{{ seller.slug }}" href="{% url 'store-products-page-filter-seller' seller.slug %}">{{ seller.seller_listing_name | capfirst}}</a>
+                                    <a id="{{ seller.slug }}" href="{% url 'store-products-page-filter-seller' seller.slug %}">{{ seller.seller_listing_name | capfirst}}</a>
                                 </li>
                                 {% endfor %}
                             </ul>
@@ -166,13 +158,36 @@
                             </ul>
                         </div>
                     </div>
+                    <!-- Order By card -->
+                    <div class="card">
+                        <div class="card-header" role="tab" id="orderByHeading">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#orderByCollapse" aria-expanded="true" aria-controls="pricesCollapse">
+                                <div class="row">
+                                    <div class="col-9">
+                                        <h5 class="mb-0" id="collapsed-accordion-label"><b>Order By</b></h5>
+                                    </div>
+                                    <div class="col-3 text-right text-dark">
+                                        <li class="fa fa-plus" id="plus-icon"></li>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div id="orderByCollapse" class="collapse" role="tabpanel" aria-labelledby="orderByHeading" data-parent="#accordion">
+                            <ul class="list-group text-left" id="category-menu-items">
+                                <li><a href="{% url 'store-products-order-by' '?' %}" id="?">Default</a></li>
+                                <li><a href="{% url 'store-products-order-by' '-date_listed' %}" id="-date_listed">Latest</a></li>
+                                <li><a href="{% url 'store-products-order-by' 'price' %}" id="price">Price: low to high</a></li>
+                                <li><a href="{% url 'store-products-order-by' '-price' %}" id="-price">Price: high to low</a></li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         <br>
     </div>
     <hr>
-    <h4 class="text-center"><b class="text-danger">{{ products.count }}</b> Products found </h4>
+    <h4 class="text-center"><b class="text-danger">{{ products.count }}</b> Products found | <a href="{% url 'store-products-page-all' %}" class="text-muted" id="clear-filters-btn"> Clear Filters</a></h4>
     <br>
     <!-- If no products in query set display message -->
     {% if products.count == 0 %}

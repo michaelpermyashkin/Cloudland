@@ -15,14 +15,12 @@ def cart(request):
         session_ID = None # no active session
 
     if session_ID != None:
-        print('should make cart')
         cart = Cart.objects.get(id=session_ID) 
         args = {
             'cart': cart,
         }
         return render(request, 'carts/shopping-cart.html', args)
     else:
-        print('empty cart')
         # cart is empty so we load empty cart template
         return render(request, 'carts/shopping-cart.html')
     

@@ -31,7 +31,7 @@
     background: none!important;
     border: none;
     text-decoration: none;
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     color: rgb(123, 123, 123);
 }
 
@@ -49,7 +49,7 @@
     background: none!important;
     border: none;
     text-decoration: none;
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     color: rgb(123, 123, 123);
 }
 
@@ -161,6 +161,11 @@
     font-weight: bold !important;
 }
 
+#clear-filters-btn:hover {
+    color: rgb(213, 20, 20) !important;
+    text-decoration: none;
+}
+
 .accordion .card {
     border: none !important;
 }
@@ -178,36 +183,4 @@
 .accordion .card-body {
     margin: 0 !important;
     padding: 0 !important;
-}
-
-@media (min-width: 34em) {
-    .card-columns {
-        -webkit-column-count: 2;
-        -moz-column-count: 2;
-        column-count: 2;
-    }
-}
-
-@media (min-width: 48em) {
-    .card-columns {
-        -webkit-column-count: 3;
-        -moz-column-count: 3;
-        column-count: 3;
-    }
-}
-
-@media (min-width: 62em) {
-    .card-columns {
-        -webkit-column-count: 4;
-        -moz-column-count: 4;
-        column-count: 4;
-    }
-}
-
-@media (min-width: 75em) {
-    .card-columns {
-        -webkit-column-count: 5;
-        -moz-column-count: 5;
-        column-count: 5;
-    }
 }
