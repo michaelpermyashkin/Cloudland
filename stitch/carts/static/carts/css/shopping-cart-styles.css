@@ -9,6 +9,12 @@
     width: 20%;
 }
 
+.product-image img {
+    max-height: 65px;
+    width: auto;
+    object-fit: cover;
+}
+
 .product-details {
     float: left;
     width: 37%;

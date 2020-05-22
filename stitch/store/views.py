@@ -1,13 +1,15 @@
 from django.contrib.auth.models import User
+from django.core.paginator import Paginator
 from django.shortcuts import render, HttpResponseRedirect, reverse
 from django.urls import reverse
 from datetime import datetime
 from store.models import Product, Seller, Category
 import random # to shuffle product order for display
 
-categories = Category.objects.order_by('name')
-sellers = Seller.objects.order_by('seller_listing_name') 
+categories = Category.objects.order_by('name') # list of all categories 
+sellers = Seller.objects.order_by('seller_listing_name') # list of all sellers 
 
+# list of all currently active filters
 active_filters = {
     'category': 'category_All',
     'seller': '',
@@ -16,8 +18,9 @@ active_filters = {
     'max_price': '',
     'order_by': '?',
 }
-active = []
+active = [] # array of active filter id's passed into template 
 
+# sets all default filters 
 def resetDefaultFilters():
     global active_filters
     active_filters = {
@@ -29,14 +32,21 @@ def resetDefaultFilters():
     }
     getActiveList()
 
+# builds array of all currently set filters
 def getActiveList():
     active.clear()
     for key in active_filters:
         if active_filters[key] != '':
             active.append(active_filters[key])
-    print(active)
 
+# Builds pagination system from product liust to display
+def buildPaginator(request, products):
+    paginator = Paginator(products, 12) # Show 20 products per page.
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return page_obj
 
+# Gets all products that match the current filters settings
 def getProductsWithActiveFilters():
     products = Product.objects.order_by('?')
     getActiveList()
@@ -57,11 +67,13 @@ def getProductsWithActiveFilters():
 def products_page_all(request):
     resetDefaultFilters()
     products = getProductsWithActiveFilters()
+    page_obj = buildPaginator(request, products)
     args = {
         'products': products,
         'sellers': sellers,
         'categories': categories,
         'active': active,
+        'page_obj': page_obj,
     }
     return render(request, 'store/products-page.html', args)
 
@@ -69,11 +81,13 @@ def products_page_all(request):
 def products_by_seller(request, slug):
     active_filters['seller'] = slug
     products = getProductsWithActiveFilters()
+    page_obj = buildPaginator(request, products)
     args = {
         'products': products,
         'sellers': sellers,
         'categories': categories,
         'active': active,
+        'page_obj': page_obj,
     }
     return render(request, 'store/products-page.html', args)
 
@@ -82,38 +96,44 @@ def products_by_category(request, slug):
     print(slug)
     active_filters['category'] = slug
     products = getProductsWithActiveFilters()
+    page_obj = buildPaginator(request, products)
     args = {
         'products': products,
         'sellers': sellers,
         'categories': categories,
         'active': active,
+        'page_obj': page_obj,
     }
     return render(request, 'store/products-page.html', args)
 
-# Products page to view all items
+# Sets the order_by filter
 def products_order_by(request, order_by):
     active_filters['order_by'] = order_by
     products = getProductsWithActiveFilters()
+    page_obj = buildPaginator(request, products)
     args = {
         'products': products,
         'sellers': sellers,
         'categories': categories,
         'active': active,
+        'page_obj': page_obj,
     }
     return render(request, 'store/products-page.html', args)
 
 
-# Filter products by selected category
+# Filter products by price where lower and upper bound is defined
 def products_by_price(request, min_price, max_price):
     active_filters['price'] = 'price_'+str(min_price)+'-'+str(max_price)
     active_filters['min_price'] = min_price
     active_filters['max_price'] = max_price
     products = getProductsWithActiveFilters()
+    page_obj = buildPaginator(request, products)
     args = {
         'products': products,
         'sellers': sellers,
         'categories': categories,
         'active': active,
+        'page_obj': page_obj,
     }
     return render(request, 'store/products-page.html', args)
 
@@ -122,11 +142,13 @@ def products_by_price_min(request, min_price):
     active_filters['price'] = 'price_'+str(min_price)
     active_filters['min_price'] = min_price
     products = getProductsWithActiveFilters()
+    page_obj = buildPaginator(request, products)
     args = {
         'products': products,
         'sellers': sellers,
         'categories': categories,
         'active': active,
+        'page_obj': page_obj,
     }
     return render(request, 'store/products-page.html', args)
 
