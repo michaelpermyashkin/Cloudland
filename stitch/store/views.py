@@ -39,12 +39,12 @@ def getActiveList():
         if active_filters[key] != '':
             active.append(active_filters[key])
 
-# Builds pagination system from product liust to display
-def buildPaginator(request, products):
-    paginator = Paginator(products, 12) # Show 20 products per page.
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    return page_obj
+# # Builds pagination system from product liust to display
+# def buildPaginator(request, products):
+#     paginator = Paginator(products, 12) # Show 20 products per page.
+#     page_number = request.GET.get('page')
+#     page_obj = paginator.get_page(page_number)
+#     return page_obj
 
 # Gets all products that match the current filters settings
 def getProductsWithActiveFilters():
@@ -67,13 +67,11 @@ def getProductsWithActiveFilters():
 def products_page_all(request):
     resetDefaultFilters()
     products = getProductsWithActiveFilters()
-    page_obj = buildPaginator(request, products)
     args = {
         'products': products,
         'sellers': sellers,
         'categories': categories,
         'active': active,
-        'page_obj': page_obj,
     }
     return render(request, 'store/products-page.html', args)
 
@@ -81,13 +79,11 @@ def products_page_all(request):
 def products_by_seller(request, slug):
     active_filters['seller'] = slug
     products = getProductsWithActiveFilters()
-    page_obj = buildPaginator(request, products)
     args = {
         'products': products,
         'sellers': sellers,
         'categories': categories,
         'active': active,
-        'page_obj': page_obj,
     }
     return render(request, 'store/products-page.html', args)
 
@@ -96,13 +92,11 @@ def products_by_category(request, slug):
     print(slug)
     active_filters['category'] = slug
     products = getProductsWithActiveFilters()
-    page_obj = buildPaginator(request, products)
     args = {
         'products': products,
         'sellers': sellers,
         'categories': categories,
         'active': active,
-        'page_obj': page_obj,
     }
     return render(request, 'store/products-page.html', args)
 
@@ -110,13 +104,11 @@ def products_by_category(request, slug):
 def products_order_by(request, order_by):
     active_filters['order_by'] = order_by
     products = getProductsWithActiveFilters()
-    page_obj = buildPaginator(request, products)
     args = {
         'products': products,
         'sellers': sellers,
         'categories': categories,
         'active': active,
-        'page_obj': page_obj,
     }
     return render(request, 'store/products-page.html', args)
 
@@ -127,13 +119,11 @@ def products_by_price(request, min_price, max_price):
     active_filters['min_price'] = min_price
     active_filters['max_price'] = max_price
     products = getProductsWithActiveFilters()
-    page_obj = buildPaginator(request, products)
     args = {
         'products': products,
         'sellers': sellers,
         'categories': categories,
         'active': active,
-        'page_obj': page_obj,
     }
     return render(request, 'store/products-page.html', args)
 
@@ -142,13 +132,11 @@ def products_by_price_min(request, min_price):
     active_filters['price'] = 'price_'+str(min_price)
     active_filters['min_price'] = min_price
     products = getProductsWithActiveFilters()
-    page_obj = buildPaginator(request, products)
     args = {
         'products': products,
         'sellers': sellers,
         'categories': categories,
         'active': active,
-        'page_obj': page_obj,
     }
     return render(request, 'store/products-page.html', args)
 

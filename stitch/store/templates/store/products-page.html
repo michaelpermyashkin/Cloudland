@@ -194,14 +194,22 @@
     <br>
     <h2 class="text-center">Oops, we didn't find any products matching your search!</h2>
     {% endif %}
-    <div class="row">
-        {% for product in page_obj %}
+    <div class="row" id="main">
+        {% for product in products %}
         <a href="{% url 'store-view-item' product.product_id %}" style="text-decoration: none !important;">
             <div class="col-lg-3 col-md-4 col-sm-6 col-xs-4 my-auto">
                 <div class="card h-100 rounded-0 border-0 product-card">
                     <div class="img-wrapper">
                         <div class="image">
-                            <img class="card-img-top rounded-0" src="{{ product.product_image.url }}" id="card-image" alt="Product Image">
+                            <!-- Load first 10 images right away -->
+                            {% if forloop.counter > 10 %}
+                            <!-- The images after the first 10 are loaded when the page is scrolled -->
+                            <img class="card-img-top rounded-0 img-responsive lazy" data-src="{{ product.product_image.url }}" id="card-image" alt="Product Image">
+                            <!--  -->
+                            {% else %}
+                            <img class="card-img-top rounded-0 img-responsive" src="{{ product.product_image.url }}" id="card-image" alt="Product Image">
+                            <!--  -->
+                            {% endif %}
                         </div>
                         <div class="img-overlay">
                             <div class="btn" id="btn-view-item">VIEW</div>
@@ -221,36 +229,44 @@
         {% endfor %}
     </div>
     {% for a in active %}
+    <!-- Hioghlights active filters by adding .active class -->
     <script>
         var activeFilterID = "{{a}}";
         var activeElement = document.getElementById(activeFilterID);
         activeElement.classList.add("active");
     </script>
     {% endfor %}
-    <nav class="mt-5" aria-label="Page navigation example">
-        <ul class="pagination justify-content-center">
-            {% if page_obj.number == 1 %}
-            <li class="page-item disabled">
-                <a class="page-link" href="" tabindex="-1">Previous</a>
-            </li>
-            {% else %}
-            <li class="page-item">
-                <a class="page-link" href="?page={{ page_obj.previous_page_number }}" tabindex="-1">Previous</a>
-            </li>
-            {% endif %} {% for page in page_obj.paginator.page_range %}
-            <li class="page-item">
-                <a class="page-link" href="?page={{ page }}">{{ page }}</a>
-            </li>
-            {% endfor %} {% if page_obj.number == page_obj.paginator.page_range %}
-            <li class="page-item disabled">
-                <a class="page-link" href="" tabindex="-1">Next</a>
-            </li>
-            {% else %}
-            <li class="page-item">
-                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
-            </li>
-            {% endif %}
-        </ul>
-    </nav>
+    <!-- Lazy loading script -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var lazyloadImages = document.querySelectorAll("img.lazy");
+            var lazyloadThrottleTimeout;
+
+            function lazyload() {
+                if (lazyloadThrottleTimeout) {
+                    clearTimeout(lazyloadThrottleTimeout);
+                }
+
+                lazyloadThrottleTimeout = setTimeout(function() {
+                    var scrollTop = window.pageYOffset;
+                    lazyloadImages.forEach(function(img) {
+                        if (img.offsetTop < (window.innerHeight + scrollTop)) {
+                            img.src = img.dataset.src;
+                            img.classList.remove('lazy');
+                        }
+                    });
+                    if (lazyloadImages.length == 0) {
+                        document.removeEventListener("scroll", lazyload);
+                        window.removeEventListener("resize", lazyload);
+                        window.removeEventListener("orientationChange", lazyload);
+                    }
+                }, 20);
+            }
+
+            document.addEventListener("scroll", lazyload);
+            window.addEventListener("resize", lazyload);
+            window.addEventListener("orientationChange", lazyload);
+        });
+    </script>
 </div>
 {% endblock content %}
