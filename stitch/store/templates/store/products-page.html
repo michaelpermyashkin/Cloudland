@@ -196,36 +196,36 @@
     {% endif %}
     <div class="row" id="main">
         {% for product in products %}
-        <a href="{% url 'store-view-item' product.product_id %}" style="text-decoration: none !important;">
-            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-4 my-auto">
-                <div class="card h-100 rounded-0 border-0 product-card">
-                    <div class="img-wrapper">
-                        <div class="image">
-                            <!-- Load first 10 images right away -->
-                            {% if forloop.counter > 10 %}
-                            <!-- The images after the first 10 are loaded when the page is scrolled -->
-                            <img class="card-img-top rounded-0 img-responsive lazy" data-src="{{ product.product_image.url }}" id="card-image" alt="Product Image">
-                            <!--  -->
-                            {% else %}
-                            <img class="card-img-top rounded-0 img-responsive" src="{{ product.product_image.url }}" id="card-image" alt="Product Image">
-                            <!--  -->
-                            {% endif %}
-                        </div>
-                        <div class="img-overlay">
-                            <div class="btn" id="btn-view-item">VIEW</div>
-                        </div>
+        <!-- <a href="{% url 'store-view-item' product.product_id %}" style="text-decoration: none !important;"> -->
+        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-4 my-auto">
+            <a href="{% url 'store-view-item' product.product_id %}" class="card h-100 rounded-0 border-0 product-card">
+                <div class="img-wrapper">
+                    <div class="image">
+                        <!-- Load first 10 images right away -->
+                        {% if forloop.counter > 10 %}
+                        <!-- The images after the first 10 are loaded when the page is scrolled -->
+                        <img class="card-img-top rounded-0 img-responsive lazy" data-src="{{ product.product_image.url }}" id="card-image" alt="Product Image">
+                        <!--  -->
+                        {% else %}
+                        <img class="card-img-top rounded-0 img-responsive" src="{{ product.product_image.url }}" id="card-image" alt="Product Image">
+                        <!--  -->
+                        {% endif %}
                     </div>
-                    <div class="card-body text-center">
-                        <h4 class="card-title">
-                            <a id="product-name">{{ product.product_name }}</a>
-                        </h4>
-                        <p id="seller-name">// {{product.seller.seller_listing_name }} //</p>
-                        <p class="card-text" id="product-description">{{ product.description_short }}</p>
-                        <h5 id="product-price">${{ product.price | floatformat:2 }}</h5>
+                    <div class="img-overlay">
+                        <div class="btn" id="btn-view-item">VIEW</div>
                     </div>
                 </div>
-            </div>
-        </a>
+                <div class="card-body text-center">
+                    <h4 class="card-title">
+                        <a id="product-name">{{ product.product_name }}</a>
+                    </h4>
+                    <p id="seller-name">// {{product.seller.seller_listing_name }} //</p>
+                    <p class="card-text" id="product-description">{{ product.description_short }}</p>
+                    <h5 id="product-price">${{ product.price | floatformat:2 }}</h5>
+                </div>
+            </a>
+        </div>
+        <!-- </a> -->
         {% endfor %}
     </div>
     {% for a in active %}

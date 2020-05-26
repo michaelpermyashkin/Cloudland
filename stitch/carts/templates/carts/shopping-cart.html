@@ -50,7 +50,7 @@
                 <form method="post" action="{% url 'remove_from_cart' %}">
                     {% csrf_token %}
                     <button type="submit" class="remove-product" name="get-prod-info{{item.product.product_id}}">
-                        REMOVE
+                        Remove
                     </button>
                 </form>
             </div>
@@ -72,9 +72,10 @@
                 <div class="totals-value" id="cart-total"></div>
             </div>
         </div>
-
-        <button class="checkout">Checkout</button>
-
+        <div class="row justify-content-end">
+            <button class="continue-shopping">Continue shopping</button>
+            <button class="checkout ml-3 btn-success">Checkout</button>
+        </div>
     </div>
     <br>
 </div>

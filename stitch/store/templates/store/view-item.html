@@ -11,7 +11,7 @@
 {% block content %}
 <div class="container">
     {% for p in product %}
-    <h1 class="my-2">{{ p.product_name }} <small class="text-muted" style="font-size: 0.5em;"> By {{ p.seller.seller_listing_name }} </small></h1>
+    <h1 class="my-2">{{ p.product_name }} <small class="text-muted" style="font-size: 0.5em;"> by {{ p.seller.seller_listing_name }} </small></h1>
     <div class="row">
         <div class="col-md-7" id="image-container">
             <img src="{{ p.product_image.url }}" alt="Product image">

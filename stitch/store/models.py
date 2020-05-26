@@ -5,6 +5,8 @@ from django.dispatch import receiver
 from django.utils.datetime_safe import datetime
 
 class Seller(models.Model):
+    profile_picture = models.ImageField(upload_to='seller_profiles', help_text="Upload your profile picture for our about page", blank=True, null=True)
+    bio_description = models.TextField(max_length=500, default="", help_text="Brief bio describing who you are and what you do", blank=True, null=True)
     seller_full_name = models.CharField(max_length=50)
     seller_listing_name = models.CharField(max_length=50)
     email = models.EmailField(max_length=50)

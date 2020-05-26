@@ -149,6 +149,11 @@ def view_item(request, id):
     return render(request, 'store/view-item.html', args)
 
 # Contact page
+def about(request):
+    sellers = Seller.objects.all() 
+    return render(request, 'store/about.html', {'sellers': sellers})
+
+# Contact page
 def contact(request):
     return render(request, 'store/contact.html')
 

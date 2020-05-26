@@ -12,4 +12,5 @@ urlpatterns = [
     path('products/min_price=<int:min_price>/', views.products_by_price_min, name='store-products-page-filter-price'),
     path('products/item/pruduct_id=<int:id>/', views.view_item, name='store-view-item'),
     path('contact/', views.contact, name='store-contact'),
+    path('about/', views.about, name='about'),
 ]
