@@ -37,7 +37,7 @@
             </div>
             <div class="product-details">
                 <div class="product-title">{{ item.product.product_name }}</div>
-                <p class="product-description">{{ item.product.description }}</p>
+                <p class="product-description">{{ item.product.description_short }}</p>
             </div>
             <div class="product-price">{{ item.product.price }}</div>
             <div class="product-quantity">{{ item.quantity }}</div>
@@ -73,7 +73,9 @@
             </div>
         </div>
         <div class="row justify-content-end">
-            <button class="continue-shopping">Continue shopping</button>
+            <a href="{% url 'store-products-page-all' %}">
+                <button class="continue-shopping">Continue shopping</button>
+            </a>
             <button class="checkout ml-3 btn-success">Checkout</button>
         </div>
     </div>

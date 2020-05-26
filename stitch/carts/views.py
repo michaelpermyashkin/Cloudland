@@ -19,7 +19,7 @@ def cart(request):
         args = {
             'cart': cart,
         }
-        return render(request, 'carts/shopping-cart.html', args)
+        return render(request, 'carts/cart.html', args)
     else:
         # cart is empty so we load empty cart template
         return render(request, 'carts/shopping-cart.html')

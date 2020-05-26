@@ -1,0 +1,186 @@
+<!-- Extends base template  -->
+{% extends "store/base.html" %}
+<!-- Loads static content to access content in static directory -->
+{% load static %}
+<!-- Page title for window tab -->
+{% block page %}Cart{% endblock page%}
+<!-- custom style sheet-->
+{% block styles %}
+<link href="{% static 'carts/css/cart-styles.css' %}" rel="stylesheet">
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet"> {% endblock styles %}
+
+<!-- custom page content -->
+{% block content %}
+
+<div class="container">
+    <script onload="setCartTotalValues()"></script>
+    <div class="row mt-5">
+        <div class="col-12 m-auto">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Product</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in cart.cartitem_set.all %}
+                        <tr>
+                            <td id="image-col">
+                                <div class="product-image text-center">
+                                    <img src="{{ item.product.product_image.url }}" />
+                                </div>
+                            </td>
+                            <td>
+                                <b class="product-name">{{ item.product.product_name }}</b>
+                                <div class="">{{ item.product.description_short}}</div>
+                            </td>
+                            <td class="product-price">${{ item.product.price }}</td>
+                            <td>
+                                <input class="form-control text-center product-quantity" type="text" value="1" />
+                            </td>
+                            <td class="product-line-price">${{ item.line_total }}</td>
+                            <!-- <td class="text-right"><button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> </button> </td> -->
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="col-lg-4 ml-auto mt-5">
+        <h2 id="cart-summary-label" class="font-weight-bold text-center">Cart Summary</h2>
+        <div>
+            <ul class="list-unstyled mb-4">
+                <!-- Subtotal -->
+                <li class="d-flex justify-content-between py-3 border-bottom">
+                    <strong class="text-muted">Order Subtotal </strong>
+                    <strong class="totals-value" id="cart-subtotal"></strong>
+                </li>
+                <!-- Shipping -->
+                <li class="d-flex justify-content-between py-3 border-bottom">
+                    <strong class="text-muted">Shipping</strong>
+                    <strong class="totals-value" id="cart-shipping"></strong>
+                </li>
+                <!-- Grand Total -->
+                <li class="d-flex justify-content-between py-3 border-bottom">
+                    <strong class="text-muted">Total</strong>
+                    <h5 class="font-weight-bold totals-value" id="cart-total"></h5>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="row no-gutters">
+        <div class="col-6">
+            <button id="btn-continue-shopping" class="btn btn-dark border-0 rounded-0 justify-content-start">Continue Shopping</button>
+
+        </div>
+        <div class="col-6 text-right">
+            <button id="btn-update-cart" class="btn btn-warning border-0 rounded-0">Update Cart</button>
+            <button id="btn-checkout" class="btn btn-success border-0 rounded-0">Checkout</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+
+        /* Set rates + misc */
+        var shippingRate = 5.00;
+        var fadeTime = 300;
+
+        /* sets initial cart total values */
+        var cartSubtotal = 0;
+        $(function() {
+            var cartSubtotal = 0;
+            $('td.product-line-price').each(function() {
+                lineTotal = this.innerHTML.replace("$", "");
+                cartSubtotal += parseFloat(lineTotal, 2)
+                console.log(lineTotal)
+            })
+            console.log(cartSubtotal)
+
+            $('#cart-subtotal').text(cartSubtotal.toFixed(2));
+            $('#cart-shipping').text(shippingRate.toFixed(2));
+            var cartTotal = cartSubtotal + shippingRate;
+            $('#cart-total').text(cartTotal.toFixed(2));
+        })
+
+        /* Assign actions */
+        $('.product-quantity input').change(function() {
+            updateQuantity(this);
+        });
+
+        $('.product-removal button').click(function() {
+            removeItem(this);
+        });
+
+
+        /* Recalculate cart */
+        function recalculateCart() {
+            var subtotal = 0;
+
+            /* Sum up row totals */
+            $('.product').each(function() {
+                subtotal += parseFloat($(this).children('.product-line-price').text());
+            });
+
+            /* Calculate totals */
+            var shipping = (subtotal > 0 ? shippingRate : 0);
+            var total = subtotal + shipping;
+            console.log(total)
+                /* Update totals display */
+            $('.totals-value').fadeOut(fadeTime, function() {
+                $('#cart-subtotal').html(subtotal.toFixed(2));
+                $('#cart-shipping').html(shipping.toFixed(2));
+                $('#cart-total').html(total.toFixed(2));
+                if (total == 0) {
+                    $('.checkout').fadeOut(fadeTime);
+                } else {
+                    $('.checkout').fadeIn(fadeTime);
+                }
+                $('.totals-value').fadeIn(fadeTime);
+            });
+        }
+
+
+        /* Update quantity */
+        function updateQuantity(quantityInput) {
+            /* Calculate line price */
+            var productRow = $(quantityInput).parent().parent();
+            var price = parseFloat(productRow.children('.product-price').text());
+            var quantity = $(quantityInput).val();
+            var linePrice = price * quantity;
+
+            /* Update line price display and recalc cart totals */
+            productRow.children('.product-line-price').each(function() {
+                $(this).fadeOut(fadeTime, function() {
+                    $(this).text(linePrice.toFixed(2));
+                    recalculateCart();
+                    $(this).fadeIn(fadeTime);
+                });
+            });
+        }
+
+
+        /* Remove item from cart */
+        function removeItem(removeButton) {
+            /* Remove row from DOM and recalc cart total */
+            var productRow = $(removeButton).parent().parent();
+            productRow.slideUp(fadeTime, function() {
+                productRow.remove();
+                recalculateCart();
+            });
+        }
+
+    });
+</script>
+{% endblock content %}
