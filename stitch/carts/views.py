@@ -22,7 +22,7 @@ def cart(request):
         return render(request, 'carts/cart.html', args)
     else:
         # cart is empty so we load empty cart template
-        return render(request, 'carts/shopping-cart.html')
+        return render(request, 'carts/cart.html')
     
 
 # handles adding a product to cart

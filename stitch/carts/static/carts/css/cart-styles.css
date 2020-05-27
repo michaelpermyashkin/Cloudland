@@ -90,3 +90,8 @@ td a:hover {
     text-decoration: none !important;
     color: #000;
 }
+
+#cart-summary-label {
+    background-color: rgb(194, 194, 194);
+    color: rgb(0, 0, 0);
+}
