@@ -48,7 +48,7 @@ def add_to_cart(request):
 
     try:
         quantity_selected = request.POST['selected_quantity']
-        cart_item.quantity = int(quantity_selected)
+        cart_item.quantity += int(quantity_selected)
         cart_item.save()
     except:
         cart_item.quantity = 1

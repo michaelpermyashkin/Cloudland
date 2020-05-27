@@ -19,40 +19,55 @@
     <script onload="setCartTotalValues()"></script>
     <div class="row mt-5">
         <div class="col-12 m-auto">
-            <div class="table-responsive">
-                <table class="table">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th scope="col"></th>
-                            <th scope="col">Product</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Quantity</th>
-                            <th scope="col">Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for item in cart.cartitem_set.all %}
-                        <tr>
-                            <td id="image-col">
-                                <div class="product-image text-center">
-                                    <img src="{{ item.product.product_image.url }}" />
-                                </div>
-                            </td>
-                            <td>
+            <table class="table">
+                <thead class="thead">
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col"><b>Product</b></th>
+                        <th scope="col"><b>Price</b></th>
+                        <th scope="col"><b>Quantity</b></th>
+                        <th scope="col"><b>Total</b></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in cart.cartitem_set.all %}
+                    <tr>
+                        <td id="image-col">
+                            <div class="product-image text-center my-2">
+                                <img src="{{ item.product.product_image.url }}" />
+                            </div>
+                        </td>
+                        <td>
+                            <a href="{% url 'store-view-item' item.product.product_id %}">
                                 <b class="product-name">{{ item.product.product_name }}</b>
                                 <div class="">{{ item.product.description_short}}</div>
-                            </td>
-                            <td class="product-price">${{ item.product.price }}</td>
-                            <td>
-                                <input class="form-control text-center product-quantity" type="text" value="1" />
-                            </td>
-                            <td class="product-line-price">${{ item.line_total }}</td>
-                            <!-- <td class="text-right"><button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> </button> </td> -->
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+                            </a>
+                        </td>
+                        <td class="product-price">${{ item.product.price }}</td>
+                        <td class="">
+                            <div class="text-left pl-4">
+                                {{ item.quantity }}
+                            </div>
+                            <!-- <input class="form-control text-center product-quantity" type="text" value="{{ item.quantity }}" /> -->
+                        </td>
+                        <td class="product-line-price">${{ item.line_total }}</td>
+
+                        <td>
+                            <div class="product-removal">
+                                <!-- Form to get the itemID into view -->
+                                <form method="post" action="{% url 'remove_from_cart' %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="remove-product" name="get-prod-info{{item.product.product_id}} ">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
     <hr>
@@ -72,20 +87,18 @@
                 </li>
                 <!-- Grand Total -->
                 <li class="d-flex justify-content-between py-3 border-bottom">
-                    <strong class="text-muted">Total</strong>
+                    <strong class="text-muted ">Total</strong>
                     <h5 class="font-weight-bold totals-value" id="cart-total"></h5>
                 </li>
             </ul>
         </div>
     </div>
-    <div class="row no-gutters">
-        <div class="col-6">
-            <button id="btn-continue-shopping" class="btn btn-dark border-0 rounded-0 justify-content-start">Continue Shopping</button>
-
+    <div class="row no-gutters ">
+        <div class="col-6 ">
+            <a href="{% url 'store-products-page-all' %} " id="btn-continue-shopping " class="btn btn-dark border-0 rounded-0 justify-content-start ">Continue Shopping</a>
         </div>
-        <div class="col-6 text-right">
-            <button id="btn-update-cart" class="btn btn-warning border-0 rounded-0">Update Cart</button>
-            <button id="btn-checkout" class="btn btn-success border-0 rounded-0">Checkout</button>
+        <div class="col-6 text-right ">
+            <a href="{% url 'checkout-billing' %}" id="btn-checkout" class="btn btn-success border-0 rounded-0">Checkout</a>
         </div>
     </div>
 </div>
@@ -104,9 +117,7 @@
             $('td.product-line-price').each(function() {
                 lineTotal = this.innerHTML.replace("$", "");
                 cartSubtotal += parseFloat(lineTotal, 2)
-                console.log(lineTotal)
             })
-            console.log(cartSubtotal)
 
             $('#cart-subtotal').text(cartSubtotal.toFixed(2));
             $('#cart-shipping').text(shippingRate.toFixed(2));

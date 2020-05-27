@@ -8,6 +8,22 @@ button:hover {
     outline: none !important;
 }
 
+.remove-product {
+    transition: all .1s ease-in-out;
+    background-color: #FFF;
+    border: none !important;
+    outline: none !important;
+    background-color: #FFF;
+    color: rgb(118, 118, 118);
+}
+
+.remove-product:hover {
+    background-color: #FFF;
+    border: none !important;
+    outline: none !important;
+    color: #dc3545;
+}
+
 #btn-continue-shopping {
     background-color: #000;
     color: #FFF;
@@ -18,68 +34,12 @@ button:hover {
     color: #FFF;
 }
 
+#btn-checkout {
+    color: #FFF !important;
+}
+
 .table-responsive {
     width: 100%;
-}
-
-.bloc_left_price {
-    color: #c01508;
-    text-align: center;
-    font-weight: bold;
-    font-size: 150%;
-}
-
-.category_block li:hover {
-    background-color: #007bff;
-}
-
-.category_block li:hover a {
-    color: #ffffff;
-}
-
-.category_block li a {
-    color: #343a40;
-}
-
-.add_to_cart_block .price {
-    color: #c01508;
-    text-align: center;
-    font-weight: bold;
-    font-size: 200%;
-    margin-bottom: 0;
-}
-
-.add_to_cart_block .price_discounted {
-    color: #343a40;
-    text-align: center;
-    text-decoration: line-through;
-    font-size: 140%;
-}
-
-.product_rassurance {
-    padding: 10px;
-    margin-top: 15px;
-    background: #ffffff;
-    border: 1px solid #6c757d;
-    color: #6c757d;
-}
-
-.product_rassurance .list-inline {
-    margin-bottom: 0;
-    text-transform: uppercase;
-    text-align: center;
-}
-
-.product_rassurance .list-inline li:hover {
-    color: #343a40;
-}
-
-.reviews_product .fa-star {
-    color: gold;
-}
-
-.pagination {
-    margin-top: 20px;
 }
 
 input[type=text] {
@@ -91,18 +51,42 @@ input[type=text] {
     font-size: 1.5rem;
 }
 
-@media screen and (max-width: 550px) {
-    .product-name {
-        font-size: 1.1rem;
-    }
-}
-
 .product-image img {
     max-height: 65px;
     width: auto;
     object-fit: cover;
 }
 
+@media screen and (max-width: 550px) {
+    .product-name {
+        font-size: 1.2rem;
+    }
+    .product-image img {
+        max-width: 45px;
+        height: auto;
+        object-fit: cover;
+    }
+}
+
 #image-col {
-    width: 60px !important;
+    width: 50px !important;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+thead {
+    margin: inherit 0 !important;
+    border: 1px solid #000 !important;
+    background-color: #000 !important;
+    color: #FFF !important;
+}
+
+td a {
+    text-decoration: none !important;
+    color: rgb(67, 67, 67);
+}
+
+td a:hover {
+    text-decoration: none !important;
+    color: #000;
 }
