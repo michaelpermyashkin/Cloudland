@@ -5,7 +5,7 @@ from store.models import Product
 class CartItem(models.Model):
     cart = models.ForeignKey('Cart', on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    quantity = models.IntegerField(default=1)
+    quantity = models.IntegerField(default=0)
     line_total = models.DecimalField(default=0.00, max_digits=5, decimal_places=2)
 
     def __str__(self):
