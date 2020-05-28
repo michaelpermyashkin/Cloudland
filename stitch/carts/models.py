@@ -9,7 +9,7 @@ class CartItem(models.Model):
     line_total = models.DecimalField(default=0.00, max_digits=5, decimal_places=2)
 
     def __str__(self):
-        return self.product.productName
+        return self.product.product_name
 
 
 class Cart(models.Model):
@@ -19,4 +19,4 @@ class Cart(models.Model):
     active = models.BooleanField(default=True)
 
     def __str__(self):
-        return "{} | $Total: {}".format(self.id, self.total)
+        return "Cart ID: {}".format(self.id)

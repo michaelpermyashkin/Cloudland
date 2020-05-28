@@ -1,0 +1,14 @@
+<!-- Extends base template  -->
+{% extends "store/base.html" %}
+<!-- Loads static content to access content in static directory -->
+{% load static %}
+<!-- Page title for window tab -->
+{% block page %}Contact{% endblock page%}
+<!-- Custom style sheet -->
+{% block styles %}{% endblock styles %}
+<!-- fills content block in base template -->
+{% block content %}
+<div class="container" style="height: 100vh;">
+    <h1>Checkout</h1>
+</div>
+{%endblock content %}
