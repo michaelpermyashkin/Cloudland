@@ -37,15 +37,12 @@
             <img src="{% static 'store/media/brand/stitch-logo.png' %}" alt="Stitch logo">
         </a>
         <button id="nav-collapse-icon" class="navbar-toggler navbar-toggler-right mt-2" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-hidden="true" Toggle navigation>
-                ☰
-            </button>
-        <div class="collapse navbar-collapse " id="navbarResponsive" data-parent="nav-collapse-icon">
+            ☰
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive" data-parent="nav-collapse-icon">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link " href="{% url 'store-products-page-all' %}">Shopping</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " href="#">Account</a>
+                    <a class="nav-link " href="{% url 'accounts-dashboard' %}">Account</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'about' %}">About</a>
@@ -53,27 +50,33 @@
                 <li class="nav-item">
                     <a class="nav-link " href="{% url 'store-contact' %} ">Contact</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="{% url 'store-products-page-all' %}">Shopping</a>
+                </li>
             </ul>
         </div>
         <ul class="navbar-nav">
-            <li class="nav-item">
+            <li class="">
                 <a class="nav-link" href="{% url 'store-cart' %} ">
-                    My Cart <span class="badge badge-pill badge-danger" id="cart-badge">{{ request.session.cart_items_total }}</span>
+                    Cart
+                    <!-- If cart exists show product count -->
+                    {% if request.session.cart_items_total %}
+                    <span class="badge badge-pill badge-danger my-auto" id="cart-badge">{{ request.session.cart_items_total }}</span>
+                    <!-- If no cart set pill to 0 -->
+                    {% else %}
+                    <span class="badge badge-pill badge-danger mb-5" id="cart-badge">0</span> {% endif %}
                 </a>
             </li>
         </ul>
     </nav>
     {% block content %} {% endblock content %}
 
-    <!-- Bootstrap core JavaScript -->
     <script src="{% static 'store/vendor/jquery/jquery.min.js' %} "></script>
     <script src="{% static 'store/vendor/bootstrap/js/bootstrap.bundle.min.js' %} "></script>
 
 </body>
-<!-- Footer -->
 <footer class="py-5">
     <p class="m-0 text-center text-white ">Copyright &copy; Your Website 2019</p>
-    <!-- /.container -->
 </footer>
 
 </html>

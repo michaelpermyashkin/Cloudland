@@ -2,8 +2,30 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import authenticate, logout
+from django.contrib.auth.decorators import login_required
 from .forms import RegisterForm, UsersLoginForm
+from carts.models import Cart
 import store.urls 
+
+# Customer Dashboard
+@login_required
+def dashboard(request):
+    try:
+        cartID = request.session['cart_id'] 
+        print(cartID)
+        cart = Cart.objects.get(id=cartID)
+    except:
+        cartID = None
+
+    if cartID != None:
+        cart = Cart.objects.get(id=cartID) 
+        args = {
+            'cart': cart,
+        }
+        return render(request, 'accounts/dashboard.html', args)
+    else:
+        return render(request, 'accounts/dashboard.html')
+
 
 # Signup
 def register(request):
@@ -21,7 +43,7 @@ def register(request):
         if next_url:
             return redirect(next_url)
         else:
-            return redirect('store-home')
+            return redirect('/')
     # else they need to register
     else:
         form = RegisterForm()
@@ -42,7 +64,7 @@ def login(request):
         if next_url:
             return redirect(next_url)
         else:
-            return redirect('store-home')
+            return redirect('/')
     # else render login page
     else:
         form = UsersLoginForm()
@@ -51,4 +73,4 @@ def login(request):
 def logout_request(request):
     logout(request)
     messages.info(request, "Logged out successfully!")
-    return redirect("store-home")
+    return redirect("/")

@@ -7,9 +7,6 @@ from carts.models import CartItem, Cart
 from .models import Order
 from .utils import orderIdGenerator
 
-def orders(request):
-    return render(request, 'orders/user-dashboard.html')
-
 @login_required
 def checkout(request):
     # To checkout the cart must exist in the session, else redirect to cart page
@@ -55,12 +52,12 @@ def checkout(request):
 def billing(request):
     try:
         cartID = request.session['cart_id'] 
-        cart = Cart.object.get(id=cartID)
+        cart = Cart.objects.get(id=cartID)
     except:
         cartID = None
         return HttpResponseRedirect(reverse('store-cart'))
 
-    cart = Cart.objects.get(id=session_ID) 
+    cart = Cart.objects.get(id=cartID) 
     args = {
         'cart': cart,
     }
