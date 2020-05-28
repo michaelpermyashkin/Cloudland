@@ -9,8 +9,10 @@
 <!-- fills content block in base template -->
 {% block content %}
 <div class="container" style="height: 100vh;">
-    <h1>Orders for {{ user }}</h1>
-    <hr> {% for order in user.order_set.all %}
+    <h1>Orders for {{ user.first_name }}</h1>
+    <hr>
+    <!--  -->
+    {% for order in user.order_set.all %}
     <p>{{ order }}</p>
     {% endfor %}
 </div>
