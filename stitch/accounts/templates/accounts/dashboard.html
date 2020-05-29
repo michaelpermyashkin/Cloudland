@@ -47,7 +47,7 @@
         <div class="col-md-8 order-md-1">
             <h3 class="text-center">My Orders</h3>
             <!-- If orders exists then display -->
-            {% if cart.cartitem_set.all|length != 0 %}
+            {% if user.order_set.all|length != 0 %}
             <!-- Show order cards for user -->
             {% for order in user.order_set.all %}
             <div class="card rounded-0 mt-3">

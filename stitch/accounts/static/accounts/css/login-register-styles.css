@@ -3,6 +3,12 @@
     --input-padding-y: .75rem;
 }
 
+button,
+button:hover {
+    border: none !important;
+    outline: none !important;
+}
+
 body {
     height: 110vh;
     height: 100%;
@@ -35,7 +41,6 @@ body {
 }
 
 .form-signin .btn {
-    font-size: 80%;
     border-radius: 0;
     letter-spacing: .1rem;
     font-weight: bold;

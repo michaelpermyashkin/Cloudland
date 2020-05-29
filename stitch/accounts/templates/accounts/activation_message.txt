@@ -1,0 +1,7 @@
+Hello {{ user_firstname }},
+
+Please activate your Stitch account here: 
+
+{{ activation_url }}
+
+Thank you!

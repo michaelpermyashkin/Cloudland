@@ -38,11 +38,11 @@ def register_request(request):
             user = authenticate(username=username, password=raw_password)
             auth_login(request, user)
 
-        next_url = request.GET.get('next')
-        if next_url:
-            return redirect(next_url)
-        else:
-            return redirect('/')
+            next_url = request.GET.get('next')
+            if next_url:
+                return redirect(next_url)
+            else:
+                return redirect('/')
     # else they need to register
     else:
         form = RegisterForm()
@@ -58,12 +58,12 @@ def login_request(request):
             password = form.cleaned_data.get("password")
             user = authenticate(username = username, password = password)
             auth_login(request, user)
-
-        next_url = request.GET.get('next')
-        if next_url:
-            return redirect(next_url)
-        else:
-            return redirect('/')
+            user.emailconfirmed.activate_user_email()
+            next_url = request.GET.get('next')
+            if next_url:
+                return redirect(next_url)
+            else:
+                return redirect('/')
     # else render login page
     else:
         form = UsersLoginForm()
