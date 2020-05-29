@@ -58,8 +58,12 @@ form {
 }
 
 .navbar a {
-    color: #000 !important;
+    color: rgb(133, 123, 123) !important;
     font-size: 1.3rem !important;
+}
+
+.navbar a:hover {
+    color: rgb(0, 0, 0) !important;
 }
 
 .navbar a span {

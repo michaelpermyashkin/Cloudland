@@ -17,7 +17,7 @@
             <img src="{{ p.product_image.url }}" alt="Product image">
         </div>
         <div class="col-md-5">
-            <h1><b>${{ p.price }}</b><small> + shipping</small></h1>
+            <h1><b>${{ p.price }}</b><small class="text-muted" style="font-size: 0.5em;"> + shipping</small></h1>
             <h3 class="my-3">Description</h3>
             <p>{{ p.description_short }}</p>
             <div class="row">
@@ -54,13 +54,32 @@
             </div>
         </div>
     </div>
-    <div class="col-md-12 m-auto">
+
+    <div class="col-md-12 ml-0 pl-0">
         <h1>Details</h1>
         <p>{{ p.description_full }}</p>
         <br>
-        <br>
+        <h1>Shipping</h1>
+        <div class="col-md-6 ml-0 pl-0">
+            <table class="table table-borderless ">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">Type</th>
+                        <th scope="col">Estimated Delivery</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">Standard Ground</th>
+                        <td>5-10 business days</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-    {% endfor %}
+    <br>
+</div>
+{% endfor %}
 </div>
 <script>
     function getSelectedQuantity(sel) {

@@ -6,7 +6,7 @@ from .models import Product, Seller, Category
 
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('product_name', 'seller', 'quantity', 'is_featured', 'description_short')
+    list_display = ('product_name', 'seller', 'quantity', 'description_short')
 
 admin.site.register(Product, ProductAdmin)
 

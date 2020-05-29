@@ -16,7 +16,8 @@
 {% block content %} {% if cart.cartitem_set.all|length != 0 %}
 <div class="container">
     <script onload="setCartTotalValues()"></script>
-    <div class="row mt-5">
+    <h2 class="text-center my-4">My Cart</h2>
+    <div class="row mt-2">
         <div class="col-12 m-auto">
             <table class="table">
                 <thead class="thead">
@@ -40,7 +41,6 @@
                         <td>
                             <a href="{% url 'store-view-item' item.product.product_id %}">
                                 <b class="product-name">{{ item.product.product_name }}</b>
-                                <div class="">{{ item.product.description_short}}</div>
                             </a>
                         </td>
                         <td class="product-price">${{ item.product.price }}</td>
@@ -76,17 +76,17 @@
             <ul class="list-unstyled mb-4">
                 <!-- Subtotal -->
                 <li class="d-flex justify-content-between py-3 border-bottom">
-                    <strong class="text-muted">Order Subtotal </strong>
+                    <strong class="text-secondary">Order Subtotal </strong>
                     <strong class="totals-value" id="cart-subtotal"></strong>
                 </li>
                 <!-- Shipping -->
                 <li class="d-flex justify-content-between py-3 border-bottom">
-                    <strong class="text-muted">Shipping</strong>
+                    <strong class="text-secondary">Shipping</strong>
                     <strong class="totals-value" id="cart-shipping"></strong>
                 </li>
                 <!-- Grand Total -->
                 <li class="d-flex justify-content-between py-3 border-bottom">
-                    <strong class="text-muted ">Total</strong>
+                    <strong class="text-secondary ">Total</strong>
                     <h5 class="font-weight-bold totals-value" id="cart-total"></h5>
                 </li>
             </ul>
@@ -94,7 +94,7 @@
     </div>
     <div class="row no-gutters ">
         <div class="col-6 ">
-            <a href="{% url 'store-products-page-all' %} " id="btn-continue-shopping " class="btn btn-dark border-0 rounded-0 justify-content-start ">Continue Shopping</a>
+            <a href="{% url 'store-products-page-all' %} " id="btn-continue-shopping" class="btn border-0 rounded-0 justify-content-start ">Continue Shopping</a>
         </div>
         <div class="col-6 text-right ">
             <a href="{% url 'orders-checkout' %}" id="btn-checkout" class="btn btn-success border-0 rounded-0">Checkout</a>
@@ -104,7 +104,7 @@
 {% else %}
 <h1 class="text-center mt-5 pt-5">Oops, looks like you have an empty cart</h1>
 <div class="col-12 text-center mt-4">
-    <a href="{% url 'store-products-page-all' %}" id="btn-continue-shopping" class="btn btn-dark border-0 rounded-0">Continue Shopping</a>
+    <a href="{% url 'store-products-page-all' %}" id="btn-continue-shopping" class="btn border-0 rounded-0">Continue Shopping</a>
 </div>
 {% endif %}
 

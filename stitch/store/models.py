@@ -35,6 +35,7 @@ class Product(models.Model):
     seller = models.ForeignKey(Seller, on_delete=models.CASCADE, null=True, blank=True)
     category = models.ManyToManyField(Category, help_text="Select the categories you would like the product to appear in")
     price = models.DecimalField(max_digits=6, decimal_places=2)
+    shipping_cost = models.DecimalField(max_digits=6, decimal_places=2, default=0.00, help_text="Shipping cost for this item")
     description_short = models.CharField(max_length=50, default="", help_text="Limit 30 characters: Brief product description on item card")
     description_full = models.TextField(max_length=1000, default="", help_text="Your full item description when item details are viewed")
     product_image = models.ImageField(upload_to='product_images', help_text="Upload product image")

@@ -32,20 +32,20 @@
 
 <body>
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-xl sticky-top">
+    <nav class="navbar navbar-expand-xl sticky-top ml-3">
         <a class="navbar-brand" href="{% url 'store-products-page-all-home' %} ">
             <img src="{% static 'store/media/brand/stitch-logo.png' %}" alt="Stitch logo">
         </a>
-        <button id="nav-collapse-icon" class="navbar-toggler navbar-toggler-right mt-2" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-hidden="true" Toggle navigation>
+        <button id="nav-collapse-icon" class="navbar-toggler navbar-toggler-right mt-4 pb-4" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-hidden="true" Toggle navigation>
             ☰
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive" data-parent="nav-collapse-icon">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link " href="{% url 'accounts-dashboard' %}">Account</a>
+                    <a class="nav-link" href="{% url 'about' %}">About</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'about' %}">About</a>
+                    <a class="nav-link " href="{% url 'accounts-dashboard' %}">Account</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link " href="{% url 'store-contact' %} ">Contact</a>
@@ -64,7 +64,7 @@
                     <span class="badge badge-pill badge-danger my-auto" id="cart-badge">{{ request.session.cart_items_total }}</span>
                     <!-- If no cart set pill to 0 -->
                     {% else %}
-                    <span class="badge badge-pill badge-danger mb-5" id="cart-badge">0</span> {% endif %}
+                    <span class="badge badge-pill badge-danger my-auto" id="cart-badge">0</span> {% endif %}
                 </a>
             </li>
         </ul>

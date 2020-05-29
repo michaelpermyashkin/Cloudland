@@ -26,12 +26,11 @@ button:hover {
 
 #btn-continue-shopping {
     background-color: #000;
-    color: #FFF;
+    color: #FFF !important;
 }
 
 #btn-continue-shopping:hover {
     background-color: rgb(70, 70, 70);
-    color: #FFF;
 }
 
 #btn-checkout {

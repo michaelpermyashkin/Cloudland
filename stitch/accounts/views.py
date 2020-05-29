@@ -12,7 +12,6 @@ import store.urls
 def dashboard(request):
     try:
         cartID = request.session['cart_id'] 
-        print(cartID)
         cart = Cart.objects.get(id=cartID)
     except:
         cartID = None
@@ -28,7 +27,7 @@ def dashboard(request):
 
 
 # Signup
-def register(request):
+def register_request(request):
     #  create new user
     if request.method == 'POST':
         form = RegisterForm(request.POST)
@@ -50,7 +49,7 @@ def register(request):
     return render(request, 'accounts/register.html', {'form': form})
 
 # Login
-def login(request):
+def login_request(request):
     # Authenticate user login attempt
     if request.method == 'POST':
         form = UsersLoginForm(request.POST or None)
