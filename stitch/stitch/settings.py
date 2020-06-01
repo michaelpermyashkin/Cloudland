@@ -120,11 +120,10 @@ CRISPY_TEMPLATE_PACK='bootstrap4'
 STRIPE_SECRET_KEY = config['STRIPE_SECRET_KEY']
 STRIPE_PUBLISHABLE_KEY = config['STRIPE_PUBLISHABLE_KEY']
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-DEFAULT_FROM_EMAIL = 'Stitch <michael.permyashkin@gmail.com>'
+DEFAULT_FROM_EMAIL = 'Cloudland Shop<cloudlandonlineshop@gmail.com>'
 
 EMAIL_HOST = config['EMAIL_HOST']
 EMAIL_HOST_USER = config['EMAIL_HOST_USER']
 EMAIL_HOST_PASSWORD = config['EMAIL_HOST_PASSWORD']
 EMAIL_PORT = config['EMAIL_PORT']
-EMAIL_USER_TLS = config['EMAIL_USER_TLS']
+EMAIL_USER_TLS = config['EMAIL_USE_TLS']

@@ -45,7 +45,8 @@ form {
     text-decoration: none;
 }
 
-.navbar .navbar-brand {
+
+/* .navbar .navbar-brand {
     transform: translateX(-50%);
     left: 50%;
     top: 0;
@@ -55,14 +56,14 @@ form {
 .navbar .navbar-brand img {
     width: 200px;
     height: auto;
-}
+} */
 
-.navbar a {
+.navbar a:not(.navbar-brand) {
     color: rgb(133, 123, 123) !important;
     font-size: 1.3rem !important;
 }
 
-.navbar a:hover {
+.navbar a:hover:not(.navbar-brand) {
     color: rgb(0, 0, 0) !important;
 }
 
@@ -71,6 +72,22 @@ form {
     padding-bottom: 0.5em;
     width: 22px;
     height: 22px;
+}
+
+.navbar .navbar-brand {
+    position: absolute;
+    transform: translateX(-50%);
+    left: 50%;
+    font-family: 'Acme', sans-serif;
+    font-size: 2em;
+}
+
+.navbar-brand {
+    color: rgb(75, 75, 75) !important;
+}
+
+.navbar-brand:hover {
+    color: #000 !important;
 }
 
 @media screen and (max-width: 767px) {
