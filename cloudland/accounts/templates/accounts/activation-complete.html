@@ -1,0 +1,22 @@
+<!-- Extends base template  -->
+{% extends "store/base.html" %}
+<!-- Loads static content to access content in static directory -->
+{% load static %}
+<!-- Crispy forms for styling -->
+{% load crispy_forms_tags %}
+<!-- Page title for window tab -->
+{% block page %}Account{% endblock page%}
+<!-- Custom page styles -->
+{% block styles %}
+<link href="{% static 'accounts/css/login-register-styles.css' %}" rel="stylesheet"> {% endblock styles %}
+<!-- fills content block in base template -->
+{% block content %}
+<div class="container text-center" style="height: 100vh;">
+    {% if page_message %}
+    <h1 class="mt-5 pt-5">{{ page_message }}</h1>
+    {% else %}
+    <h1>Oops, looks like something went wrong with your email activation</h1>
+    {% endif %}
+    <a href="{% url 'store-products-page-all' %} " id="btn-continue-shopping" class="btn border-0 rounded-0 justify-content-start mt-3">Continue Shopping</a>
+</div>
+{% endblock content %}

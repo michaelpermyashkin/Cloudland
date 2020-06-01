@@ -1,12 +1,13 @@
-from django.shortcuts import render, redirect
+import re
+from django.shortcuts import render, redirect, Http404
 from django.contrib import messages
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import authenticate, logout
 from django.contrib.auth.decorators import login_required
-from .forms import RegisterForm, UsersLoginForm
 from carts.models import Cart
 import store.urls 
-
+from .forms import RegisterForm, UsersLoginForm
+from .models import EmailConfirmed
 
 from django.conf import settings
 
@@ -57,11 +58,10 @@ def login_request(request):
     if request.method == 'POST':
         form = UsersLoginForm(request.POST or None)
         if form.is_valid():
-            username = form.cleaned_data.get("username")
-            password = form.cleaned_data.get("password")
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
             user = authenticate(username = username, password = password)
             auth_login(request, user)
-            # user.emailconfirmed.activate_user_email()
             next_url = request.GET.get('next')
             if next_url:
                 return redirect(next_url)
@@ -74,5 +74,36 @@ def login_request(request):
 
 def logout_request(request):
     logout(request)
-    messages.info(request, "Logged out successfully!")
-    return redirect("/")
+    messages.info(request, 'Logged out successfully!')
+    return redirect('/')
+
+
+SHA1_RE = re.compile('^[a-f0-9]{40}$')
+# Email activation view
+def email_activation(request, activation_key):
+    # Check if key is valid
+    if SHA1_RE.search(activation_key):
+        try:
+            instance = EmailConfirmed.objects.get(activation_key=activation_key)
+        except EmailConfirmed.DoesNotExist:
+            instance = None
+            raise Http404
+        # Confirm the email
+        if instance is not None and not instance.confirmed:
+            page_message = 'Thank you! Your email has been confirmed!'
+            context = {'page_message': page_message}
+            instance.confirmed = True
+            instance.activation_key = 'Confirmed'
+            instance.save()
+        # This email is already marked as being confirmed
+        elif instance is not None and instance.confirmed:
+            page_message = 'Your email has already been confirmed'
+            context = {'page_message': page_message}
+        else:
+            page_message = None
+            context = {}
+
+        return render(request, 'accounts/activation-complete.html', context)
+    # Raise 404 if invalid key
+    else: 
+        raise Http404
