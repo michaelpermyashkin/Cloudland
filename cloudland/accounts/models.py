@@ -35,9 +35,7 @@ class EmailConfirmed(models.Model):
         }
         message = render_to_string('accounts/activation_message.txt', context)
         from_email = settings.DEFAULT_FROM_EMAIL
+        self.email_user(subject, message, from_email)
 
-        print(message)
-        # self.emailconfirmed.email_user(subject, message, from_email)
-
-    def email_user(self, subject, message, from_email=None, *kwargs):
-        send_mail(subject, message, from_email, [self.user.email], **kwargs)
+    def email_user(self, subject, message, from_email=None, **kwargs):
+        send_mail(subject, message, from_email, [self.user.email], kwargs)
