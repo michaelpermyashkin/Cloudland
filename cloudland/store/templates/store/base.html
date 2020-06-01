@@ -1,0 +1,83 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Cloudland | {% block page %}{% endblock page%}</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'store/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'store/css/base-styles.css' %}" rel="stylesheet">
+    <link rel="shortcut icon" type="image/png" href="{% static 'store/media/brand/favicon.ico' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Darker Grotesque' rel='stylesheet'>
+    <link href="https://fonts.googleapis.com/css2?family=Acme&display=swap" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://use.fontawesome.com/releases/v5.12.1/js/all.js" crossorigin="anonymous"></script>
+    <script src="{% static 'store/js/helper.js' %}"></script>
+    <script src="{% static 'store/vendor/jquery/jquery.min.js' %} "></script>
+    <script src="{% static 'store/vendor/bootstrap/js/bootstrap.bundle.min.js' %} "></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Allows templates to apply custom styles -->
+    {% block styles %}{% endblock styles %}
+    <!-- Custom styles for this template -->
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-xl sticky-top pl-3">
+        <a class="navbar-brand" href="{% url 'store-products-page-all-home' %} ">
+            Cloudland.
+            <!-- <img src="{% static 'store/media/brand/stitch-logo.png' %}" alt="Stitch logo"> -->
+        </a>
+        <button id="nav-collapse-icon" class="navbar-toggler navbar-toggler-right mt-4 pb-4" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-hidden="true" Toggle navigation>
+            ☰
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive" data-parent="nav-collapse-icon">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'about' %}">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="{% url 'accounts-dashboard' %}">Account</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="{% url 'store-contact' %} ">Contact</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="{% url 'store-products-page-all' %}">Shopping</a>
+                </li>
+            </ul>
+        </div>
+        <ul class="navbar-nav">
+            <li class="">
+                <a class="nav-link" href="{% url 'store-cart' %} ">
+                    Cart
+                    <!-- If cart exists show product count -->
+                    {% if request.session.cart_items_total %}
+                    <span class="badge badge-pill badge-danger my-auto" id="cart-badge">{{ request.session.cart_items_total }}</span>
+                    <!-- If no cart set pill to 0 -->
+                    {% else %}
+                    <span class="badge badge-pill badge-danger my-auto" id="cart-badge">0</span> {% endif %}
+                </a>
+            </li>
+        </ul>
+    </nav>
+    {% block content %} {% endblock content %}
+
+
+</body>
+<footer class="py-5">
+    <p class="m-0 text-center text-white ">Copyright &copy; Your Website 2019</p>
+</footer>
+
+</html>

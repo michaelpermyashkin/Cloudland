@@ -1,0 +1,89 @@
+<!-- Extends base template  -->
+{% extends "store/base.html" %}
+<!-- Loads static content to access content in static directory -->
+{% load static %}
+<!-- Page title for window tab -->
+{% block page %}Shop{% endblock page%}
+<!-- Custom page styles -->
+{% block styles %}
+<link href="{% static 'store/css/view-item-styles.css' %}" rel="stylesheet">{% endblock styles %}
+<!-- fills content block in base template -->
+{% block content %}
+<div class="container">
+    {% for p in product %}
+    <h1 class="my-2">{{ p.product_name }} <small class="text-muted" style="font-size: 0.5em;"> by {{ p.seller.seller_listing_name }} </small></h1>
+    <div class="row">
+        <div class="col-md-7" id="image-container">
+            <img src="{{ p.product_image.url }}" alt="Product image">
+        </div>
+        <div class="col-md-5">
+            <h1><b>${{ p.price }}</b><small class="text-muted" style="font-size: 0.5em;"> + shipping</small></h1>
+            <h3 class="my-3">Description</h3>
+            <p>{{ p.description_short }}</p>
+            <div class="row">
+                <div class="col-4">
+                    <dl class="param param-inline">
+                        <dt>Quantity: </dt>
+                        <dd>
+                            <select class="form-control form-control-sm rounded-0" onChange="getSelectedQuantity(this);">
+                                <option value='1'> 1 </option>
+                                <option value='2'> 2 </option>
+                                <option value='3'> 3 </option>
+                                <option value='4'> 4 </option>
+                                <option value='5'> 5 </option>
+                                <option value='6'> 6 </option>
+                                <option value='7'> 7 </option>
+                                <option value='8'> 8 </option>
+                                <option value='9'> 9 </option>
+                            </select>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="col-8">
+                    <div>
+                        <!-- Form to add product to cart -->
+                        <form method="post" action="{% url 'add_to_cart' %}">
+                            {% csrf_token %}
+                            <input type="hidden" id="selected_quantity" name="selected_quantity">
+                            <button type="submit" class="btn border-0 rounded-0 mt-4" id="btn-add-to-cart" name="get-prod-info{{p.product_id}}" id="hidden-button">
+                                ADD TO CART
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12 ml-0 pl-0">
+        <h1>Details</h1>
+        <p>{{ p.description_full }}</p>
+        <br>
+        <h1>Shipping</h1>
+        <div class="col-md-6 ml-0 pl-0">
+            <table class="table table-borderless ">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">Type</th>
+                        <th scope="col">Estimated Delivery</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">Standard Ground</th>
+                        <td>5-10 business days</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <br>
+</div>
+{% endfor %}
+</div>
+<script>
+    function getSelectedQuantity(sel) {
+        document.getElementById("selected_quantity").value = sel.options[sel.selectedIndex].value;
+    }
+</script>
+{% endblock content %}

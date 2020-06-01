@@ -1,0 +1,96 @@
+.btn:active,
+button:active,
+.btn:focus,
+button:focus,
+.btn:hover,
+button:hover {
+    border: none !important;
+    outline: none !important;
+}
+
+.remove-product {
+    transition: all .1s ease-in-out;
+    background-color: #FFF;
+    border: none !important;
+    outline: none !important;
+    background-color: #FFF;
+    color: rgb(118, 118, 118);
+}
+
+.remove-product:hover {
+    background-color: #FFF;
+    border: none !important;
+    outline: none !important;
+    color: #dc3545;
+}
+
+#btn-continue-shopping {
+    background-color: #000;
+    color: #FFF !important;
+}
+
+#btn-continue-shopping:hover {
+    background-color: rgb(70, 70, 70);
+}
+
+#btn-checkout {
+    color: #FFF !important;
+}
+
+.table-responsive {
+    width: 100%;
+}
+
+input[type=text] {
+    align-self: center;
+    max-width: 50px;
+}
+
+.product-name {
+    font-size: 1.5rem;
+}
+
+.product-image img {
+    max-height: 65px;
+    width: auto;
+    object-fit: cover;
+}
+
+@media screen and (max-width: 550px) {
+    .product-name {
+        font-size: 1.2rem;
+    }
+    .product-image img {
+        max-width: 45px;
+        height: auto;
+        object-fit: cover;
+    }
+}
+
+#image-col {
+    width: 50px !important;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+thead {
+    margin: inherit 0 !important;
+    border: 1px solid #000 !important;
+    background-color: #000 !important;
+    color: #FFF !important;
+}
+
+td a {
+    text-decoration: none !important;
+    color: rgb(67, 67, 67);
+}
+
+td a:hover {
+    text-decoration: none !important;
+    color: #000;
+}
+
+#cart-summary-label {
+    background-color: rgb(194, 194, 194);
+    color: rgb(0, 0, 0);
+}
