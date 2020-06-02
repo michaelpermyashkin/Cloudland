@@ -6,7 +6,7 @@ from django.urls import reverse
 from store.models import Product, Seller, Category
 from carts.models import CartItem, Cart
 
-from accounts.models import UserAddressTable
+from accounts.models import UserAddress
 from accounts.forms import UserAddressForm
 
 from .models import Order

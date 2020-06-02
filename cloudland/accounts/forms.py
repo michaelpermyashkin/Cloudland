@@ -3,12 +3,12 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 
-from .models import UserAddressTable
+from .models import UserAddress
 
 
 class UserAddressForm(forms.ModelForm):
     class Meta:
-        model = UserAddressTable
+        model = UserAddress
         fields = ['first_name', 'last_name', 'address', 'address2', 'city', 'state', 'zipcode', 'phone_number', 'billing']
     def __init__(self, *args, **kwargs):
         super(UserAddressForm, self).__init__(*args, **kwargs)

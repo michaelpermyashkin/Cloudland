@@ -9,7 +9,7 @@ from django.template.loader import render_to_string
 from localflavor.us.us_states import US_STATES
 
 
-class UserAddressTable(models.Model):
+class UserAddress(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=120)
     last_name = models.CharField(max_length=120)
