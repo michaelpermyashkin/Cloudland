@@ -33,19 +33,29 @@
 </head>
 
 <body>
+    {% if messages %}
+    <div class="alert alert-success alert-dismissible rounded-0 fade show" role="alert">
+        {% for message in messages %}
+        <div {% if message.tags %} class="{{ message.tags }} text-center" {% endif %}>{{ message }}</div>
+        {% endfor %}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endif %}
     <!-- Navigation -->
     <nav class="navbar navbar-expand-xl sticky-top pl-3">
         <a class="navbar-brand" href="{% url 'store-products-page-all-home' %} ">
-            Cloudland.
+            Cloudland
             <!-- <img src="{% static 'store/media/brand/stitch-logo.png' %}" alt="Stitch logo"> -->
         </a>
-        <button id="nav-collapse-icon" class="navbar-toggler navbar-toggler-right mt-4 pb-4" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-hidden="true" Toggle navigation>
+        <button id="nav-collapse-icon" class="navbar-toggler navbar-toggler-right mt-3 pb-4" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-hidden="true" Toggle navigation>
             ☰
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive" data-parent="nav-collapse-icon">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'about' %}">About</a>
+                    <a class="nav-link " href="{% url 'store-products-page-all' %}">Shopping</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link " href="{% url 'accounts-dashboard' %}">Account</a>
@@ -54,7 +64,7 @@
                     <a class="nav-link " href="{% url 'store-contact' %} ">Contact</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="{% url 'store-products-page-all' %}">Shopping</a>
+                    <a class="nav-link" href="{% url 'about' %}">About</a>
                 </li>
             </ul>
         </div>

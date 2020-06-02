@@ -1,6 +1,6 @@
 Hello {{ user_firstname }},
 
-Please activate your Stitch account here: 
+Please activate your Cloudland account here: 
 
 {{ activation_url }}
 

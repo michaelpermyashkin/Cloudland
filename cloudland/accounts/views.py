@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import authenticate, logout
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse
 from carts.models import Cart
 import store.urls 
 from .forms import RegisterForm, UsersLoginForm
@@ -41,7 +42,7 @@ def register_request(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             auth_login(request, user)
-
+            messages.success(request, "Registration Successful! Please confirm your email now.")
             next_url = request.GET.get('next')
             if next_url:
                 return redirect(next_url)
@@ -74,8 +75,7 @@ def login_request(request):
 
 def logout_request(request):
     logout(request)
-    messages.info(request, 'Logged out successfully!')
-    return redirect('/')
+    return redirect(reverse('accounts-login'))
 
 
 SHA1_RE = re.compile('^[a-f0-9]{40}$')

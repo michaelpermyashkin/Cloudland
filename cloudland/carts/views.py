@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.contrib import messages
 from django.shortcuts import render, HttpResponseRedirect
 from datetime import datetime
 from django.urls import reverse
@@ -54,6 +55,7 @@ def add_to_cart(request):
         cart_item.quantity = 1
         cart_item.save()
 
+    messages.success(request, "Added item to cart")
     request.session['cart_items_total'] = cart.cartitem_set.count()
     calcCartTotal(cart)
     cart.save()
@@ -74,7 +76,7 @@ def remove_from_cart(request):
     cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product) # return tuple (<model object>, true/false)
     
     cart_item.delete()
-
+    messages.error(request, "Removed item to cart")
     request.session['cart_items_total'] = cart.cartitem_set.count()
     calcCartTotal(cart)
     cart.save()

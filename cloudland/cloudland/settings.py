@@ -1,4 +1,5 @@
 import os, json
+from django.contrib.messages import constants as messages
 
 with open('/Users/michaelpermyashkin/Desktop/Projects/Cloudland/config/config.json') as config_file:
     config = json.load(config_file)
@@ -9,12 +10,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = config['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
+
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-
-# Application definition
+# Site url setting
+SITE_URL = 'https://cloudlandshop.com'
+if DEBUG:
+    SITE_URL = 'http://localhost:8000'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -107,8 +111,14 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.0/howto/static-files/
+{
+    messages.DEBUG: 'debug',
+    messages.INFO: 'info',
+    messages.SUCCESS: 'success',
+    messages.WARNING: 'warning',
+    messages.ERROR: 'danger',
+}
+
 
 STATIC_URL = '/static/'
 

@@ -5,7 +5,8 @@
 <!-- Page title for window tab -->
 {% block page %}Dashboard{% endblock page%}
 <!-- Custom style sheet -->
-{% block styles %}{% endblock styles %}
+{% block styles %}
+<link href="{% static 'accounts/css/dashboard-styles.css' %}" rel="stylesheet"> {% endblock styles %}
 <!-- fills content block in base template -->
 {% block content %}
 <div class="container" style="height: 100vh;">
@@ -74,7 +75,7 @@
         </div>
     </div>
     <div class="text-right">
-        <a href="{% url 'accounts-logout' %}" class="btn btn-danger mt-5">Logout</a>
+        <a href="{% url 'accounts-logout' %}" class="btn btn-danger mt-5 rounded-0">Logout</a>
     </div>
 </div>
 {%endblock content %}

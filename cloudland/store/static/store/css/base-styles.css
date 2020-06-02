@@ -10,6 +10,8 @@ body {
 }
 
 .btn {
+    border: none !important;
+    outline: none !important;
     background-color: #000;
     color: #FFF;
     padding: 5px 10px;
@@ -26,6 +28,16 @@ button:hover {
     outline: none !important;
 }
 
+.btn:active,
+button:active,
+.btn:focus,
+button:focus,
+.btn:hover,
+button:hover {
+    border: none !important;
+    outline: none !important;
+}
+
 form {
     background-color: transparent;
 }
@@ -37,12 +49,20 @@ form {
     padding-top: 0 !important;
 }
 
+.navbar-toggler {
+    border: none !important;
+    outline: none !important;
+}
+
 .navbar-toggler:active {
-    outline: none;
+    outline: none !important;
+    border: none !important;
 }
 
 .navbar-toggler:hover {
     text-decoration: none;
+    outline: none !important;
+    border: none !important;
 }
 
 

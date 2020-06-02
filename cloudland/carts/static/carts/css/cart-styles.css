@@ -10,15 +10,13 @@ button:hover {
 
 .remove-product {
     transition: all .1s ease-in-out;
-    background-color: #FFF;
+    background-color: transparent;
     border: none !important;
     outline: none !important;
-    background-color: #FFF;
     color: rgb(118, 118, 118);
 }
 
 .remove-product:hover {
-    background-color: #FFF;
     border: none !important;
     outline: none !important;
     color: #dc3545;
