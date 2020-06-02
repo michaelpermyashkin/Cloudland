@@ -1,5 +1,7 @@
 <!-- Extends base template  -->
 {% extends "store/base.html" %}
+<!-- Crispy forms for styling -->
+{% load crispy_forms_tags %}
 <!-- Loads static content to access content in static directory -->
 {% load static %}
 <!-- Page title for window tab -->
@@ -9,6 +11,47 @@
 <!-- fills content block in base template -->
 {% block content %}
 <div class="container" style="height: 100vh;">
-    <h1>Checkout</h1>
+    {% if address_form %}
+    <!-- Shipping details -->
+    <div>
+        <h2 class="text-center my-4">Shipping</h2>
+        <div class="col-lg-8 mx-auto mt-2">
+            <form method="post" action='{% url "ajax-add-user-address" %}?next=orders-checkout'>
+                {% csrf_token %}
+                <div class="form-row">
+                    <div class="form-group col-md-6 mb-0">
+                        {{ address_form.first_name|as_crispy_field }}
+                    </div>
+                    <div class="form-group col-md-6 mb-0">
+                        {{ address_form.last_name|as_crispy_field }}
+                    </div>
+                </div>
+                {{ address_form.address|as_crispy_field }} {{ address_form.address2|as_crispy_field }}
+                <div class="form-row">
+                    <div class="form-group col-md-6 mb-0">
+                        {{ address_form.city|as_crispy_field }}
+                    </div>
+                    <div class="form-group col-md-4 mb-0">
+                        {{ address_form.state|as_crispy_field }}
+                    </div>
+                    <div class="form-group col-md-2 mb-0">
+                        {{ address_form.zipcode|as_crispy_field }}
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6 mb-0">
+                        {{ address_form.phone_number|as_crispy_field }}
+                    </div>
+                </div>
+                {{ address_form.billing|as_crispy_field }}
+                <div class="text-right mt-3">
+                    <button type="submit" class="btn btn-primary rounded-0 px-5 py-2">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+    <!-- Billing details -->
+
 </div>
 {%endblock content %}

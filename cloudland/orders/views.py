@@ -2,8 +2,13 @@ import time
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, HttpResponseRedirect
 from django.urls import reverse
+
 from store.models import Product, Seller, Category
 from carts.models import CartItem, Cart
+
+from accounts.models import UserAddressTable
+from accounts.forms import UserAddressForm
+
 from .models import Order
 from .utils import orderIdGenerator
 
@@ -30,13 +35,15 @@ def checkout(request):
         # Maybe an error message here
         return HttpResponseRedirect(reverse('store-cart'))
 
-    new_order, created = Order.objects.get_or_create(cart=cart)
-    if created:
-        # assign user to order
-        # assign address to order
-        # process payment
-        new_order.order_id = orderIdGenerator()
-        new_order.save()
+    try:
+        address_added = request.GET['address_added']
+    except:
+        address_added = None
+    
+    if address_added is None:
+        address_form = UserAddressForm()
+    else:
+        address_form = None
 
     # assign user to order
     new_order.user = request.user
@@ -47,7 +54,10 @@ def checkout(request):
         del request.session['cart_items_total']
         return HttpResponseRedirect(reverse('store-cart'))
 
-    return render(request, 'orders/checkout.html')
+    context = {
+        'address_form': address_form,
+    }
+    return render(request, 'orders/checkout.html', context)
 
 def billing(request):
     try:

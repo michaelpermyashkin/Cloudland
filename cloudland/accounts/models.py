@@ -6,9 +6,31 @@ from django.urls import reverse
 
 from django.template.loader import render_to_string
 
+from localflavor.us.us_states import US_STATES
+
+
+class UserAddressTable(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=120)
+    last_name = models.CharField(max_length=120)
+    address = models.CharField(max_length=120)
+    address2 = models.CharField(max_length=120, null=True, blank=True)
+    city = models.CharField(max_length=120)
+    state = models.CharField(max_length=120, choices=US_STATES)
+    zipcode = models.CharField(max_length=120)
+    phone_number = models.CharField(max_length=120)
+    shipping = models.BooleanField(default=True)
+    billing = models.BooleanField(default=False)
+    timestamp = models.DateTimeField(auto_now=True, auto_now_add=False)
+    updated = models.DateTimeField(auto_now=False, auto_now_add=True)
+
+    def __str__(self):
+        return str(self.user.username)
+    
+
 
 class UserStripe(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     stripe_id = models.CharField(max_length=120, null=True, blank=True)
 
     def __str__(self):
@@ -16,7 +38,7 @@ class UserStripe(models.Model):
 
 
 class EmailConfirmed(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     activation_key = models.CharField(max_length=200)
     confirmed = models.BooleanField(default=False)
 

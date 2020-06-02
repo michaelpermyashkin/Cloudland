@@ -1,5 +1,5 @@
 import re
-from django.shortcuts import render, redirect, Http404
+from django.shortcuts import render, redirect, Http404, HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import authenticate, logout
@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from carts.models import Cart
 import store.urls 
-from .forms import RegisterForm, UsersLoginForm
+from .forms import RegisterForm, UsersLoginForm, UserAddressForm
 from .models import EmailConfirmed
 
 from django.conf import settings
@@ -106,4 +106,22 @@ def email_activation(request, activation_key):
         return render(request, 'accounts/activation-complete.html', context)
     # Raise 404 if invalid key
     else: 
+        raise Http404
+
+
+def add_user_address(request):
+    try:
+        redirect_view = request.GET['next']
+    except:
+        redirect_view = None
+
+    if request.method == 'POST':
+        form = UserAddressForm(request.POST)
+        if form.is_valid():
+            new_address = form.save(commit=False)
+            new_address.user = request.user
+            new_address.save()
+            if redirect_view != None:
+                return HttpResponseRedirect(reverse(str(redirect_view))+'?add+=True') # add+=True if address from form was saved 
+    else:
         raise Http404
