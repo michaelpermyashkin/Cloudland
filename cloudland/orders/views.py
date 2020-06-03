@@ -6,8 +6,8 @@ from django.urls import reverse
 from store.models import Product, Seller, Category
 from carts.models import CartItem, Cart
 
-from accounts.models import UserAddress
-from accounts.forms import UserAddressForm
+from accounts.models import UserAddress, UserBillingAddress
+from accounts.forms import UserAddressForm, UserBillingAddressForm
 
 from .models import Order
 from .utils import orderIdGenerator
@@ -35,15 +35,11 @@ def checkout(request):
         # Maybe an error message here
         return HttpResponseRedirect(reverse('store-cart'))
 
-    try:
-        address_added = request.GET['address_added']
-    except:
-        address_added = None
-    
-    if address_added is None:
-        address_form = UserAddressForm()
-    else:
-        address_form = None
+    address_form = UserAddressForm()
+    billing_form = UserBillingAddressForm()
+
+    current_addresses = UserAddress.objects.filter(user=request.user)
+    billing_addresses = UserBillingAddress.objects.filter(user=request.user)
 
     # assign user to order
     new_order.user = request.user
@@ -56,6 +52,9 @@ def checkout(request):
 
     context = {
         'address_form': address_form,
+        'billing_form': billing_form,
+        'billing_addresses': billing_addresses,
+        'current_addresses': current_addresses,
     }
     return render(request, 'orders/checkout.html', context)
 

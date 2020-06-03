@@ -3,13 +3,14 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 
-from .models import UserAddress
+from .models import UserAddress, UserBillingAddress
 
 
 class UserAddressForm(forms.ModelForm):
+    default = forms.BooleanField(required=False, label='Set as default')
     class Meta:
         model = UserAddress
-        fields = ['first_name', 'last_name', 'address', 'address2', 'city', 'state', 'zipcode', 'phone_number', 'billing']
+        fields = ['first_name', 'last_name', 'address', 'address2', 'city', 'state', 'zipcode', 'phone_number']
     def __init__(self, *args, **kwargs):
         super(UserAddressForm, self).__init__(*args, **kwargs)
         self.fields['first_name'].widget.attrs.update({
@@ -53,6 +54,49 @@ class UserAddressForm(forms.ModelForm):
             'placeholder': '(555)-555-5555',
             'type': 'text'})
 
+
+class UserBillingAddressForm(forms.ModelForm):
+    default = forms.BooleanField(required=False, label='Set as default')
+    class Meta:
+        model = UserBillingAddress
+        fields = ['first_name', 'last_name', 'address', 'address2', 'city', 'state', 'zipcode']
+    def __init__(self, *args, **kwargs):
+        super(UserBillingAddressForm, self).__init__(*args, **kwargs)
+        self.fields['first_name'].widget.attrs.update({
+            'class': 'form-control',
+            'name': 'first_name',
+            'placeholder': 'First name',
+            'type': 'text'})
+        self.fields['last_name'].widget.attrs.update({
+            'class': 'form-control',
+            'name': 'last_name',
+            'placeholder': 'Your last name',
+            'type': 'text'})
+        self.fields['address'].widget.attrs.update({
+            'class': 'form-control',
+            'name': 'address',
+            'placeholder': 'Address line 1',
+            'type': 'text'})
+        self.fields['address2'].widget.attrs.update({
+            'class': 'form-control',
+            'name': 'address',
+            'placeholder': 'Address line 2',
+            'type': 'text'})
+        self.fields['city'].widget.attrs.update({
+            'class': 'form-control',
+            'name': 'city',
+            'placeholder': 'City',
+            'type': 'text'})
+        self.fields['state'].widget.attrs.update({
+            'class': 'form-control',
+            'name': 'state',
+            'placeholder': 'State',
+            'type': 'text'})
+        self.fields['zipcode'].widget.attrs.update({
+            'class': 'form-control',
+            'name': 'zipcode',
+            'placeholder': 'ZIP Code',
+            'type': 'text'})
 
 
 class RegisterForm(UserCreationForm):

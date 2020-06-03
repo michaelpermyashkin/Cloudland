@@ -7,8 +7,8 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from carts.models import Cart
 import store.urls 
-from .forms import RegisterForm, UsersLoginForm, UserAddressForm
-from .models import EmailConfirmed
+from .forms import RegisterForm, UsersLoginForm, UserAddressForm, UserBillingAddressForm
+from .models import EmailConfirmed, UserDefaultAddresses
 
 from django.conf import settings
 
@@ -121,6 +121,33 @@ def add_user_address(request):
             new_address = form.save(commit=False)
             new_address.user = request.user
             new_address.save()
+            is_default = form['default']
+            if is_default:
+                default_address, created = UserDefaultAddresses.objects.get_or_create(user=request.user)
+                default_address.shipping = new_address
+                default_address.save()
+            if redirect_view != None:
+                return HttpResponseRedirect(reverse(str(redirect_view))+'?add+=True') # add+=True if address from form was saved 
+    else:
+        raise Http404
+
+def add_user_billing_address(request):
+    try:
+        redirect_view = request.GET['next']
+    except:
+        redirect_view = None
+
+    if request.method == 'POST':
+        form = UserBillingAddressForm(request.POST)
+        if form.is_valid():
+            new_address = form.save(commit=False)
+            new_address.user = request.user
+            new_address.save()
+            is_default = form['default']
+            if is_default:
+                default_address, created = UserDefaultAddresses.objects.get_or_create(user=request.user)
+                default_address.billing = new_address
+                default_address.save()
             if redirect_view != None:
                 return HttpResponseRedirect(reverse(str(redirect_view))+'?add+=True') # add+=True if address from form was saved 
     else:

@@ -9,6 +9,15 @@ from django.template.loader import render_to_string
 from localflavor.us.us_states import US_STATES
 
 
+class UserDefaultAddresses(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    shipping = models.ForeignKey("UserAddress", null=True, blank=True, on_delete=models.CASCADE)
+    billing = models.ForeignKey("UserBillingAddress", null=True, blank=True, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.user.username)
+    
+
 class UserAddress(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=120)
@@ -20,13 +29,50 @@ class UserAddress(models.Model):
     zipcode = models.CharField(max_length=120)
     phone_number = models.CharField(max_length=120)
     shipping = models.BooleanField(default=True)
-    billing = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now=True, auto_now_add=False)
     updated = models.DateTimeField(auto_now=False, auto_now_add=True)
 
+    class Meta:
+        ordering = ['-updated', '-timestamp']
+
     def __str__(self):
         return str(self.user.username)
+
+    def get_address(self):
+        if self.address2:
+            print('%s, %s, %s, %s, %s' % (self.address, self.address2, self.city, self.state, self.zipcode))
+            return '%s, %s, %s, %s, %s' % (self.address, self.address2, self.city, self.state, self.zipcode)
+        else:
+            print('%s, %s, %s, %s' % (self.address, self.city, self.state, self.zipcode))
+            return '%s, %s, %s, %s' % (self.address, self.city, self.state, self.zipcode)
+
+
+class UserBillingAddress(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=120)
+    last_name = models.CharField(max_length=120)
+    address = models.CharField(max_length=120)
+    address2 = models.CharField(max_length=120, null=True, blank=True)
+    city = models.CharField(max_length=120)
+    state = models.CharField(max_length=120, choices=US_STATES)
+    zipcode = models.CharField(max_length=120)
+    timestamp = models.DateTimeField(auto_now=True, auto_now_add=False)
+    updated = models.DateTimeField(auto_now=False, auto_now_add=True)
     
+    class Meta:
+        ordering = ['-updated', '-timestamp']
+
+    def __str__(self):
+        return str(self.user.username)
+
+    def get_address(self):
+        if self.address2:
+            print('%s, %s, %s, %s, %s' % (self.address, self.address2, self.city, self.state, self.zipcode))
+            return '%s, %s, %s, %s, %s' % (self.address, self.address2, self.city, self.state, self.zipcode)
+        else:
+            print('%s, %s, %s, %s' % (self.address, self.city, self.state, self.zipcode))
+            return '%s, %s, %s, %s' % (self.address, self.city, self.state, self.zipcode)
+
 
 
 class UserStripe(models.Model):
