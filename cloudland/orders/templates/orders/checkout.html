@@ -12,12 +12,33 @@
 <!-- fills content block in base template -->
 {% block content %}
 <div class="container">
-    <h2 class="text-center my-4">Checkout</h2>
+    <script>
+        function showShippingForm() {
+            var x = document.getElementById("shipping-form");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+
+
+        function showBillingForm() {
+            var x = document.getElementById("billing-form");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+    </script>
+    <h2 class="text-center my-4">Complete Your Order</h2>
     <hr>
     <!-- ./Add new address form -->
     <br>
     <form method="POST" action="">
-        <div class="text-center">
+        <h3 class="text-center bg-secondary text-white pt-1 pb-2">Shipping</h3>
+        <div class="text-center mt-5">
             <!-- Select shipping address from profile -->
             {% if current_addresses %}
             <div class="col-lg-12">
@@ -30,6 +51,11 @@
                 {% else %}
                 <input type="radio" name="shipping_address" id="{{ address.id }}" /> {{address.get_address }} {% endif %}
                 <br> {% endfor %}
+            </div>
+            {% else %}
+            <div class="col-lg-12">
+                <h4><strong>Select Shipping Address</strong></h4>
+                <h5 class="text-muted">No shipping addresses have been saved</h5>
             </div>
             {% endif %}
             <br>
@@ -50,6 +76,11 @@
                 <!-- ./end address loop -->
                 {% endfor %}
             </div>
+            {% else %}
+            <div class="col-lg-12">
+                <h4><strong>Select Billing Address</strong></h4>
+                <h5 class="text-muted">No billing addresses have been saved</h5>
+            </div>
             {% endif %}
         </div>
     </form>
@@ -58,7 +89,7 @@
         <!-- Form to add a new address to user profile -->
         <div class="text-center mt-5">
             <button class="btn bg-transparent p-0 m-0" onclick="showShippingForm()" id="toggle-form">
-                <h3 class="">Add New Shipping Address<li class="fa fa-plus" id="plus-icon"></li></h3>
+                <h3 class="">Add New Shipping Address <li class="fa fa-plus" id="plus-icon"></li></h3>
             </button>
         </div>
         <div id="shipping-form">
@@ -104,7 +135,7 @@
         <!-- Form to add a new address to user profile -->
         <div class="text-center mt-3">
             <button class="btn bg-transparent p-0 m-0" onclick="showBillingForm()" id="toggle-form">
-                <h3 class="">Add New Billing Address<li class="fa fa-plus" id="plus-icon"></li></h3>
+                <h3 class="">Add New Billing Address <li class="fa fa-plus" id="plus-icon"></li></h3>
             </button>
         </div>
         <div id="billing-form">
@@ -140,25 +171,65 @@
         </div>
         {% endif %}
     </div>
-    <script>
-        function showShippingForm() {
-            var x = document.getElementById("shipping-form");
-            if (x.style.display === "none") {
-                x.style.display = "block";
-            } else {
-                x.style.display = "none";
-            }
-        }
+    <br>
+    <div id="payment">
+        <h3 class="text-center bg-secondary text-white mt-5 pt-1 pb-2">Payment</h3>
+        <script src="https://js.stripe.com/v3/"></script>
+
+        <form action="/charge" method="post" id="payment-form">
+            <div class="stripe-form-row mt-5">
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <label for="card-element"><h4>Credit or debit card</h4></label>
+                        <div id="card-element">
+                            <!-- A Stripe Element will be inserted here. -->
+                        </div>
+                    </div>
+                    <div id="card-errors" role="alert"></div>
+                </div>
+                <div class="text-center">
+                    <div class="col-md-6 mx-auto">
+                        <button class="btn btn-success btn-block rounded-0 my-3">Submit Payment</button>
+                    </div>
+                </div>
+            </div>
 
 
-        function showBillingForm() {
-            var x = document.getElementById("billing-form");
-            if (x.style.display === "none") {
-                x.style.display = "block";
-            } else {
-                x.style.display = "none";
-            }
-        }
-    </script>
+            <!-- Used to display form errors. -->
+
+        </form>
+        <script>
+            // Create a Stripe client.
+            var stripe = Stripe('pk_test_bDaLLnuS6dvktvlP8Iuzz3J200RUcADXjE');
+
+            // Create an instance of Elements.
+            var elements = stripe.elements();
+
+            // Custom styling can be passed to options when creating an Element.
+            // (Note that this demo uses a wider set of styles than the guide below.)
+            var style = {
+                base: {
+                    color: '#32325d',
+                    fontSmoothing: 'antialiased',
+                    '::placeholder': {
+                        color: '#aab7c4'
+                    }
+                },
+                invalid: {
+                    color: '#fa755a',
+                    iconColor: '#fa755a'
+                }
+            };
+
+            // Create an instance of the card Element.
+            var card = elements.create('card', {
+                style: style
+            });
+
+            // Add an instance of the card Element into the `card-element` <div>.
+            card.mount('#card-element');
+        </script>
+    </div>
+
 </div>
 {%endblock content %}

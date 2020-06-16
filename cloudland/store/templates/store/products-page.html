@@ -196,7 +196,6 @@
     {% endif %}
     <div class="row" id="main">
         {% for product in products %}
-        <!-- <a href="{% url 'store-view-item' product.product_id %}" style="text-decoration: none !important;"> -->
         <div class="col-lg-3 col-md-4 col-sm-6 col-xs-4 my-auto">
             <a href="{% url 'store-view-item' product.product_id %}" class="card h-100 rounded-0 border-0 product-card">
                 <div class="img-wrapper">
@@ -225,9 +224,9 @@
                 </div>
             </a>
         </div>
-        <!-- </a> -->
         {% endfor %}
     </div>
+
     {% for a in active %}
     <!-- Hioghlights active filters by adding .active class -->
     <script>
