@@ -84,10 +84,14 @@ def remove_from_cart(request):
 # calculates cart total
 def calcCartTotal(cart):
     newTotal = 0.00
+    shippingTotal = 0.00
     for item in cart.cartitem_set.all():
+        shippingTotal += float(item.product.shipping_cost)
         line_total = float(item.product.price) * item.quantity
         item.line_total = line_total
         item.save()
         newTotal += line_total
-    cart.total = newTotal
+    cart.sub_total = newTotal
+    cart.shipping = shippingTotal
+    cart.grand_total = newTotal + shippingTotal
     cart.save()

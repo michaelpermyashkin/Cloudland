@@ -28,10 +28,11 @@ button:hover {
     color: rgb(0, 0, 0) !important;
 }
 
-#shipping-form,
+
+/* #shipping-form,
 #billing-form {
     display: none;
-}
+} */
 
 .StripeElement {
     box-sizing: border-box;

@@ -29,6 +29,9 @@ def checkout(request):
         new_order = Order()
         new_order.cart = cart
         new_order.user = request.user
+        new_order.sub_total = cart.sub_total
+        new_order.shipping = cart.shipping
+        new_order.order_total = cart.grand_total
         new_order.order_id = orderIdGenerator()
         new_order.save()
     except:
@@ -50,7 +53,9 @@ def checkout(request):
         del request.session['cart_items_total']
         return HttpResponseRedirect(reverse('store-cart'))
 
+
     context = {
+        'cart': cart,
         'address_form': address_form,
         'billing_form': billing_form,
         'billing_addresses': billing_addresses,

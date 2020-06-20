@@ -21,7 +21,7 @@ class UserAddressForm(forms.ModelForm):
         self.fields['last_name'].widget.attrs.update({
             'class': 'form-control',
             'name': 'last_name',
-            'placeholder': 'Your last name',
+            'placeholder': 'Last name',
             'type': 'text'})
         self.fields['address'].widget.attrs.update({
             'class': 'form-control',
@@ -46,7 +46,7 @@ class UserAddressForm(forms.ModelForm):
         self.fields['zipcode'].widget.attrs.update({
             'class': 'form-control',
             'name': 'zipcode',
-            'placeholder': 'ZIP Code',
+            'placeholder': 'ZIP',
             'type': 'text'})
         self.fields['phone_number'].widget.attrs.update({
             'class': 'form-control',
@@ -70,7 +70,7 @@ class UserBillingAddressForm(forms.ModelForm):
         self.fields['last_name'].widget.attrs.update({
             'class': 'form-control',
             'name': 'last_name',
-            'placeholder': 'Your last name',
+            'placeholder': 'Last name',
             'type': 'text'})
         self.fields['address'].widget.attrs.update({
             'class': 'form-control',
@@ -95,7 +95,7 @@ class UserBillingAddressForm(forms.ModelForm):
         self.fields['zipcode'].widget.attrs.update({
             'class': 'form-control',
             'name': 'zipcode',
-            'placeholder': 'ZIP Code',
+            'placeholder': 'ZIP',
             'type': 'text'})
 
 

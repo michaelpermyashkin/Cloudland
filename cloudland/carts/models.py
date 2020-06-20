@@ -13,7 +13,9 @@ class CartItem(models.Model):
 
 
 class Cart(models.Model):
-    total = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
+    sub_total = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
+    shipping = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
+    grand_total = models.DecimalField(max_digits=7, decimal_places=2, default=0.00)
     timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
     updated = models.DateTimeField(auto_now_add=False, auto_now=True)
     active = models.BooleanField(default=True)

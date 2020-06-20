@@ -12,134 +12,66 @@
 <!-- fills content block in base template -->
 {% block content %}
 <div class="container">
-    <script>
-        function showShippingForm() {
-            var x = document.getElementById("shipping-form");
-            if (x.style.display === "none") {
-                x.style.display = "block";
-            } else {
-                x.style.display = "none";
-            }
-        }
-
-
-        function showBillingForm() {
-            var x = document.getElementById("billing-form");
-            if (x.style.display === "none") {
-                x.style.display = "block";
-            } else {
-                x.style.display = "none";
-            }
-        }
-    </script>
     <h2 class="text-center my-4">Complete Your Order</h2>
     <hr>
-    <!-- ./Add new address form -->
     <br>
-    <form method="POST" action="">
-        <h3 class="text-center bg-secondary text-white pt-1 pb-2">Shipping</h3>
-        <div class="text-center mt-5">
-            <!-- Select shipping address from profile -->
-            {% if current_addresses %}
-            <div class="col-lg-12">
-                <h4><strong>Select Shipping Address</strong></h4>
-                {% for address in current_addresses %}
-                <!-- if default then set as checked -->
-                {% if request.user.userdefaultaddresses.shipping.id == address.id %}
-                <input type="radio" name="shipping_address" id="{{ address.id }}" checked/> {{address.get_address }}
-                <!-- ./endif -->
-                {% else %}
-                <input type="radio" name="shipping_address" id="{{ address.id }}" /> {{address.get_address }} {% endif %}
-                <br> {% endfor %}
-            </div>
+    <div class="row">
+        <div class="col-md-4 order-md-2 mb-4">
+            <h4 class="d-flex justify-content-between align-items-center mb-3">
+                <span class="text-muted">My cart</span>
+                <span class="badge badge-success badge-pill">{{cart.cartitem_set.all|length}}</span>
+            </h4>
+            <ul class="list-group mb-3 rounded-0">
+                {% for item in cart.cartitem_set.all %}
+                <li class="list-group-item d-flex justify-content-between lh-condensed">
+                    <div>
+                        <h6 class="my-0">{{ item.product.product_name }} x {{ item.quantity }}</h6>
+                        <small class="text-muted">{{ item.product.description_short }}</small>
+                    </div>
+                    <span class="text-muted">${{ item.line_total }}</span>
+                </li>
+                {% endfor %}
+                <div id="totals">
+                    <li class="list-group-item">
+                        <div class="d-flex justify-content-between">
+                            <span>Subtotal</span>
+                            <h6 class="mt-1"><b>$ {{ cart.sub_total }}</b></h6>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span>Shipping</span>
+                            <h6 class="mt-1"><b>$ {{ cart.shipping }}</b></h6>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between text-success">
+                            <span>Total (USD)</span>
+                            <h4><b>$ {{ cart.grand_total }}</b></h4>
+                        </div>
+                    </li>
+                </div>
+            </ul>
+        </div>
+        <div class="col-md-8 order-md-1">
+            <!-- Billing form -->
+            <h2 class="mb-3"><strong>Billing</strong></h2>
+            <!-- Select billing address from profile -->
+            <h4>Select or add billing address</h4>
+            {% if billing_addresses %} {% for address in billing_addresses %}
+            <!-- if default then set as checked -->
+            {% if request.user.userdefaultaddresses.billing.id == address.id %}
+            <input type="radio" name="billing_address" id="{{ address.id }}" checked/> {{address.get_address }}
+            <!-- ./endif -->
             {% else %}
-            <div class="col-lg-12">
-                <h4><strong>Select Shipping Address</strong></h4>
-                <h5 class="text-muted">No shipping addresses have been saved</h5>
-            </div>
+            <input type="radio" name="billing_address" id="{{ address.id }}" /> {{address.get_address }}
+            <!-- ./endif -->
             {% endif %}
             <br>
-            <!-- Select billing address from profile -->
-            {% if billing_addresses %}
+            <!-- ./end address loop -->
+            {% endfor %} {% else %}
             <div class="col-lg-12">
-                <h4><strong>Select Billing Address</strong></h4>
-                {% for address in billing_addresses %}
-                <!-- if default then set as checked -->
-                {% if request.user.userdefaultaddresses.billing.id == address.id %}
-                <input type="radio" name="billing_address" id="{{ address.id }}" checked/> {{address.get_address }}
-                <!-- ./endif -->
-                {% else %}
-                <input type="radio" name="billing_address" id="{{ address.id }}" /> {{address.get_address }}
-                <!-- ./endif -->
-                {% endif %}
-                <br>
-                <!-- ./end address loop -->
-                {% endfor %}
+                <h5 class="text-muted">No billing addresses have been added</h5>
             </div>
-            {% else %}
-            <div class="col-lg-12">
-                <h4><strong>Select Billing Address</strong></h4>
-                <h5 class="text-muted">No billing addresses have been saved</h5>
-            </div>
-            {% endif %}
-        </div>
-    </form>
-    <div class="justify-content-center m-auto">
-        {% if address_form %}
-        <!-- Form to add a new address to user profile -->
-        <div class="text-center mt-5">
-            <button class="btn bg-transparent p-0 m-0" onclick="showShippingForm()" id="toggle-form">
-                <h3 class="">Add New Shipping Address <li class="fa fa-plus" id="plus-icon"></li></h3>
-            </button>
-        </div>
-        <div id="shipping-form">
-            <div class="col-lg-8 mx-auto mt-2">
-                <form method="post" action='{% url "ajax-add-user-address" %}?next=orders-checkout'>
-                    {% csrf_token %}
-                    <div class="form-row">
-                        <div class="form-group col-md-6 mb-0">
-                            {{ address_form.first_name|as_crispy_field }}
-                        </div>
-                        <div class="form-group col-md-6 mb-0">
-                            {{ address_form.last_name|as_crispy_field }}
-                        </div>
-                    </div>
-                    {{ address_form.address|as_crispy_field }} {{ address_form.address2|as_crispy_field }}
-                    <div class="form-row">
-                        <div class="form-group col-md-6 mb-0">
-                            {{ address_form.city|as_crispy_field }}
-                        </div>
-                        <div class="form-group col-md-4 mb-0">
-                            {{ address_form.state|as_crispy_field }}
-                        </div>
-                        <div class="form-group col-md-2 mb-0">
-                            {{ address_form.zipcode|as_crispy_field }}
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6 mb-0">
-                            {{ address_form.phone_number|as_crispy_field }}
-                        </div>
-                    </div>
-                    {{ address_form.default|as_crispy_field }}
-                    <div class="text-right mt-3">
-                        <button type="submit" class="btn btn-primary btn-block rounded-0 px-5 py-2">Add Shipping Address</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-        {% endif %}
-    </div>
-    <div class="justify-content-center m-auto">
-        {% if billing_form %}
-        <!-- Form to add a new address to user profile -->
-        <div class="text-center mt-3">
-            <button class="btn bg-transparent p-0 m-0" onclick="showBillingForm()" id="toggle-form">
-                <h3 class="">Add New Billing Address <li class="fa fa-plus" id="plus-icon"></li></h3>
-            </button>
-        </div>
-        <div id="billing-form">
-            <div class="col-lg-8 mx-auto mt-2">
+            {% endif %} {% if billing_form %}
+            <div id="billing-form" class="mt-3">
                 <form method="post" action='{% url "ajax-add-user-billing-address" %}?next=orders-checkout'>
                     {% csrf_token %}
                     <div class="form-row">
@@ -168,68 +100,114 @@
                     </div>
                 </form>
             </div>
-        </div>
-        {% endif %}
-    </div>
-    <br>
-    <div id="payment">
-        <h3 class="text-center bg-secondary text-white mt-5 pt-1 pb-2">Payment</h3>
-        <script src="https://js.stripe.com/v3/"></script>
+            {% endif %}
+            <!-- ./ Billing form -->
 
-        <form action="/charge" method="post" id="payment-form">
-            <div class="stripe-form-row mt-5">
-                <div class="row justify-content-center">
-                    <div class="col-md-6">
-                        <label for="card-element"><h4>Credit or debit card</h4></label>
-                        <div id="card-element">
-                            <!-- A Stripe Element will be inserted here. -->
+            <hr class="mb-4">
+
+            <!-- Shipping form -->
+            <h2 class="mb-3"><strong>Shipping</strong></h2>
+            <!-- Select shipping address from profile -->
+            <h4>Select or add shipping address</h4>
+            {% if current_addresses %} {% for address in current_addresses %}
+            <!-- if default then set as checked -->
+            {% if request.user.userdefaultaddresses.shipping.id == address.id %}
+            <input type="radio" name="shipping_address" id="{{ address.id }}" checked/> {{address.get_address }}
+            <!-- ./endif -->
+            {% else %}
+            <input type="radio" name="shipping_address" id="{{ address.id }}" /> {{address.get_address }} {% endif %}
+            <br> {% endfor %} {% else %}
+            <div class="col-lg-12">
+                <h5 class="text-muted">No shipping addresses have been added</h5>
+            </div>
+            {% endif %}
+            <br>
+            <div id="shipping-form">
+                <form method="post" action='{% url "ajax-add-user-address" %}?next=orders-checkout'>
+                    {% csrf_token %}
+                    <div class="form-row">
+                        <div class="form-group col-md-6 mb-0">
+                            {{ address_form.first_name|as_crispy_field }}
+                        </div>
+                        <div class="form-group col-md-6 mb-0">
+                            {{ address_form.last_name|as_crispy_field }}
                         </div>
                     </div>
-                    <div id="card-errors" role="alert"></div>
-                </div>
-                <div class="text-center">
-                    <div class="col-md-6 mx-auto">
-                        <button class="btn btn-success btn-block rounded-0 my-3">Submit Payment</button>
+                    {{ address_form.address|as_crispy_field }} {{ address_form.address2|as_crispy_field }}
+                    <div class="form-row">
+                        <div class="form-group col-md-6 mb-0">
+                            {{ address_form.city|as_crispy_field }}
+                        </div>
+                        <div class="form-group col-md-4 mb-0">
+                            {{ address_form.state|as_crispy_field }}
+                        </div>
+                        <div class="form-group col-md-2 mb-0">
+                            {{ address_form.zipcode|as_crispy_field }}
+                        </div>
                     </div>
-                </div>
+                    {{ address_form.default|as_crispy_field }}
+                    <div class="text-right mt-3">
+                        <button type="submit" class="btn btn-primary btn-block rounded-0 px-5 py-2">Add Shipping Address</button>
+                    </div>
+                </form>
             </div>
+            <!-- ./Shipping Form -->
 
+            <hr class="mb-4">
 
-            <!-- Used to display form errors. -->
+            <!-- Payment Form -->
+            <h2 class="mb-3">Payment</h2>
+            <div id="payment">
+                <script src="https://js.stripe.com/v3/"></script>
+                <form action="/charge" method="post" id="payment-form">
+                    <div class="stripe-form-row mt-4">
+                        <div class="row justify-content-center">
+                            <div class="col-md-12">
+                                <label for="card-element"><h4>Credit or debit card</h4></label>
+                                <div id="card-element">
+                                    <!-- A Stripe Element will be inserted here. -->
+                                </div>
+                            </div>
+                            <div id="card-errors" role="alert"></div>
+                        </div>
+                        <div class="text-center">
+                            <button class="btn btn-success btn-block rounded-0 my-3">Submit Payment</button>
+                        </div>
+                    </div>
+                </form>
+                <script>
+                    // Create a Stripe client.
+                    var stripe = Stripe('pk_test_bDaLLnuS6dvktvlP8Iuzz3J200RUcADXjE');
 
-        </form>
-        <script>
-            // Create a Stripe client.
-            var stripe = Stripe('pk_test_bDaLLnuS6dvktvlP8Iuzz3J200RUcADXjE');
+                    // Create an instance of Elements.
+                    var elements = stripe.elements();
 
-            // Create an instance of Elements.
-            var elements = stripe.elements();
+                    // Custom styling can be passed to options when creating an Element.
+                    // (Note that this demo uses a wider set of styles than the guide below.)
+                    var style = {
+                        base: {
+                            color: '#32325d',
+                            fontSmoothing: 'antialiased',
+                            '::placeholder': {
+                                color: '#aab7c4'
+                            }
+                        },
+                        invalid: {
+                            color: '#fa755a',
+                            iconColor: '#fa755a'
+                        }
+                    };
 
-            // Custom styling can be passed to options when creating an Element.
-            // (Note that this demo uses a wider set of styles than the guide below.)
-            var style = {
-                base: {
-                    color: '#32325d',
-                    fontSmoothing: 'antialiased',
-                    '::placeholder': {
-                        color: '#aab7c4'
-                    }
-                },
-                invalid: {
-                    color: '#fa755a',
-                    iconColor: '#fa755a'
-                }
-            };
+                    // Create an instance of the card Element.
+                    var card = elements.create('card', {
+                        style: style
+                    });
 
-            // Create an instance of the card Element.
-            var card = elements.create('card', {
-                style: style
-            });
-
-            // Add an instance of the card Element into the `card-element` <div>.
-            card.mount('#card-element');
-        </script>
+                    // Add an instance of the card Element into the `card-element` <div>.
+                    card.mount('#card-element');
+                </script>
+            </div>
+        </div>
     </div>
-
 </div>
 {%endblock content %}
