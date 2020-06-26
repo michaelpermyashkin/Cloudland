@@ -2,12 +2,10 @@ import stripe
 import random
 import hashlib
 from django.conf import settings
-from django.contrib.auth import get_user_model
 from django.contrib.auth.signals import user_logged_in
 from django.db.models.signals import post_save
 from .models import UserStripe, EmailConfirmed
 
-User = get_user_model()
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
@@ -33,4 +31,4 @@ def user_created(sender, instance, created, *args, **kwargs):
             email_confirmed.save()
             email_confirmed.activate_user_email()
 
-post_save.connect(user_created, sender=User)
+post_save.connect(user_created, sender=settings.AUTH_USER_MODEL)

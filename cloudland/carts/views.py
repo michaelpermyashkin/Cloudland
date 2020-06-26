@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.shortcuts import render, HttpResponseRedirect
 from datetime import datetime
 from django.urls import reverse
+from django.conf import settings
 
 from store.models import Product # Product model
 from carts.models import Cart # Cart Model

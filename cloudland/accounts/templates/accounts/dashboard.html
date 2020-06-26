@@ -67,21 +67,23 @@
                     <h5>Order #: {{ order.order_id }}</h5>
                 </div>
                 <div class="card-body p-2">
-                    {% for item in order.cart.cartitem_set.all %}
                     <h4 class="ml-1">Items</h4>
-                    <li class="list-group-item d-flex justify-content-between lh-condensed">
-                        <div>
-                            <h6 class="my-0">{{ item.product.product_name }} x {{ item.quantity }}</h6>
-                            <small class="text-muted">{{ item.product.description_short }}</small>
-                        </div>
-                        <span class="text-muted">${{ item.line_total }}</span>
-                    </li>
+                    <div class="col-12">
+                        {% for item in order.cart.cartitem_set.all %}
+                        <li class="list-group-item d-flex justify-content-between lh-condensed">
+                            <div>
+                                <h6 class="my-0">{{ item.product.product_name }} x {{ item.quantity }}</h6>
+                                <small class="text-muted">{{ item.product.description_short }}</small>
+                            </div>
+                            <span class="text-muted">${{ item.line_total }}</span>
+                        </li>
+                        {% endfor %}
+                    </div>
                     <h4 class="ml-1 mt-2">Details</h4>
                     <div class="col-12">
-                        <h6><b>Order Date:</b> {{ order.timestamp }}</h6>
-                        <h6><b>Order Receipt:</b> <a href="{{ order.order_receipt_link }}" target="_blank">View</a></h6>
+                        <h6><b>Order Date:</b> {{ order.timestamp_completed }}</h6>
+                        <h6><a href="{{ order.order_receipt_link }}" target="_blank">View your receipt here</a></h6>
                     </div>
-                    {% endfor %}
                 </div>
                 <div class="card-footer bg-light">
                     <h6>Subtotal: {{ order.sub_total }}</h6>

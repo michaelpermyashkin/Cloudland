@@ -130,6 +130,7 @@ CRISPY_TEMPLATE_PACK='bootstrap4'
 
 STRIPE_SECRET_KEY = config['STRIPE_SECRET_KEY']
 STRIPE_PUBLISHABLE_KEY = config['STRIPE_PUBLISHABLE_KEY']
+DEFAULT_TAX_RATE = 0.08 # 8% tax
 
 DEFAULT_FROM_EMAIL = 'Cloudland Shop<cloudlandonlineshop@gmail.com>'
 

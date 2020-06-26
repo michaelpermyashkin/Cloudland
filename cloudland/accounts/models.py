@@ -35,7 +35,7 @@ class UserAddress(models.Model):
         ordering = ['-updated', '-timestamp']
 
     def __str__(self):
-        return str(self.user.username)
+        return self.get_address()
 
     def get_address(self):
         if self.address2:
@@ -60,7 +60,7 @@ class UserBillingAddress(models.Model):
         ordering = ['-updated', '-timestamp']
 
     def __str__(self):
-        return str(self.user.username)
+        return self.get_address()
 
     def get_address(self):
         if self.address2:

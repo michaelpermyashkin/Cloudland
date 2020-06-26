@@ -1,4 +1,5 @@
 import time
+from decimal import Decimal
 
 import stripe
 from django.conf import settings
@@ -42,7 +43,8 @@ def checkout(request):
         new_order.user = request.user
         new_order.sub_total = cart.sub_total
         new_order.shipping = cart.shipping
-        new_order.order_total = cart.grand_total
+        new_order.order_tax = round(cart.grand_total * Decimal(settings.DEFAULT_TAX_RATE), 2)
+        new_order.order_total = cart.grand_total + new_order.order_tax
         new_order.order_id = orderIdGenerator()
         new_order.save()
     except:
@@ -69,11 +71,31 @@ def checkout(request):
             pass
         # Add card to the customer
         if customer is not None:
+            shipping_address = request.POST['shipping_address'] # an address ID
+            billing_address = request.POST['billing_address'] # an address ID
             token = request.POST['stripeToken']
             card = customer.create_source(
                     customer.id,
                     source=token,
                 )
+
+            try:
+                billing_address_instance = UserBillingAddress.objects.get(id=billing_address)
+            except:
+                billing_address_instance = None
+            
+            try:
+                shipping_address_instance = UserAddress.objects.get(id=shipping_address)
+            except:
+                shipping_address_instance = None
+
+            card.address_line1 = billing_address_instance.address or None
+            card.address_line2 = billing_address_instance.address2 or None
+            card.address_city = billing_address_instance.city or None
+            card.address_state = billing_address_instance.state or None
+            card.address_zip = billing_address_instance.zipcode or None
+            card.save()
+
             charge_amount = int(new_order.order_total * 100)
             charge = stripe.Charge.create(
                     amount=charge_amount,
@@ -82,9 +104,10 @@ def checkout(request):
                     customer = customer,
                     description="Cloudland order #%s" %(new_order.order_id),
                 )
-            print(charge["receipt_url"])
             if charge["captured"]:
                 new_order.status = 'Complete'
+                new_order.shipping_address = shipping_address_instance
+                new_order.billing_address = billing_address_instance
                 new_order.order_receipt_link = charge["receipt_url"]
                 new_order.save()
             # print(card)
@@ -93,11 +116,12 @@ def checkout(request):
     if new_order.status == 'Complete':
         del request.session['cart_id']
         del request.session['cart_items_total']
-        return HttpResponseRedirect(reverse('store-cart'))
+        return HttpResponseRedirect(reverse('accounts-dashboard'))
 
 
     context = {
-        'cart': cart,
+        'order': new_order,
+        'tax_rate': float(cart.grand_total) * settings.DEFAULT_TAX_RATE,
         'address_form': address_form,
         'billing_form': billing_form,
         'billing_addresses': billing_addresses,
