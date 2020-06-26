@@ -20,7 +20,7 @@
     <div class="row mt-2">
         <div class="col-12 m-auto">
             <table class="table">
-                <thead class="thead">
+                <thead class="thead thead-dark">
                     <tr>
                         <th scope="col"></th>
                         <th scope="col"><b>Product</b></th>
@@ -96,7 +96,7 @@
     </div>
     <div class="row no-gutters ">
         <div class="col-6 ">
-            <a href="{% url 'store-products-page-all' %} " id="btn-continue-shopping" class="btn border-0 rounded-0 justify-content-start ">Continue Shopping</a>
+            <a href="{% url 'store-products-page-all' %} " id="btn-continue-shopping" class="btn border-0 rounded-0 justify-content-start btn-primary">Continue Shopping</a>
         </div>
         <div class="col-6 text-right ">
             <a href="{% url 'orders-checkout' %}" id="btn-checkout" class="btn btn-success border-0 rounded-0">Checkout</a>
@@ -106,7 +106,7 @@
 {% else %}
 <h1 class="text-center mt-5 pt-5">Oops, looks like you have an empty cart</h1>
 <div class="col-12 text-center mt-4">
-    <a href="{% url 'store-products-page-all' %}" id="btn-continue-shopping" class="btn border-0 rounded-0">Continue Shopping</a>
+    <a href="{% url 'store-products-page-all' %}" id="btn-continue-shopping" class="btn border-0 rounded-0 btn-primary">Continue Shopping</a>
 </div>
 {% endif %}
 

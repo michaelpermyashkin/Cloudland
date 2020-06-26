@@ -22,15 +22,6 @@ button:hover {
     color: #dc3545;
 }
 
-#btn-continue-shopping {
-    background-color: #000;
-    color: #FFF !important;
-}
-
-#btn-continue-shopping:hover {
-    background-color: rgb(70, 70, 70);
-}
-
 #btn-checkout {
     color: #FFF !important;
 }

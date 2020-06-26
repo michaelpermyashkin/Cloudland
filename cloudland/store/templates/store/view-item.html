@@ -60,22 +60,27 @@
         <p>{{ p.description_full }}</p>
         <br>
         <h1>Shipping</h1>
-        <div class="col-md-6 ml-0 pl-0">
+        <div class="col-md-10 col-sm-12 ml-0 pl-0">
             <table class="table table-borderless ">
                 <thead class="thead-light">
                     <tr>
                         <th scope="col">Type</th>
                         <th scope="col">Estimated Delivery</th>
+                        <th scope="col">Product Shipping</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <th scope="row">Standard Ground</th>
+                        <td scope="row">Standard Ground</td>
                         <td>5-10 business days</td>
+                        <td>${{ p.shipping_cost }}</td>
                     </tr>
                 </tbody>
             </table>
         </div>
+        <small>
+            **Sellers ship products individually. Products in a single order will arrive seperately and shipping time may vary.
+        </small>
     </div>
     <br>
 </div>
