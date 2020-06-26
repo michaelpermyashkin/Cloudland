@@ -27,7 +27,6 @@ class UserAddress(models.Model):
     city = models.CharField(max_length=120)
     state = models.CharField(max_length=120, choices=US_STATES)
     zipcode = models.CharField(max_length=120)
-    phone_number = models.CharField(max_length=120)
     shipping = models.BooleanField(default=True)
     timestamp = models.DateTimeField(auto_now=True, auto_now_add=False)
     updated = models.DateTimeField(auto_now=False, auto_now_add=True)
@@ -40,10 +39,8 @@ class UserAddress(models.Model):
 
     def get_address(self):
         if self.address2:
-            print('%s, %s, %s, %s, %s' % (self.address, self.address2, self.city, self.state, self.zipcode))
             return '%s, %s, %s, %s, %s' % (self.address, self.address2, self.city, self.state, self.zipcode)
         else:
-            print('%s, %s, %s, %s' % (self.address, self.city, self.state, self.zipcode))
             return '%s, %s, %s, %s' % (self.address, self.city, self.state, self.zipcode)
 
 
@@ -67,10 +64,8 @@ class UserBillingAddress(models.Model):
 
     def get_address(self):
         if self.address2:
-            print('%s, %s, %s, %s, %s' % (self.address, self.address2, self.city, self.state, self.zipcode))
             return '%s, %s, %s, %s, %s' % (self.address, self.address2, self.city, self.state, self.zipcode)
         else:
-            print('%s, %s, %s, %s' % (self.address, self.city, self.state, self.zipcode))
             return '%s, %s, %s, %s' % (self.address, self.city, self.state, self.zipcode)
 
 

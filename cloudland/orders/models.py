@@ -19,7 +19,14 @@ class Order(models.Model):
     sub_total = models.DecimalField(default=0.00, max_digits=5, decimal_places=2)
     shipping = models.DecimalField(default=0.00, max_digits=5, decimal_places=2)
     order_total = models.DecimalField(default=0.00, max_digits=5, decimal_places=2)
+    order_receipt_link = models.CharField(max_length=240, null=True, blank=True)
     timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
 
     def __str__(self):
         return self.order_id
+
+    def get_order_date(self):
+        if self.address2:
+            return '%s, %s, %s, %s, %s' % (self.address, self.address2, self.city, self.state, self.zipcode)
+        else:
+            return '%s, %s, %s, %s' % (self.address, self.city, self.state, self.zipcode)

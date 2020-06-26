@@ -118,6 +118,7 @@ def add_user_address(request):
     if request.method == 'POST':
         form = UserAddressForm(request.POST)
         if form.is_valid():
+            print("HEY")
             new_address = form.save(commit=False)
             new_address.user = request.user
             new_address.save()
@@ -127,7 +128,7 @@ def add_user_address(request):
                 default_address.shipping = new_address
                 default_address.save()
             if redirect_view != None:
-                return HttpResponseRedirect(reverse(str(redirect_view))+'?add+=True') # add+=True if address from form was saved 
+                return HttpResponseRedirect(reverse(str(redirect_view))+'?shipping-added') # add+=True if address from form was saved 
     else:
         raise Http404
 
@@ -149,6 +150,6 @@ def add_user_billing_address(request):
                 default_address.billing = new_address
                 default_address.save()
             if redirect_view != None:
-                return HttpResponseRedirect(reverse(str(redirect_view))+'?add+=True') # add+=True if address from form was saved 
+                return HttpResponseRedirect(reverse(str(redirect_view))+'?billing-added') # add+=True if address from form was saved 
     else:
         raise Http404

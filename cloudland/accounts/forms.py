@@ -10,7 +10,7 @@ class UserAddressForm(forms.ModelForm):
     default = forms.BooleanField(required=False, label='Set as default')
     class Meta:
         model = UserAddress
-        fields = ['first_name', 'last_name', 'address', 'address2', 'city', 'state', 'zipcode', 'phone_number']
+        fields = ['first_name', 'last_name', 'address', 'address2', 'city', 'state', 'zipcode']
     def __init__(self, *args, **kwargs):
         super(UserAddressForm, self).__init__(*args, **kwargs)
         self.fields['first_name'].widget.attrs.update({
@@ -47,11 +47,6 @@ class UserAddressForm(forms.ModelForm):
             'class': 'form-control',
             'name': 'zipcode',
             'placeholder': 'ZIP',
-            'type': 'text'})
-        self.fields['phone_number'].widget.attrs.update({
-            'class': 'form-control',
-            'name': 'phone_number',
-            'placeholder': '(555)-555-5555',
             'type': 'text'})
 
 

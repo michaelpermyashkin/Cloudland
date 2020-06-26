@@ -1,4 +1,7 @@
 import time
+
+import stripe
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, HttpResponseRedirect
 from django.urls import reverse
@@ -11,6 +14,14 @@ from accounts.forms import UserAddressForm, UserBillingAddressForm
 
 from .models import Order
 from .utils import orderIdGenerator
+
+try: 
+    stripe_pub = settings.STRIPE_PUBLISHABLE_KEY
+    stripe_secret = settings.STRIPE_SECRET_KEY
+except Exception as e:
+    raise NotImplementedError(str(e))
+
+stripe.api_key = stripe_secret
 
 @login_required
 def checkout(request):
@@ -37,6 +48,9 @@ def checkout(request):
     except:
         # Maybe an error message here
         return HttpResponseRedirect(reverse('store-cart'))
+    # assign user to order
+    new_order.user = request.user
+    new_order.save()
 
     address_form = UserAddressForm()
     billing_form = UserBillingAddressForm()
@@ -44,9 +58,37 @@ def checkout(request):
     current_addresses = UserAddress.objects.filter(user=request.user)
     billing_addresses = UserBillingAddress.objects.filter(user=request.user)
 
-    # assign user to order
-    new_order.user = request.user
-    new_order.save()
+    # The payement form has been submitted - complete charge
+    if request.method == 'POST':
+        # Get user stipe id from the authenticated user model
+        try:
+            user_stripe = request.user.userstripe.stripe_id
+            customer = stripe.Customer.retrieve(user_stripe)
+        except:
+            customer = None
+            pass
+        # Add card to the customer
+        if customer is not None:
+            token = request.POST['stripeToken']
+            card = customer.create_source(
+                    customer.id,
+                    source=token,
+                )
+            charge_amount = int(new_order.order_total * 100)
+            charge = stripe.Charge.create(
+                    amount=charge_amount,
+                    currency="usd",
+                    source=card,
+                    customer = customer,
+                    description="Cloudland order #%s" %(new_order.order_id),
+                )
+            print(charge["receipt_url"])
+            if charge["captured"]:
+                new_order.status = 'Complete'
+                new_order.order_receipt_link = charge["receipt_url"]
+                new_order.save()
+            # print(card)
+            # print(charge)
 
     if new_order.status == 'Complete':
         del request.session['cart_id']
@@ -60,6 +102,7 @@ def checkout(request):
         'billing_form': billing_form,
         'billing_addresses': billing_addresses,
         'current_addresses': current_addresses,
+        'stripe_pub': stripe_pub,
     }
     return render(request, 'orders/checkout.html', context)
 
