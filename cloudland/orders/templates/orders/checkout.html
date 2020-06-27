@@ -58,7 +58,7 @@
 
         </div>
 
-        <div class="col-md-8 mb-4">
+        <div class="col-md-8 mb-4" id="main-form">
             <form action="" method="post" id="payment-form">
                 <h2 class="mb-3">Shipping</h2>
                 <h4>Select or add shipping address</h4>
@@ -72,7 +72,7 @@
                 <br> {% endfor %} {% else %}
                 <h5 class="text-danger">No shipping addresses have been added</h5>
                 {% endif %}
-                <a href="#add-shipping" class="btn btn-warning my-3" id="toggle-shipping-form">Add New Shipping Address</a>
+                <a class="btn btn-warning rounded-0 my-3" id="toggle-shipping-form">Add New Shipping Address</a>
 
                 <hr class="mb-4">
 
@@ -92,7 +92,7 @@
                 {% endfor %} {% else %}
                 <h5 class="text-danger">No billing addresses have been added</h5>
                 {% endif %}
-                <a href="#add-billing" class="btn btn-warning my-3" id="toggle-billing-form">Add New Billing Address</a>
+                <a class="btn btn-warning rounded-0 my-3" id="toggle-billing-form">Add New Billing Address</a>
 
                 <hr class="my-4">
 
@@ -166,87 +166,104 @@
                 $("#toggle-shipping-form").click(function() {
                     $("#add-shipping").fadeToggle();
                     $('#add-billing').hide();
+                    $('#main-form').hide();
                 });
                 $("#toggle-billing-form").click(function() {
                     $("#add-billing").fadeToggle();
                     $("#add-shipping").hide();
+                    $("#main-form").hide();
                 });
             </script>
         </div>
-    </div>
-
-    <div class="col-md-8 offset-4">
-        <!-- Shipping form -->
-        <div class="shipping-form-container pt-2" id="add-shipping" style="display: none;">
-            <h2 class="mb-3"><strong>Add Shipping Address</strong></h2>
-            <div id="shipping-form">
-                <form method="post" action='{% url "ajax-add-user-address" %}?next=orders-checkout'>
-                    {% csrf_token %}
-                    <div class="form-row">
-                        <div class="form-group col-md-6 mb-0">
-                            {{ address_form.first_name|as_crispy_field }}
+        <div class="col-md-8">
+            <!-- Shipping form -->
+            <div class="shipping-form-container" id="add-shipping" style="display: none;">
+                <h2 class="mb-3"><strong>Add Shipping Address</strong></h2>
+                <div id="shipping-form">
+                    <form method="post" action='{% url "ajax-add-user-address" %}?next=orders-checkout'>
+                        {% csrf_token %}
+                        <div class="form-row">
+                            <div class="form-group col-md-6 mb-0">
+                                {{ address_form.first_name|as_crispy_field }}
+                            </div>
+                            <div class="form-group col-md-6 mb-0">
+                                {{ address_form.last_name|as_crispy_field }}
+                            </div>
                         </div>
-                        <div class="form-group col-md-6 mb-0">
-                            {{ address_form.last_name|as_crispy_field }}
+                        {{ address_form.address|as_crispy_field }} {{ address_form.address2|as_crispy_field }}
+                        <div class="form-row">
+                            <div class="form-group col-md-6 mb-0">
+                                {{ address_form.city|as_crispy_field }}
+                            </div>
+                            <div class="form-group col-md-4 mb-0">
+                                {{ address_form.state|as_crispy_field }}
+                            </div>
+                            <div class="form-group col-md-2 mb-0">
+                                {{ address_form.zipcode|as_crispy_field }}
+                            </div>
                         </div>
-                    </div>
-                    {{ address_form.address|as_crispy_field }} {{ address_form.address2|as_crispy_field }}
-                    <div class="form-row">
-                        <div class="form-group col-md-6 mb-0">
-                            {{ address_form.city|as_crispy_field }}
+                        {{ address_form.default|as_crispy_field }}
+                        <div class="text-right mt-3">
+                            <a href="#top" class="btn btn-danger rounded-0 px-5 py-2" id="shipping-cancel-toggle">Cancel</a>
+                            <button type="submit" class="btn btn-primary rounded-0 px-5 py-2">Add New Shipping Address</button>
                         </div>
-                        <div class="form-group col-md-4 mb-0">
-                            {{ address_form.state|as_crispy_field }}
-                        </div>
-                        <div class="form-group col-md-2 mb-0">
-                            {{ address_form.zipcode|as_crispy_field }}
-                        </div>
-                    </div>
-                    {{ address_form.default|as_crispy_field }}
-                    <div class="text-right mt-3">
-                        <button type="submit" class="btn btn-primary btn-block rounded-0 px-5 py-2">Add New Shipping Address</button>
-                    </div>
-                </form>
+                    </form>
+                </div>
+                <!-- ./Shipping Form -->
             </div>
-            <!-- ./Shipping Form -->
+
+            <!-- Billing form -->
+            <div class="billing-form-container" id="add-billing" style="display: none;">
+                <h2 class="mb-3"><strong>Add Billing Address</strong></h2>
+                {% if billing_form %}
+                <div id="billing-form">
+                    <form method="post" action='{% url "ajax-add-user-billing-address" %}?next=orders-checkout'>
+                        {% csrf_token %}
+                        <div class="form-row">
+                            <div class="form-group col-md-6 mb-0">
+                                {{ billing_form.first_name|as_crispy_field }}
+                            </div>
+                            <div class="form-group col-md-6 mb-0">
+                                {{ billing_form.last_name|as_crispy_field }}
+                            </div>
+                        </div>
+                        {{ billing_form.address|as_crispy_field }} {{ billing_form.address2|as_crispy_field }}
+                        <div class="form-row">
+                            <div class="form-group col-md-6 mb-0">
+                                {{ billing_form.city|as_crispy_field }}
+                            </div>
+                            <div class="form-group col-md-4 mb-0">
+                                {{ billing_form.state|as_crispy_field }}
+                            </div>
+                            <div class="form-group col-md-2 mb-0">
+                                {{ billing_form.zipcode|as_crispy_field }}
+                            </div>
+                        </div>
+                        {{ billing_form.default|as_crispy_field }}
+                        <div class="text-right mt-3">
+                            <a href="#top" class="btn btn-danger rounded-0 px-5 py-2" id="billing-cancel-toggle">Cancel</a>
+                            <button type="submit" class="btn btn-primary rounded-0 px-5 py-2">Add New Billing Address</button>
+                        </div>
+                    </form>
+                </div>
+                {% endif %}
+                <!-- ./ Billing form -->
+            </div>
+            <script>
+                $("#shipping-cancel-toggle").click(function() {
+                    $("#add-billing").hide();
+                    $("#add-shipping").hide();
+                    $("#main-form").show();
+                });
+                $("#billing-cancel-toggle").click(function() {
+                    $("#add-billing").hide();
+                    $("#add-shipping").hide();
+                    $("#main-form").show();
+                });
+            </script>
         </div>
 
-        <!-- Billing form -->
-        <div class="billing-form-container pt-2" id="add-billing" style="display: none;">
-            <h2 class="mb-3"><strong>Add Billing Address</strong></h2>
-            {% if billing_form %}
-            <div id="billing-form">
-                <form method="post" action='{% url "ajax-add-user-billing-address" %}?next=orders-checkout'>
-                    {% csrf_token %}
-                    <div class="form-row">
-                        <div class="form-group col-md-6 mb-0">
-                            {{ billing_form.first_name|as_crispy_field }}
-                        </div>
-                        <div class="form-group col-md-6 mb-0">
-                            {{ billing_form.last_name|as_crispy_field }}
-                        </div>
-                    </div>
-                    {{ billing_form.address|as_crispy_field }} {{ billing_form.address2|as_crispy_field }}
-                    <div class="form-row">
-                        <div class="form-group col-md-6 mb-0">
-                            {{ billing_form.city|as_crispy_field }}
-                        </div>
-                        <div class="form-group col-md-4 mb-0">
-                            {{ billing_form.state|as_crispy_field }}
-                        </div>
-                        <div class="form-group col-md-2 mb-0">
-                            {{ billing_form.zipcode|as_crispy_field }}
-                        </div>
-                    </div>
-                    {{ billing_form.default|as_crispy_field }}
-                    <div class="text-right mt-3">
-                        <button type="submit" class="btn btn-primary btn-block rounded-0 px-5 py-2">Add New Billing Address</button>
-                    </div>
-                </form>
-            </div>
-            {% endif %}
-            <!-- ./ Billing form -->
-        </div>
     </div>
+
 </div>
 {%endblock content %}
