@@ -21,6 +21,7 @@
                         {% csrf_token %} {{ form|crispy }}
                         <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
                         <a class="d-block text-center mt-2" href="{% url 'accounts-login' %}">Sign In</a>
+                        <a class="d-block text-center" href="{% url 'seller-login' %}">I'm a Seller</a>
                         <hr class="my-4">
                     </form>
                 </div>

@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'localflavor',
 
+    'sellers',
     'store',
     'accounts',
     'carts',
@@ -110,15 +111,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
-
-{
-    messages.DEBUG: 'debug',
-    messages.INFO: 'info',
-    messages.SUCCESS: 'success',
-    messages.WARNING: 'warning',
-    messages.ERROR: 'danger',
-}
 
 
 STATIC_URL = '/static/'
