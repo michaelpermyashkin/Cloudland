@@ -3,7 +3,7 @@ from django.contrib import admin
 # Register your models here.
 from .models import Product, Seller, Category
 
-
+admin.site.site_header = "Cloudland Admininstration"
 
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('product_name', 'seller', 'quantity', 'description_short')

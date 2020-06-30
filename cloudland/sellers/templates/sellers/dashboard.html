@@ -6,53 +6,85 @@
 {% block page %}Dashboard{% endblock page%}
 <!-- Custom style sheet -->
 {% block styles %}
-<link href="{% static 'accounts/css/dashboard-styles.css' %}" rel="stylesheet"> {% endblock styles %}
+<link href="{% static 'sellers/css/dashboard-styles.css' %}" rel="stylesheet"> {% endblock styles %}
 <!-- fills content block in base template -->
 {% block content %}
 <div class="container">
     <div class="my-4 text-center">
-        <h2>My Account</h2>
+        <h2 class="text-success">Welcome {{ user.first_name }}!</h2>
     </div>
     <hr>
     <div class="row justify-content-center">
-        <div class="col-md-7 order-md-1">
-            <h3 class="text-center">My Products</h3>
-            <!-- If no products in query set display message -->
-            {% if products.count == 0 %}
-            <br>
-            <h2 class="text-center">Oops, we didn't find any products matching your search!</h2>
-            {% endif %}
-            <div class="row" id="main">
-                {% for product in products %}
-                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-4 my-auto">
-                    <a href="{% url 'store-view-item' product.product_id %}" class="card h-100 rounded-0 border-0 product-card">
-                        <div class="img-wrapper">
-                            <div class="image">
-                                <!-- Load first 10 images right away -->
-                                {% if forloop.counter > 10 %}
-                                <!-- The images after the first 10 are loaded when the page is scrolled -->
-                                <img class="card-img-top rounded-0 img-responsive lazy" data-src="{{ product.product_image.url }}" id="card-image" alt="Product Image">
-                                <!--  -->
-                                {% else %}
-                                <img class="card-img-top rounded-0 img-responsive" src="{{ product.product_image.url }}" id="card-image" alt="Product Image">
-                                <!--  -->
-                                {% endif %}
+        <div class="col-md-12 order-md-1">
+            <!-- PRODUCT MANAGER -->
+            <h3 class="my-2 text-center">My Product Manager</h3>
+            <h5>
+                <a href="{% url 'store-products-page-filter-seller' seller.slug %}">View all my products in Store</a>
+            </h5>
+            <table class="table">
+                <thead class="thead thead-dark">
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col"><b>Name</b></th>
+                        <th scope="col"><b>Price</b></th>
+                        <th scope="col"><b>Shipping</b></th>
+                        <th scope="col"><b>Quantity</b></th>
+                        <th scope="col"><b>Actions</b></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in products %}
+                    <tr>
+                        <td id="image-col">
+                            <div class="product-image text-center my-2">
+                                <img src="{{ product.product_image.url }}" />
                             </div>
-                            <div class="img-overlay">
-                                <div class="btn" id="btn-view-item">VIEW</div>
+                        </td>
+                        <td>
+                            <a href="{% url 'store-view-item' product.product_id %}">
+                                <b class="product-name">{{ product.product_name }}</b>
+                            </a>
+                        </td>
+                        <td class="product-price">${{ product.price }}</td>
+                        <td class="product-shipping">${{ product.shipping_cost }}</td>
+                        <td class="">
+                            <div class="text-left pl-4">
+                                {{ product.quantity }}
+                            </div>
+                            <!-- <input class="form-control text-center product-quantity" type="text" value="{{ item.quantity }}" /> -->
+                        </td>
+                        <td>
+                            <a id="actions" href="{% url 'edit-product' product.product_id %}">Edit</a>
+                            <br>
+                            <a id="actions" target="_blank" href="{% url 'store-view-item' product.product_id %}">View in Store</a>
+                            <!-- <input class="form-control text-center product-quantity" type="text" value="{{ item.quantity }}" /> -->
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <hr class="my-5">
+
+            <!-- SELLER BIO -->
+            <div class="col-lg-6 col-md-8 m-auto">
+                <h3 class="my-2 text-center">My Bio</h3>
+                <div class="mb-5">
+                    <div class="card border-0">
+                        <img class="card-img-top" src="{{ seller.profile_picture.url }}" alt="{{ seller.seller_listing_name }} Profile Picture">
+                        <div class="card-body text-left">
+                            <div class="text-center">
+                                <h3 class="card-title mb-0">{{ seller.seller_full_name }}</h3>
+                                <h5 class="card-text text-secondary">// {{ seller.seller_listing_name }} //</h5>
+                                <h5 class="card-text text-black-50"><i class="fas fa-envelope fa-xs"></i> {{ seller.email }}</h5>
+                            </div>
+                            <p class="p-2">{{ seller.bio_description }}</p>
+                            <div class="text-center">
+                                <a href="{% url 'edit-bio' seller.slug %}" class="btn btn-block btn-warning">Edit My Bio</a>
                             </div>
                         </div>
-                        <div class="card-body text-center">
-                            <h4 class="card-title">
-                                <a id="product-name">{{ product.product_name }}</a>
-                            </h4>
-                            <p id="seller-name">// {{product.seller.seller_listing_name }} //</p>
-                            <p class="card-text" id="product-description">{{ product.description_short }}</p>
-                            <h5 id="product-price">${{ product.price | floatformat:2 }}</h5>
-                        </div>
-                    </a>
+                    </div>
                 </div>
-                {% endfor %}
             </div>
         </div>
     </div>

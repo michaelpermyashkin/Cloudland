@@ -1,0 +1,90 @@
+<!-- Extends base template  -->
+{% extends "store/base.html" %}
+<!-- Crispy forms for styling -->
+{% load crispy_forms_tags %}
+<!-- Loads static content to access content in static directory -->
+{% load static %}
+<!-- Page title for window tab -->
+{% block page %}Dashboard{% endblock page%}
+<!-- Custom style sheet -->
+{% block styles %}
+<link href="{% static 'sellers/css/bio-edit-styles.css' %}" rel="stylesheet"> {% endblock styles %}
+<!-- fills content block in base template -->
+{% block content %}
+
+<div class="container">
+    <div class="col-md-12 m-auto">
+        <h2>Edit My Bio</h2>
+        <hr>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card border-0">
+                    <img id="profile_picture" class="card-img-top" src="{{ seller.profile_picture.url }}" alt="{{ seller.seller_listing_name }} Profile Picture">
+                    <div class="card-body text-left">
+                        <div class="text-center">
+                            <h3 id="seller_full_name" class="card-title mb-0">{{ seller.seller_full_name }}</h3>
+                            <h5 id="seller_listing_name" class="card-text text-secondary">// {{ seller.seller_listing_name }} //</h5>
+                            <h5 id="email" class="card-text text-black-50"><i class="fas fa-envelope fa-xs"></i> {{ seller.email }}</h5>
+                        </div>
+                        <p id="bio_description" class="p-2">{{ seller.bio_description }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <form method="POST" enctype='multipart/form-data'>
+                    {% csrf_token %}
+                    <div class="form-group" onkeyup="func('seller_full_name')">
+                        <!-- Full name -->
+                        {{ form.seller_full_name|as_crispy_field }}
+                    </div>
+                    <div class="form-group" onkeyup="func('seller_listing_name')">
+                        <!-- Listing name -->
+                        {{ form.seller_listing_name|as_crispy_field }}
+                    </div>
+                    <div class="form-group" onkeyup="func('profile_picture')">
+                        <!-- Profile Picture -->
+                        {{ form.profile_picture|as_crispy_field }}
+                    </div>
+                    <div class="form-group" onkeyup="func('bio_description')">
+                        <!-- Bio Description -->
+                        {{ form.bio_description|as_crispy_field }}
+                    </div>
+                    <div class="form-group" onkeyup="func('email')">
+                        <!-- Email -->
+                        {{ form.email|as_crispy_field }}
+                    </div>
+                    <div class="text-right">
+                        <a href="{% url 'seller-dashboard' %}" class="btn btn-danger">Cancel</a>
+                        <button class="btn btn-success px-5" type="submit">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        function func(id) {
+            update = document.getElementsByName(id)[0].value;
+            if (id == 'seller_listing_name') {
+                update = '// ' + update + ' //';
+            }
+            document.getElementById(id).innerHTML = update;
+        }
+
+        // Handles image previewing 
+        function previewImg(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function(e) {
+                    $('#profile_picture').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]); // convert to base64 string
+            }
+        }
+        $("#id_profile_picture").change(function() {
+            previewImg(this);
+        });
+    </script>
+</div>
+{% endblock content %}

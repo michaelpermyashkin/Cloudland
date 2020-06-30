@@ -1,0 +1,122 @@
+<!-- Extends base template  -->
+{% extends "store/base.html" %}
+<!-- Crispy forms for styling -->
+{% load crispy_forms_tags %}
+<!-- Loads static content to access content in static directory -->
+{% load static %}
+<!-- Page title for window tab -->
+{% block page %}Dashboard{% endblock page%}
+<!-- Custom style sheet -->
+{% block styles %}
+<link href="{% static 'sellers/css/product-edit-styles.css' %}" rel="stylesheet"> {% endblock styles %}
+<!-- fills content block in base template -->
+{% block content %}
+<div class="container">
+    <h2>Editing {{ product.product_name}}</h2>
+    <hr>
+    <div class="row">
+        <div class="col-md-6">
+            <a class="card rounded-0 border-0 product-card">
+                <div class="img-wrapper">
+                    <div class="image">
+                        <img class="card-img-top rounded-0 img-responsive" src="{{ product.product_image.url }}" id="card-image" alt="Product Image">
+                    </div>
+                </div>
+                <div class="card-body text-center">
+                    <h4 class="card-title">
+                        <a id="product_name">{{ product.product_name }}</a>
+                    </h4>
+                    <p id="seller-name">// {{product.seller.seller_listing_name }} //</p>
+                    <p class="card-text" id="description_short" style="margin-top: -1rem;">{{ product.description_short }}</p>
+                    <h5 id="price">${{ product.price | floatformat:2 }}</h5>
+                </div>
+            </a>
+            <h2>Description</h2>
+            <p id="description_full">{{ product.description_full }}</p>
+            <h2>Shipping</h2>
+            <table class="table table-borderless" style="font-size: 1rem;">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">Type</th>
+                        <th scope="col">Estimated Delivery</th>
+                        <th scope="col">Product Shipping</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td scope="row">Standard Ground</td>
+                        <td>5-10 business days</td>
+                        <td id="shipping_cost">${{ product.shipping_cost }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <form method="POST" enctype='multipart/form-data'>
+                {% csrf_token %}
+                <div class="form-group" onkeyup="func('product_name')">
+                    <!-- Full name -->
+                    {{ form.product_name|as_crispy_field }}
+                </div>
+                <div class="form-group" onkeyup="func('category')">
+                    <!-- Listing name -->
+                    {{ form.category|as_crispy_field }}
+                </div>
+                <div class="form-group" onkeyup="func('price')">
+                    <!-- Profile Picture -->
+                    {{ form.price|as_crispy_field }}
+                </div>
+                <div class="form-group" onkeyup="func('shipping_cost')">
+                    <!-- Bio Description -->
+                    {{ form.shipping_cost|as_crispy_field }}
+                </div>
+                <div class="form-group" onkeyup="func('description_short')">
+                    <!-- Email -->
+                    {{ form.description_short|as_crispy_field }}
+                </div>
+                <div class="form-group" onkeyup="func('description_full')">
+                    <!-- Email -->
+                    {{ form.description_full|as_crispy_field }}
+                </div>
+                <div class="form-group" onkeyup="func('product_image')">
+                    <!-- Email -->
+                    {{ form.product_image|as_crispy_field }}
+                </div>
+                <div class="form-group" onkeyup="func('quantity')">
+                    <!-- Email -->
+                    {{ form.quantity|as_crispy_field }}
+                </div>
+                <div class="text-right">
+                    <a href="{% url 'seller-dashboard' %}" class="btn btn-danger">Cancel</a>
+                    <button class="btn btn-success px-5" type="submit">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script>
+        function func(id) {
+            update = document.getElementsByName(id)[0].value;
+            if (id == 'price' || id == 'shipping_cost') {
+                update = '$' + update;
+            }
+            document.getElementById(id).innerHTML = update;
+        }
+
+        // Handles image previewing 
+        function previewImg(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function(e) {
+                    $('#card-image').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]); // convert to base64 string
+            }
+        }
+        $("#id_product_image").change(function() {
+            previewImg(this);
+        });
+    </script>
+</div>
+{% endblock content %}
