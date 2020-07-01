@@ -132,10 +132,14 @@
     color: #FFF;
 }
 
+.accordion .card {
+    background-color: transparent !important;
+}
+
 .accordion .card ul {
+    background-color: rgb(245, 245, 245) !important;
     margin-left: 0;
-    padding-left: 1em;
-    padding-top: 15px;
+    padding-left: 2em;
     border: none;
     list-style: none;
 }
@@ -146,7 +150,7 @@
     border: none;
     text-decoration: none;
     font-size: 1.2rem;
-    color: rgb(123, 123, 123);
+    color: rgb(97, 97, 97);
 }
 
 .accordion .card ul li button:hover {

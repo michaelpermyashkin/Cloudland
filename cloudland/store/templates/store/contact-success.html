@@ -1,0 +1,23 @@
+<!-- Extends base template  -->
+{% extends "store/base.html" %}
+<!-- Loads static content to access content in static directory -->
+{% load static %}
+<!-- Page title for window tab -->
+{% block page %}Contact{% endblock page%}
+<!-- Custom style sheet -->
+{% block styles %}
+<link href="{% static 'store/css/contact-styles.css' %}" rel="stylesheet">{% endblock styles %}
+<!-- fills content block in base template -->
+{% block content %}
+<div class="container" style="min-height: 100vh;">
+    <h2 class="h1-responsive text-center my-4">Contact us</h2>
+    <div class="col-8 m-auto text-center">
+        <hr>
+        <h4>Thank you! Your email has been sent and we will reach out to you shortly!</h4>
+    </div>
+    <br>
+    <div class="col-12 text-center mt-4">
+        <a href="{% url 'store-products-page-all' %}" id="btn-continue-shopping" class="btn btn-dark border-0 rounded-0">Continue Shopping</a>
+    </div>
+</div>
+{%endblock content %}

@@ -101,8 +101,8 @@
                                 </div>
                             </a>
                         </div>
-                        <div id="categoriesCollapse" class="collapse" role="tabpanel" aria-labelledby="categoriesHeading" data-parent="#accordion">
-                            <ul class="list-group text-left" id="category-menu-items">
+                        <div id="categoriesCollapse" class="collapse mt-0" role="tabpanel" aria-labelledby="categoriesHeading" data-parent="#accordion">
+                            <ul class="list-group text-left " id="category-menu-items">
                                 {% for category in categories %}
                                 <li>
                                     <a id="{{category.slug}}" href="{% url 'store-products-page-filter-category' category.slug %}">{{ category.name }}</a>
@@ -225,6 +225,10 @@
             </a>
         </div>
         {% endfor %}
+
+        <div class="col-12 text-center mt-4">
+            <a href="#top" class="btn btn-dark border-0 rounded-0">Back to top</a>
+        </div>
     </div>
 
     {% for a in active %}

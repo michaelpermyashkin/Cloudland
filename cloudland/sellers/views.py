@@ -61,7 +61,8 @@ def seller_login(request):
                 else:
                     return redirect(reverse('seller-dashboard'))
             else:
-                messages.warning(request, "PERMISSION DENIED: Your account does not have the proper permission. If this is a mistake please contact us at cloudlandonline@gmail.com")
+                messages.warning(request, "Your account does not have the proper permission, please login here. If this is a mistake please contact us at cloudlandonline@gmail.com")
+                return redirect(reverse('accounts-login'))
     # else render login page
     else:
         form = UsersLoginForm()

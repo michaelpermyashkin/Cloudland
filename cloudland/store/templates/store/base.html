@@ -23,6 +23,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
     <script src="https://use.fontawesome.com/releases/v5.12.1/js/all.js" crossorigin="anonymous"></script>
     <script src="{% static 'store/js/helper.js' %}"></script>
     <script src="{% static 'store/vendor/jquery/jquery.min.js' %} "></script>
@@ -46,10 +47,9 @@
     {% endif %}
 
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-xl sticky-top pl-3">
+    <nav class="navbar navbar-expand-lg sticky-top pl-3">
         <a class="navbar-brand" href="{% url 'store-products-page-all-home' %} ">
             Cloudland
-            <!-- <img src="{% static 'store/media/brand/stitch-logo.png' %}" alt="Stitch logo"> -->
         </a>
         <button id="nav-collapse-icon" class="navbar-toggler navbar-toggler-right mt-3 pb-4" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-hidden="true" Toggle navigation>
             ☰
@@ -98,12 +98,66 @@
         </ul>
         {% endif %}
     </nav>
-    {% block content %} {% endblock content %}
-
-
+    <div id="top">
+        {% block content %} {% endblock content %}
+    </div>
 </body>
-<footer class="py-5">
-    <p class="m-0 text-center text-white ">Copyright &copy; Cloudland 2020</p>
+<footer class="site-footer py-5 mt-5">
+    <div class="container">
+        <div class="col-md-6 justify-content-center">
+            <ul class="social-icons">
+                <li>
+                    <a href="#" class="instagram"><i class="fab fa-instagram"></i></a>
+                </li>
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-sm-12">
+                <h6>About</h6>
+                <p class="text-justify">
+                    Cloudland is a platform that allows our sellers to share their creative work - getting your favorites from our hands to yours. Ranging through a variety of categories, Cloudland invite you to browse your favories! Welcome to the clouds, where the sky
+                    is the limit.
+                </p>
+            </div>
+            <div class="col-md-3 col-sm-4 col-4">
+                <h6>Sellers</h6>
+                <ul class="footer-links">
+                    {% for seller in sellers %}
+                    <li>
+                        <a id="{{ seller.slug }}" href="{% url 'store-products-page-filter-category' seller.slug %}">{{ seller.seller_listing_name }}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col-md-3 col-sm-4 col-4">
+                <h6>Categories</h6>
+                <ul class="footer-links">
+                    {% for category in categories %}
+                    <li>
+                        <a id="{{ category.slug }}" href="{% url 'store-products-page-filter-category' category.slug %}">{{ category.name }}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="col-md-2 col-sm-4 col-4">
+                <h6>Quick Links</h6>
+                <ul class="footer-links">
+                    <li><a href="{% url 'about' %}">About Us</a></li>
+                    <li><a href="{% url 'store-contact' %}">Contact Us</a></li>
+                    <li><a href="{% url 'accounts-dashboard' %}">My Dashboard</a></li>
+                </ul>
+            </div>
+        </div>
+        <hr>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-sm-6 col-xs-12">
+                <p class="copyright-text">Copyright &copy; 2020 All Rights Reserved by Cloudland.</p>
+            </div>
+        </div>
+    </div>
 </footer>
 
 </html>

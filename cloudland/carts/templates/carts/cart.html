@@ -13,8 +13,9 @@
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet"> {% endblock styles %}
 
 <!-- custom page content -->
-{% block content %} {% if cart.cartitem_set.all|length != 0 %}
-<div class="container">
+{% block content %}
+<div class="container" style="min-height: 100vh;">
+    {% if cart.cartitem_set.all|length != 0 %}
     <script onload="setCartTotalValues()"></script>
     <h2 class="text-center my-4">My Cart</h2>
     <div class="row mt-2">
@@ -102,13 +103,13 @@
             <a href="{% url 'orders-checkout' %}" id="btn-checkout" class="btn btn-success border-0 rounded-0">Checkout</a>
         </div>
     </div>
+    {% else %}
+    <h1 class="text-center mt-5 pt-5">Oops, looks like you have an empty cart</h1>
+    <div class="col-12 text-center mt-4">
+        <a href="{% url 'store-products-page-all' %}" id="btn-continue-shopping" class="btn btn-dark border-0 rounded-0">Continue Shopping</a>
+    </div>
+    {% endif %}
 </div>
-{% else %}
-<h1 class="text-center mt-5 pt-5">Oops, looks like you have an empty cart</h1>
-<div class="col-12 text-center mt-4">
-    <a href="{% url 'store-products-page-all' %}" id="btn-continue-shopping" class="btn btn-dark border-0 rounded-0">Continue Shopping</a>
-</div>
-{% endif %}
 
 <script>
     // $(document).ready(function() {

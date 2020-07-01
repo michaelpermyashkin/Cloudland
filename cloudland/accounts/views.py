@@ -62,12 +62,16 @@ def login_request(request):
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
             user = authenticate(username = username, password = password)
-            auth_login(request, user)
-            next_url = request.GET.get('next')
-            if next_url:
-                return redirect(next_url)
+            if user.groups.filter(name='Seller').count():
+                messages.warning(request, "Your account has seller permissions, please log in here. If this is a mistake please contact us at cloudlandonline@gmail.com")
+                return redirect(reverse('seller-login'))
             else:
-                return redirect('/')
+                auth_login(request, user)
+                next_url = request.GET.get('next')
+                if next_url:
+                    return redirect(next_url)
+                else:
+                    return redirect('/')
     # else render login page
     else:
         form = UsersLoginForm()
@@ -118,7 +122,6 @@ def add_user_address(request):
     if request.method == 'POST':
         form = UserAddressForm(request.POST)
         if form.is_valid():
-            print("HEY")
             new_address = form.save(commit=False)
             new_address.user = request.user
             new_address.save()

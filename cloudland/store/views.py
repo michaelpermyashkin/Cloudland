@@ -1,10 +1,14 @@
+import random # to shuffle product order for display
+from datetime import datetime
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.shortcuts import render, HttpResponseRedirect, reverse
 from django.urls import reverse
-from datetime import datetime
 from store.models import Product, Seller, Category
-import random # to shuffle product order for display
+from .forms import ContactForm
+from django.core.mail import send_mail, BadHeaderError
+from django.contrib.auth.decorators import login_required
 
 categories = Category.objects.order_by('name') # list of all categories 
 sellers = Seller.objects.order_by('seller_listing_name') # list of all sellers 
@@ -154,8 +158,23 @@ def about(request):
     return render(request, 'store/about.html', {'sellers': sellers})
 
 # Contact page
+@login_required
 def contact(request):
-    return render(request, 'store/contact.html')
+    if request.method == 'GET':
+        form = ContactForm()
+    else:
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            from_email = form.cleaned_data['your_email']
+            subject = "Message from: " + from_email + " re: " + form.cleaned_data['subject']
+            message = form.cleaned_data['message']
+            try:
+                send_mail(subject, message, from_email, [settings.DEFAULT_FROM_EMAIL])
+            except BadHeaderError:
+                return HttpResponse('Invalid header found.')
+            return render(request, 'store/contact-success.html')
+    return render(request, 'store/contact.html', {'form': form})
+
 
 # products = [
 #     {
