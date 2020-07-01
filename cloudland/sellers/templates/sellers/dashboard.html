@@ -18,9 +18,14 @@
         <div class="col-md-12 order-md-1">
             <!-- PRODUCT MANAGER -->
             <h3 class="my-2 text-center">My Product Manager</h3>
-            <h5>
-                <a href="{% url 'store-products-page-filter-seller' seller.slug %}">View all my products in Store</a>
-            </h5>
+            <div class="row justify-content-end mx-1">
+                <h5>
+                    <a class="btn btn-secondary btn-sm mx-1" href="{% url 'store-products-page-filter-seller' seller.slug %}">View all my products in Store</a>
+                </h5>
+                <h5>
+                    <a class="btn btn-success btn-sm" href="{% url 'add-product' %}">Add New Product</a>
+                </h5>
+            </div>
             <table class="table">
                 <thead class="thead thead-dark">
                     <tr>
@@ -41,7 +46,7 @@
                             </div>
                         </td>
                         <td>
-                            <a href="{% url 'store-view-item' product.product_id %}">
+                            <a href="{% url 'edit-product' product.product_id %}">
                                 <b class="product-name">{{ product.product_name }}</b>
                             </a>
                         </td>
@@ -51,15 +56,39 @@
                             <div class="text-left pl-4">
                                 {{ product.quantity }}
                             </div>
-                            <!-- <input class="form-control text-center product-quantity" type="text" value="{{ item.quantity }}" /> -->
                         </td>
                         <td>
                             <a id="actions" href="{% url 'edit-product' product.product_id %}">Edit</a>
                             <br>
                             <a id="actions" target="_blank" href="{% url 'store-view-item' product.product_id %}">View in Store</a>
-                            <!-- <input class="form-control text-center product-quantity" type="text" value="{{ item.quantity }}" /> -->
+                            <br>
+                            <a href="" id="actions" class="remove-product text-danger" data-toggle="modal" data-target="#exampleModal">
+                                Delete <i class="fas fa-trash-alt"></i>
+                            </a>
                         </td>
                     </tr>
+                    <!-- modals to confirm deleting -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h3 class="modal-title text-uppercase text-danger" id="exampleModalLabel">Confirm deleting this item</h3>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true" style="font-size: 2rem;">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+                                    <h5>
+                                        Are you sure you want to delete {{ product.product_name }}? This cannot be undone.
+                                    </h5>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                    <a href="{% url 'delete-product' product.product_id %}" class="btn btn-danger">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     {% endfor %}
                 </tbody>
             </table>
