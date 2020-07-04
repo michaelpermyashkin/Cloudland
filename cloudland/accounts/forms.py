@@ -2,8 +2,9 @@ from django import forms
 from django.contrib.auth import authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
-
+from django.contrib.auth import password_validation
 from .models import UserAddress, UserBillingAddress
+from django.core.exceptions import ValidationError
 
 
 class UserAddressForm(forms.ModelForm):
@@ -183,3 +184,63 @@ class UsersLoginForm(forms.Form):
             pass
         else:
             return password
+
+class UserPasswordResetForm(forms.Form):
+    MIN_LENGTH = 8
+    username = forms.CharField()
+    email = forms.EmailField()
+    password = forms.CharField(widget=forms.PasswordInput)
+    confirm_password = forms.CharField(widget=forms.PasswordInput)
+
+    class Meta:
+        model = User
+        fields = ['username', 'password', 'confirm_password']
+
+    def __init__(self, *args, **kwargs):
+        super(UserPasswordResetForm, self).__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs.update({
+            'class': 'form-control',
+            'name': 'username',
+            'placeholder': 'Username',
+            'type': 'text'})
+        self.fields['email'].widget.attrs.update({
+            'class': 'form-control',
+            'name': 'email',
+            'placeholder': 'email@example.com',
+            'type': 'email'})
+        self.fields['password'].widget.attrs.update({
+            'class': 'form-control',
+            'name': 'password',
+            'placeholder': 'New password',
+            'type': 'password'})
+        self.fields['confirm_password'].widget.attrs.update({
+            'class': 'form-control',
+            'name': 'confirm_password',
+            'placeholder': 'Confirm new password',
+            'type': 'password'})
+
+    def clean(self):
+        cleaned_data = super(UserPasswordResetForm, self).clean()
+        username = self.cleaned_data.get('username')
+        email = self.cleaned_data.get('email')
+        # Check if a user has that email and password
+        try:
+            user = User.objects.get(username=username, email=email)
+        except User.DoesNotExist:
+            self.add_error('username', "This user does not exist")
+
+        password = cleaned_data.get("password")
+        confirm_password = cleaned_data.get("confirm_password")
+        # Run Djangos built in password validators
+        try:
+            password_validation.validate_password(password)
+        except ValidationError as e:
+            self.add_error('password', e)
+
+        # Check if both passwords match
+        if password != confirm_password:
+            self.add_error('confirm_password', "Password does not match")
+
+        return cleaned_data
+
+

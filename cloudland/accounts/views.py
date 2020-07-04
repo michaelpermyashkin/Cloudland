@@ -4,10 +4,11 @@ from django.contrib import messages
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import authenticate, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.urls import reverse
 from carts.models import Cart
 import store.urls 
-from .forms import RegisterForm, UsersLoginForm, UserAddressForm, UserBillingAddressForm
+from .forms import RegisterForm, UsersLoginForm, UserAddressForm, UserBillingAddressForm, UserPasswordResetForm
 from .models import EmailConfirmed, UserDefaultAddresses
 
 from django.conf import settings
@@ -76,6 +77,25 @@ def login_request(request):
     else:
         form = UsersLoginForm()
     return render(request, 'accounts/login.html', {'form': form})
+
+# Login
+def password_reset(request):
+    # Authenticate user login attempt
+    if request.method == 'POST':
+        form = UserPasswordResetForm(request.POST or None)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            email = form.cleaned_data.get('email')
+            password = form.cleaned_data.get('password')
+            user = User.objects.get(username=username, email=email)
+            print(user)
+            user.set_password(password)
+            user.save()
+            return redirect(reverse('accounts-login'))
+    # else render login page
+    else:
+        form = UserPasswordResetForm()
+    return render(request, 'accounts/reset-password.html', {'form': form})
 
 def logout_request(request):
     logout(request)
