@@ -209,19 +209,19 @@
                         <img class="card-img-top rounded-0 img-responsive" src="{{ product.product_image.url }}" id="card-image" alt="Product Image">
                         <!--  -->
                         {% endif %}
-                    </div>
-                    <div class="img-overlay text-right my-auto">
-                        <div class="btn mt-1" id="btn-view-item" data-original-title="Quick View" rel="tooltip">View Item</div>
-                        <!-- Form to add product to cart -->
-                        {% if product.quantity != 0 %}
-                        <form method="post" action="{% url 'add_to_cart' %}">
-                            {% csrf_token %}
-                            <input type="hidden" id="selected_quantity" name="selected_quantity" value=1>
-                            <button type="submit" class="btn border-0 rounded-0 mt-1" id="btn-add-to-cart" name="get-prod-info{{product.product_id}}" id="hidden-button">
-                                Add to Cart
-                            </button>
-                        </form>
-                        {% endif %}
+                        <div class="img-overlay text-right my-auto">
+                            <div class="btn mt-3" id="btn-view-item" data-original-title="Quick View" rel="tooltip">View Item</div>
+                            <!-- Form to add product to cart -->
+                            {% if product.quantity != 0 %}
+                            <form method="post" action="{% url 'add_to_cart' %}">
+                                {% csrf_token %}
+                                <input type="hidden" id="selected_quantity" name="selected_quantity" value="1">
+                                <button type="submit" class="btn border-0 rounded-0 mt-1" id="btn-add-to-cart" name="get-prod-info{{product.product_id}}" id="hidden-button">
+                                    Add to Cart
+                                </button>
+                            </form>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
             </a>
