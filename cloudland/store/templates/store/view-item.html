@@ -10,31 +10,72 @@
 <!-- fills content block in base template -->
 {% block content %}
 <div class="container" style="min-height: 100vh;">
-    {% for p in product %}
-    <h1 class="my-2">{{ p.product_name }} <small class="text-muted" style="font-size: 0.5em;"> by {{ p.seller.seller_listing_name }} </small></h1>
+    <h1 class="my-2">{{ product.product_name }} <small class="text-muted" style="font-size: 0.5em;"> by {{ product.seller.seller_listing_name }} </small></h1>
     <div class="row">
         <div class="col-md-7" id="image-container">
-            <img src="{{ p.product_image.url }}" alt="Product image">
+            <div class="img-container">
+                <img src="{{ product.product_image.url }}" alt="Product image">
+                <div class="overlay" id="enlarge">
+                    <span><h3>Click to enlarge</h3></span>
+                </div>
+            </div>
+            <!-- Creates the bootstrap modal where the image will appear -->
+            <div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="myModalLabel">{{ product.product_name }} Preview</h4>
+                            <button type="button" class="close" data-dismiss="modal"><i class="fas fa-times" aria-hidden="true"></i><span class="sr-only">Close</span></button>
+                        </div>
+                        <div class="modal-body">
+                            <img src="{{ product.product_image.url }}" id="imagepreview">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script>
+                $("#enlarge").on("click", function() {
+                    $('#imagemodal').modal('show'); // imagemodal is the id attribute assigned to the bootstrap modal, then i use the show function
+                });
+            </script>
         </div>
         <div class="col-md-5">
-            <h1><b>${{ p.price }}</b><small class="text-muted" style="font-size: 0.5em;"> + shipping</small></h1>
-            <h3 class="my-3">Description</h3>
-            <p>{{ p.description_short }}</p>
+            <h1><b>${{ product.price }}</b><small class="text-muted" style="font-size: 0.5em;"> + shipping</small></h1>
+            <h3 class="mt-3">Description</h3>
+            <p class="mt-1 mb-5">{{ product.description_short }}</p>
+
+
+            <!-- If qauntity == 5 change from plural -->
+            {% if product.quantity > 5%}
+            <h4 class="text-success">{{ product.quantity }} Items Remaining</h4>
+            {% else %}
+            <!-- If qauntity == 1 change from plural -->
+            {% if product.quantity == 1 %}
+            <h4 class="text-danger">{{ product.quantity }} Item Remaining</h4>
+            {% else %}
+            <!-- If Quantity == 0 -->
+            {% if product.quantity == 0 %}
+            <h4 class="text-danger">Out of Stock</h4>
+            {% else %}
+            <h4 class="text-danger">{{ product.quantity }} Items Remaining</h4>
+            <!-- ./end nested if -->
+            {% endif %}
+            <!-- ./end nested if -->
+            {% endif %}
+            <!-- ./end if -->
+            {% endif %}
+
+            <!-- If in stock show cart and quantity selection -->
+            {% if product.quantity != 0 %}
             <div class="row">
                 <div class="col-4">
                     <dl class="param param-inline">
                         <dt>Quantity: </dt>
                         <dd>
                             <select class="form-control form-control-sm rounded-0" onChange="getSelectedQuantity(this);">
-                                <option value='1'> 1 </option>
-                                <option value='2'> 2 </option>
-                                <option value='3'> 3 </option>
-                                <option value='4'> 4 </option>
-                                <option value='5'> 5 </option>
-                                <option value='6'> 6 </option>
-                                <option value='7'> 7 </option>
-                                <option value='8'> 8 </option>
-                                <option value='9'> 9 </option>
+                            {% for i in qaunt_available %} 
+                            <option value='{{ i }}'> {{ i }} </option>
+                            {% endfor %}
                             </select>
                         </dd>
                     </dl>
@@ -45,19 +86,36 @@
                         <form method="post" action="{% url 'add_to_cart' %}">
                             {% csrf_token %}
                             <input type="hidden" id="selected_quantity" name="selected_quantity">
-                            <button type="submit" class="btn border-0 rounded-0 mt-4" id="btn-add-to-cart" name="get-prod-info{{p.product_id}}" id="hidden-button">
+                            <button type="submit" class="btn border-0 rounded-0 mt-4" id="btn-add-to-cart" name="get-prod-info{{product.product_id}}" id="hidden-button">
                                 ADD TO CART
                             </button>
                         </form>
                     </div>
                 </div>
             </div>
+            {% else %}
+            <div class="row">
+                <div class="col-4">
+                    <dl class="param param-inline">
+                        <dt>Quantity: </dt>
+                        <dd>
+                            <select class="form-control form-control-sm rounded-0">
+                                <option value='0'> 0 </option>
+                            </select>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="col-8">
+                    <button type="submit" class="btn border-0 rounded-0 mt-4 disabled" id="btn-add-to-cart" id="hidden-button">ADD TO CART</button>
+                </div>
+            </div>
+            {% endif %}
         </div>
     </div>
 
     <div class="col-md-12 ml-0 pl-0">
         <h1>Details</h1>
-        <p>{{ p.description_full }}</p>
+        <p>{{ product.description_full }}</p>
         <br>
         <h1>Shipping</h1>
         <div class="col-md-10 col-sm-12 ml-0 pl-0">
@@ -73,7 +131,7 @@
                     <tr>
                         <td scope="row">Standard Ground</td>
                         <td>5-10 business days</td>
-                        <td>${{ p.shipping_cost }}</td>
+                        <td>${{ product.shipping_cost }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -84,7 +142,6 @@
     </div>
     <br>
 </div>
-{% endfor %}
 </div>
 <script>
     function getSelectedQuantity(sel) {

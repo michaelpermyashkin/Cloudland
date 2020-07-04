@@ -52,6 +52,7 @@ def getActiveList():
 
 # Gets all products that match the current filters settings
 def getProductsWithActiveFilters():
+    # products = Product.objects.filter(quantity__gte=1).order_by('?')
     products = Product.objects.order_by('?')
     getActiveList()
     if active_filters['min_price'] != '' and active_filters['max_price'] != '':
@@ -93,7 +94,6 @@ def products_by_seller(request, slug):
 
 # Filter products by selected category
 def products_by_category(request, slug):
-    print(slug)
     active_filters['category'] = slug
     products = getProductsWithActiveFilters()
     args = {
@@ -146,9 +146,11 @@ def products_by_price_min(request, min_price):
 
 # View when an item is selected to display item detail
 def view_item(request, id):
-    product = Product.objects.filter(product_id=id)
+    product = Product.objects.get(product_id=id)
+    qaunt_available = range(1, product.quantity+1)
     args = {
         'product': product,
+        'qaunt_available': qaunt_available,
     }
     return render(request, 'store/view-item.html', args)
 

@@ -114,6 +114,13 @@ def checkout(request):
             # print(charge)
 
     if new_order.status == 'Complete':
+        cartID = request.session['cart_id'] 
+        cart = Cart.objects.get(id=cartID)
+        for item in cart.cartitem_set.all():
+            print("Before: "+ str(item.product.quantity))
+            item.product.quantity -= 1
+            item.product.save()
+            print("After: "+ str(item.product.quantity))
         del request.session['cart_id']
         del request.session['cart_items_total']
         return HttpResponseRedirect(reverse('accounts-dashboard'))
