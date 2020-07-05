@@ -13,6 +13,7 @@ class Seller(models.Model):
     email = models.EmailField(max_length=50)
     date_added = models.DateField(auto_now_add=True)
     slug = models.SlugField(null=True, unique=True)
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.seller_listing_name

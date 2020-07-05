@@ -11,7 +11,7 @@ from django.core.mail import send_mail, BadHeaderError
 from django.contrib.auth.decorators import login_required
 
 categories = Category.objects.order_by('name') # list of all categories 
-sellers = Seller.objects.order_by('seller_listing_name') # list of all sellers 
+sellers = Seller.objects.all().filter(is_active=True).order_by('seller_listing_name') # list of all sellers 
 
 # list of all currently active filters
 active_filters = {
@@ -53,7 +53,7 @@ def getActiveList():
 # Gets all products that match the current filters settings
 def getProductsWithActiveFilters():
     # products = Product.objects.filter(quantity__gte=1).order_by('?')
-    products = Product.objects.order_by('?')
+    products = Product.objects.filter(seller__is_active=True).order_by('?')
     getActiveList()
     if active_filters['min_price'] != '' and active_filters['max_price'] != '':
         products = products.filter(price__gte=active_filters['min_price'], price__lte=active_filters['max_price'])

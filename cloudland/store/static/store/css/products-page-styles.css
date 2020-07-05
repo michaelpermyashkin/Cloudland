@@ -114,7 +114,7 @@
     /* button goes over image */
     position: absolute;
     /* bottom: 0; */
-    bottom: 10px;
+    bottom: 0;
     left: 0;
     right: 0;
     text-align: center;
@@ -127,10 +127,9 @@
     content: ' ';
     display: block;
     /* adjust 'height' to position overlay content vertically */
-    height: 40%;
+    /* height: 40%; */
 }
 
-#btn-view-item,
 #btn-add-to-cart {
     /* dont display button while not hovering */
     display: none;
@@ -141,6 +140,10 @@
     background-color: rgb(0, 0, 0) !important;
     color: rgb(201, 201, 201) !important;
     font-size: 12pt;
+}
+
+.icon-bag2:before {
+    content: "\e74c";
 }
 
 .img-wrapper:hover #btn-view-item {
@@ -161,8 +164,7 @@
     filter: 0;
 }
 
-#btn-add-to-cart:hover,
-#btn-view-item:hover {
+#btn-add-to-cart:hover {
     transition: 300ms ease-in-out;
     color: rgb(255, 255, 255) !important;
     padding-right: 3rem;
