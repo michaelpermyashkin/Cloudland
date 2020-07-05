@@ -201,15 +201,13 @@
             <a href="{% url 'store-view-item' product.product_id %}" class="card rounded-0 border-0 product-card mt-4">
                 <div class="img-wrapper">
                     <div class="image">
-                        <!-- Load first 10 images right away -->
+                        <img class="card-img-top rounded-0 img-responsive" src="{{ product.product_image.url }}" id="card-image" alt="Product Image">
+                        <!-- Load first 10 images right away
                         {% if forloop.counter > 10 %}
-                        <!-- The images after the first 10 are loaded when the page is scrolled -->
                         <img class="card-img-top rounded-0 img-responsive lazy" data-src="{{ product.product_image.url }}" id="card-image" alt="Product Image">
-                        <!--  -->
                         {% else %}
                         <img class="card-img-top rounded-0 img-responsive" src="{{ product.product_image.url }}" id="card-image" alt="Product Image">
-                        <!--  -->
-                        {% endif %}
+                        {% endif %} -->
                         <div class="img-overlay text-right">
                             <!-- Form to add product to cart -->
                             {% if product.quantity != 0 %}
