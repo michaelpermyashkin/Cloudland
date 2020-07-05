@@ -45,6 +45,7 @@ def add_product(request):
             return redirect(reverse('seller-dashboard'))
         args = {
             'form': form,
+            'seller_listing_name': seller.seller_listing_name,
         }
         return render(request, 'sellers/product-add.html', args)
 

@@ -51,19 +51,11 @@
                             <div class="text-left pl-4">
                                 {{ item.quantity }}
                             </div>
-                            <!-- <input class="form-control text-center product-quantity" type="text" value="{{ item.quantity }}" /> -->
                         </td>
                         <td class="product-line-price">${{ item.line_total }}</td>
-
                         <td>
                             <div class="product-removal">
-                                <!-- Form to get the itemID into view -->
-                                <form method="post" action="{% url 'remove_from_cart' %}">
-                                    {% csrf_token %}
-                                    <button type="submit" class="remove-product" name="get-prod-info{{item.product.product_id}} ">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
-                                </form>
+                                <a href="{% url 'remove_from_cart' item.product.product_id %}"><i class="fas fa-trash-alt"></i></a>
                             </div>
                         </td>
                     </tr>

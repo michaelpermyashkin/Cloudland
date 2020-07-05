@@ -12,28 +12,27 @@
 <!-- fills content block in base template -->
 {% block content %}
 <div class="container">
-    <h2>Editing {{ product.product_name}}</h2>
+    <h2>Add a New Product</h2>
     <hr>
     <div class="row">
-        <div class="col-md-6">
-            <h3 class="text-muted text-center">Preview</h3>
+        <div class="col-md-6" style="font-size: 1.2rem;">
             <a class="card rounded-0 border-0 product-card">
                 <div class="img-wrapper">
                     <div class="image">
                         <img class="card-img-top rounded-0 img-responsive" src="{{ product.product_image.url }}" id="card-image" alt="Product Image">
                     </div>
                 </div>
-                <div class="card-body text-center">
-                    <h4 class="card-title">
-                        <a id="product_name"></a>
-                    </h4>
-                    <p id="seller-name"></p>
-                    <p class="card-text" id="description_short" style="margin-top: -1rem;"></p>
-                    <h5 id="price"></h5>
+                <div class="card-body text-left">
+                    <h3 class="card-title text-center">
+                        <a id="product_name">{{ product.product_name }}</a>
+                    </h3>
+                    <p class="text-center" id="seller-name">// {{product.seller.seller_listing_name }} //</p>
+                    <p class="card-text" id="description_short" style="margin-top: -1rem;">{{ product.description_short }}</p>
+                    <h5 id="price">${{ product.price | floatformat:2 }}</h5>
                 </div>
             </a>
-            <h2>Description</h2>
-            <p id="description_full"></p>
+            <h2 class="mt-5">Description</h2>
+            <p id="description_full">{{ product.description_full }}</p>
             <h2>Shipping</h2>
             <table class="table table-borderless" style="font-size: 1rem;">
                 <thead class="thead-light">
@@ -52,7 +51,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-8 m-auto">
             <form method="POST" enctype='multipart/form-data'>
                 {% csrf_token %}
                 <div class="form-group" onkeyup="func('product_name')">

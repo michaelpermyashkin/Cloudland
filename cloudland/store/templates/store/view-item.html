@@ -83,10 +83,10 @@
                 <div class="col-8">
                     <div>
                         <!-- Form to add product to cart -->
-                        <form method="post" action="{% url 'add_to_cart' %}">
+                        <form method="post" action="{% url 'add_to_cart' product.product_id %}">
                             {% csrf_token %}
-                            <input type="hidden" id="selected_quantity" name="selected_quantity">
-                            <button type="submit" class="btn border-0 rounded-0 mt-4" id="btn-add-to-cart" name="get-prod-info{{product.product_id}}" id="hidden-button">
+                            <input type="hidden" id="selected_quantity" name="selected_quantity" value="1">
+                            <button type="submit" class="btn border-0 rounded-0 mt-4" id="btn-add-to-cart">
                                 ADD TO CART
                             </button>
                         </form>

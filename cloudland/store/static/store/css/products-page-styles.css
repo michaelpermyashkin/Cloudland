@@ -85,13 +85,29 @@
     color: #000 !important;
 }
 
-.img-wrapper {
+
+/* .img-wrapper {
     position: relative;
 }
 
 .img-wrapper img {
     transition: all .5s ease-in-out;
     -webkit-transition: .5s ease-in-out;
+} */
+
+.image {
+    padding: 0;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden
+}
+
+#card-image {
+    width: 300px;
+    height: 250px;
+    object-fit: cover
 }
 
 .img-overlay {

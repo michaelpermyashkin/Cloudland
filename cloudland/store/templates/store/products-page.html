@@ -196,8 +196,9 @@
     {% endif %}
     <div class="row" id="main">
         {% for product in products %}
-        <div class="col-lg-3 col-md-4 col-sm-6 col-6 my-auto mt-5">
-            <a href="{% url 'store-view-item' product.product_id %}" class="card rounded-0 product-card">
+        <!-- <div class="col-lg-3 col-md-4 col-sm-6 col-6 my-auto mt-5"> -->
+        <div class="col-lg-3 col-md-4 col-sm-6 col-6 mt-auto mt-5">
+            <a href="{% url 'store-view-item' product.product_id %}" class="card rounded-0 border-0 product-card my-4">
                 <div class="img-wrapper">
                     <div class="image">
                         <!-- Load first 10 images right away -->
@@ -209,35 +210,37 @@
                         <img class="card-img-top rounded-0 img-responsive" src="{{ product.product_image.url }}" id="card-image" alt="Product Image">
                         <!--  -->
                         {% endif %}
-                        <div class="img-overlay text-right my-auto">
+                        <div class="img-overlay text-right">
                             <div class="btn mt-3" id="btn-view-item" data-original-title="Quick View" rel="tooltip">View Item</div>
                             <!-- Form to add product to cart -->
                             {% if product.quantity != 0 %}
-                            <form method="post" action="{% url 'add_to_cart' %}">
+                            <form method="post" action="{% url 'add_to_cart' product.product_id %}">
                                 {% csrf_token %}
                                 <input type="hidden" id="selected_quantity" name="selected_quantity" value="1">
-                                <button type="submit" class="btn border-0 rounded-0 mt-1" id="btn-add-to-cart" name="get-prod-info{{product.product_id}}" id="hidden-button">
-                                    Add to Cart
+                                <button type="submit" class="btn border-0 rounded-0 mt-1" id="btn-add-to-cart">
+                                    ADD TO CART
                                 </button>
                             </form>
+                            <!-- ./ form -->
                             {% endif %}
                         </div>
                     </div>
                 </div>
             </a>
-            <div class="card-body text-left">
+            <div class="card-body text-left" style="bottom: 0;">
                 <a class="text-decoration-none" style="text-decoration: none; color: #000;" href="{% url 'store-view-item' product.product_id %}">
-                    <h4 class="card-title text-center">
+                    <h4 class="card-title">
                         {{ product.product_name }}
                     </h4>
-                    <p class="text-muted text-center" id="seller-name">// {{product.seller.seller_listing_name }} //</p>
+                    <h5 class="text-muted" id="seller-name">{{product.seller.seller_listing_name }}</h5>
                     {% if product.quantity == 0 %}
-                    <h5 class="text-danger">
-                        Out of Stock
-                    </h5>
-                    {% endif %}
-                    <p class="card-text" id="product-description">{{ product.description_short }}</p>
+                    <div class="row justify-content-between mx-1">
+                        <h5 id="product-price">${{ product.price | floatformat:2 }}</h5>
+                        <h5 class="text-danger">Out of Stock</h5>
+                    </div>
+                    {% else %}
                     <h5 id="product-price">${{ product.price | floatformat:2 }}</h5>
+                    {% endif %}
                 </a>
             </div>
         </div>
