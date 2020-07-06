@@ -30,6 +30,8 @@ INSTALLED_APPS = [
 
     'crispy_forms',
     'localflavor',
+    'storages', # S3 
+    'corsheaders',
 
     'sellers',
     'store',
@@ -38,7 +40,10 @@ INSTALLED_APPS = [
     'orders',
 ]
 
+CORS_ORIGIN_WHITELIST = ['https://cloudland-static.s3.*']
+
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -114,19 +119,49 @@ USE_L10N = True
 USE_TZ = True
 
 
-STATIC_URL = '/static/'
+# STATIC_URL = '/static/' 
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
+######### S3 Configurations ##########
+AWS_LOCATION = config['AWS_LOCATION']
+AWS_ACCESS_KEY_ID = config['AWS_ACCESS_KEY_ID']
+AWS_SECRET_ACCESS_KEY = config['AWS_SECRET_ACCESS_KEY']
+AWS_STORAGE_BUCKET_NAME = config['AWS_STORAGE_BUCKET_NAME']
+AWS_FILE_OVERWRITE = False
+AWS_DEFAULT_NONE = None
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'accounts/static'),
+#     os.path.join(BASE_DIR, 'carts/static'),
+#     os.path.join(BASE_DIR, 'store/static'),
+#     os.path.join(BASE_DIR, 'sellers/static'),
+#     os.path.join(BASE_DIR, 'orders/static'),
+# ] 
+STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+
+######### Media Configurations ##########
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'store/media')
 
+
+######### Crispy Forms Configurations ##########
 CRISPY_TEMPLATE_PACK='bootstrap4'
 
+
+######### Stripe Configurations ##########
 STRIPE_SECRET_KEY = config['STRIPE_SECRET_KEY']
 STRIPE_PUBLISHABLE_KEY = config['STRIPE_PUBLISHABLE_KEY']
 DEFAULT_TAX_RATE = 0.08 # 8% tax
 
-DEFAULT_FROM_EMAIL = 'Cloudland Shop<cloudlandonlineshop@gmail.com>'
 
+######### Email Configurations ##########
+DEFAULT_FROM_EMAIL = 'Cloudland Shop<cloudlandonlineshop@gmail.com>'
 EMAIL_BACKEND = config['EMAIL_BACKEND']
 EMAIL_HOST = config['EMAIL_HOST']
 EMAIL_HOST_USER = config['EMAIL_HOST_USER']
