@@ -154,9 +154,8 @@ def view_item(request, id):
     }
     return render(request, 'store/view-item.html', args)
 
-# Contact page
+# About page
 def about(request):
-    sellers = Seller.objects.all() 
     return render(request, 'store/about.html', {'sellers': sellers})
 
 # Contact page

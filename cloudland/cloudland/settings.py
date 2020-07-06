@@ -129,25 +129,23 @@ AWS_SECRET_ACCESS_KEY = config['AWS_SECRET_ACCESS_KEY']
 AWS_STORAGE_BUCKET_NAME = config['AWS_STORAGE_BUCKET_NAME']
 AWS_FILE_OVERWRITE = False
 AWS_DEFAULT_NONE = None
-AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
 }
 
-# STATICFILES_DIRS = [
-#     os.path.join(BASE_DIR, 'accounts/static'),
-#     os.path.join(BASE_DIR, 'carts/static'),
-#     os.path.join(BASE_DIR, 'store/static'),
-#     os.path.join(BASE_DIR, 'sellers/static'),
-#     os.path.join(BASE_DIR, 'orders/static'),
-# ] 
+# AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+AWS_S3_CUSTOM_DOMAIN = config['AWS_CLOUDFRONT_CUSTOM_DOMAIN']
+
 STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+
+
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 
 ######### Media Configurations ##########
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'store/media')
 
 
 ######### Crispy Forms Configurations ##########

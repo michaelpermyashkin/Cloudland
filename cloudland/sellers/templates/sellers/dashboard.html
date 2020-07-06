@@ -62,13 +62,13 @@
                             <br>
                             <a id="actions" target="_blank" href="{% url 'store-view-item' product.product_id %}">View in Store</a>
                             <br>
-                            <a href="" id="actions" class="remove-product text-danger" data-toggle="modal" data-target="#exampleModal">
+                            <a href="" id="actions" class="remove-product text-danger" data-toggle="modal" data-target="#confirm-{{ product.product_id }}">
                                 Delete <i class="fas fa-trash-alt"></i>
                             </a>
                         </td>
                     </tr>
                     <!-- modals to confirm deleting -->
-                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="confirm-{{ product.product_id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">

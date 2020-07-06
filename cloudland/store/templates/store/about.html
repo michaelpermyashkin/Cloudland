@@ -16,9 +16,9 @@
 </header>
 <div class="container" style="min-height: 100vh;">
     <hr>
-    <div class="card-columns justify-content-center">
+    <div class="card-columns">
         {% for seller in sellers %}
-        <div class="mb-5">
+        <div class="mb-2">
             <div class="card border-0">
                 <img class="card-img-top" src="{{ seller.profile_picture.url }}" alt="{{ seller.seller_listing_name }} Profile Picture">
                 <div class="card-body text-left">
@@ -32,7 +32,7 @@
             </div>
         </div>
         {% endfor %}
-        <div class="mb-4">
+        <div class="mb-2">
             <div class="card border-0">
                 <img class="card-img-top" src="{% static 'store/media/brand/michaelpermyashkin_profile.jpg' %}" alt="Michael Permyashkin Profile Picture">
                 <div class="card-body text-center">
