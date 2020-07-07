@@ -55,20 +55,40 @@
             <form method="POST" enctype='multipart/form-data'>
                 {% csrf_token %}
                 <div class="form-group" onkeyup="func('product_name')">
-                    <!-- Full name -->
+                    <!-- Product name -->
                     {{ form.product_name|as_crispy_field }}
                 </div>
                 <div class="form-group" onkeyup="func('category')">
-                    <!-- Listing name -->
+                    <!-- Category -->
                     {{ form.category|as_crispy_field }}
                 </div>
-                <div class="form-group" onkeyup="func('price')">
-                    <!-- Profile Picture -->
-                    {{ form.price|as_crispy_field }}
-                </div>
-                <div class="form-group" onkeyup="func('shipping_cost')">
-                    <!-- Bio Description -->
-                    {{ form.shipping_cost|as_crispy_field }}
+                <div class="form-row justify-content-center">
+                    <div class="form-group col-3" onkeyup="func('price')">
+                        <!-- Price -->
+                        <label for="id_price" class="requiredField">
+                            Price<span class="asteriskField">*</span>
+                        </label>
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text bg-success text-white">$</div>
+                            </div>
+                            {{ form.price }}
+                        </div>
+                    </div>
+                    <div class="form-group col-3">
+                        <div class="form-group" onkeyup="func('shipping_cost')">
+                            <!-- Shipping -->
+                            <label for="id_price" class="requiredField">
+                                Price<span class="asteriskField">*</span>
+                            </label>
+                            <div class="input-group mb-2">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text bg-success text-white">$</div>
+                                </div>
+                                {{ form.shipping_cost }}
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="form-group" onkeyup="func('description_short')">
                     <!-- Email -->

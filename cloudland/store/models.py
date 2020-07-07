@@ -37,12 +37,13 @@ class Product(models.Model):
     seller = models.ForeignKey(Seller, on_delete=models.CASCADE, null=True, blank=True)
     category = models.ManyToManyField(Category, help_text="Hold down “Control”, or “Command” on a Mac, to select more than one.")
     price = models.DecimalField(max_digits=6, decimal_places=2)
-    shipping_cost = models.DecimalField(max_digits=6, decimal_places=2, default=0.00, help_text="Shipping cost for this item")
-    description_short = models.TextField(max_length=100, default="", help_text="Limit 100 characters: Product description on item card")
+    shipping_cost = models.DecimalField(max_digits=6, decimal_places=2)
+    description_short = models.TextField(max_length=100, default="", help_text="Limit 100 characters: Brief discription of the item shown on the items detail view page")
     description_full = models.TextField(max_length=1000, default="", help_text="Your full item description when item details are viewed")
     product_image = models.ImageField(upload_to='product_images', help_text="There are no image size restrictions, but sqaure images will always render without any cropping.")
     date_listed = models.DateTimeField(auto_now_add=True)
     quantity = models.PositiveIntegerField(help_text="Quantity available - Default 1", default=1)
+    total_purchases = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.product_name

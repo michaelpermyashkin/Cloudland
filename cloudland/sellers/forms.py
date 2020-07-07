@@ -1,24 +1,52 @@
 from django import forms
 from store.models import Product, Seller
 
+from crispy_forms.bootstrap import AppendedText, PrependedText
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, ButtonHolder, Submit
+from crispy_forms.layout import Field
+
+
 class ProductEditForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = ['product_name', 'category', 'price', 'shipping_cost', 'description_short', 'description_full', 'product_image', 'quantity']
 
-        # def clean_image(self):
-        #     image = self.cleaned_data.get('image', False)
-        #     if image:
-        #         if image._height > 1920 or image._width > 1080:
-        #             self.add_error('product_image', "Image must have a 2")
-        #         return image
-        #     else:
-        #         raise ValidationError("No image found")
+    def __init__(self, *args, **kwargs):
+        super(ProductEditForm, self).__init__(*args, **kwargs)
+        self.fields['description_short'].widget.attrs.update({
+            'rows':'2'})
+        self.fields['price'].widget.attrs.update({
+            'label': 'Price',
+            'class': 'form-control',
+            'placeholder': '0.00',
+            'type': 'text'})
+        self.fields['shipping_cost'].widget.attrs.update({
+            'label': 'Price',
+            'placeholder': '0.00',
+            'class': 'form-control',
+            'type': 'text'})
 
 class ProductAddForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = ['product_name', 'category', 'price', 'shipping_cost', 'description_short', 'description_full', 'product_image', 'quantity', 'seller']
+
+    def __init__(self, *args, **kwargs):
+        super(ProductAddForm, self).__init__(*args, **kwargs)
+        self.fields['description_short'].widget.attrs.update({
+            'rows':'2'})
+        self.fields['price'].widget.attrs.update({
+            'label': 'Price',
+            'placeholder': '0.00',
+            'class': 'form-control',
+            'type': 'text'})
+        self.fields['shipping_cost'].widget.attrs.update({
+            'label': 'Price',
+            'placeholder': '0.00',
+            'class': 'form-control',
+            'type': 'text'})
+
 
 class SellerBioEditForm(forms.ModelForm):
     class Meta:

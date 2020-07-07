@@ -38,7 +38,7 @@
     });
 </script>
 
-<div class="container">
+<div class="container-fluid">
     <div class="my-4 text-center">
         <h2 class="text-success">Welcome {{ user.first_name }}!</h2>
     </div>
@@ -69,6 +69,7 @@
                         <th scope="col"><b>Price</b></th>
                         <th scope="col"><b>Shipping</b></th>
                         <th scope="col"><b>Quantity</b></th>
+                        <th scope="col"><b>Total Orders</b></th>
                         <th scope="col"><b>Actions</b></th>
                     </tr>
                 </thead>
@@ -92,13 +93,18 @@
                                 {{ product.quantity }}
                             </div>
                         </td>
+                        <td class="">
+                            <div class="text-left pl-4">
+                                {{ product.total_purchases }}
+                            </div>
+                        </td>
                         <td>
                             <a id="actions" href="{% url 'edit-product' product.product_id %}">Edit</a>
                             <br>
-                            <a id="actions" target="_blank" href="{% url 'store-view-item' product.product_id %}">View in Store</a>
+                            <a id="actions" target="_blank" href="{% url 'store-view-item' product.product_id %}">View</a>
                             <br>
                             <a href="" id="actions" class="remove-product text-danger" data-toggle="modal" data-target="#confirm-{{ product.product_id }}">
-                                Delete <i class="fas fa-trash-alt"></i>
+                                <i class="fas fa-trash-alt"></i>
                             </a>
                         </td>
                     </tr>
@@ -131,7 +137,7 @@
             <hr class="my-5">
 
             <!-- SELLER BIO -->
-            <div class="col-lg-6 col-md-8 m-auto">
+            <div class="col-lg-5 col-md-6 m-auto">
                 <h3 class="my-2 text-center" id="bio">My Bio</h3>
                 <div class="mb-5">
                     <div class="card border-0">
