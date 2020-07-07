@@ -100,6 +100,6 @@ td a:not(#actions):hover {
     color: rgb(0, 0, 0);
 }
 
-p {
+p:not(footer p) {
     font-size: 1.3rem;
 }

@@ -21,7 +21,7 @@
                             <h4><b>Shop by Category</b></h4>
                             <ul class="list-inline text-left" id="category-menu-items">
                                 <li class="list-inline-item">
-                                    <a id="category_All" href="{% url 'store-products-page-all' %}">All</a>
+                                    <a id="category_All" href="{% url 'store-products-page-filter-category' 'All' %}">All</a>
                                 </li>
                                 {% for category in categories %}
                                 <li class="list-inline-item">
@@ -43,6 +43,9 @@
                         <div class="col-lg-3 col-md-4 float-left">
                             <h4><b>Shop by Seller</b></h4>
                             <ul class="list-group" id="category-menu-items" style="list-style-type: none;">
+                                <li>
+                                    <a id="seller_All" href="{%  url 'store-products-page-filter-seller' 'All' %}">All Sellers</a>
+                                </li>
                                 {% for seller in sellers %}
                                 <li>
                                     <a id="{{ seller.slug}}" href="{% url 'store-products-page-filter-seller' seller.slug %}">{{ seller.seller_listing_name | capfirst}}</a>
@@ -54,20 +57,47 @@
                         <div class="col-lg-3 col-md-4 float-left">
                             <h4><b>Shop by Price</b></h4>
                             <ul class="list-group" id="category-menu-items" style="list-style-type: none;">
-                                <li><a href="{% url 'store-products-page-filter-price' 0 5 %}" id="price_0-5">$0.00 - $5.00</a></li>
-                                <li><a href="{% url 'store-products-page-filter-price' 5 10 %}" id="price_5-10">$5.00 - $10.00</a></li>
-                                <li><a href="{% url 'store-products-page-filter-price' 10 15 %}" id="price_10-15">$10.00 - $15.00</a></li>
-                                <li><a href="{% url 'store-products-page-filter-price' 15  %}" id="price-15">$15.00+</a></li>
+                                <!-- Check if previous GET has order_by to preserve -->
+                                {% if 'order_by' in request.GET %}
+                                <li><a href="{{ request.path }}?order_by={{ request.GET.order_by }}&price=default" id="price_default">Default</a></li>
+                                <li><a href="{{ request.path }}?order_by={{ request.GET.order_by }}&min_price=0&max_price=5" id="price_0-5">$0.00 - $5.00</a></li>
+                                <li><a href="{{ request.path }}?order_by={{ request.GET.order_by }}&min_price=5&max_price=10" id="price_5-10">$5.00 - $10.00</a></li>
+                                <li><a href="{{ request.path }}?order_by={{ request.GET.order_by }}&min_price=10&max_price=15" id="price_10-15">$10.00 - $15.00</a></li>
+                                <li><a href="{{ request.path }}?order_by={{ request.GET.order_by }}&min_price=15" id="price_15">$15.00+</a></li>
+                                {% else %}
+                                <li><a href="{{ request.path }}?price=default" id="price_default">Default</a></li>
+                                <li><a href="{{ request.path }}?min_price=0&max_price=5" id="price_0-5">$0.00 - $5.00</a></li>
+                                <li><a href="{{ request.path }}?min_price=5&max_price=10" id="price_5-10">$5.00 - $10.00</a></li>
+                                <li><a href="{{ request.path }}?min_price=10&max_price=15" id="price_10-15">$10.00 - $15.00</a></li>
+                                <li><a href="{{ request.path }}?min_price=15" id="price_15">$15.00+</a></li>
+                                {% endif %}
                             </ul>
                         </div>
                         <!-- Order by -->
                         <div class="col-lg-3 col-md-4 float-left">
                             <h4><b>Order By</b></h4>
                             <ul class="list-group" id="category-menu-items" style="list-style-type: none;">
-                                <li><a href="{% url 'store-products-order-by' '?' %}" id="?">Default</a></li>
-                                <li><a href="{% url 'store-products-order-by' '-date_listed' %}" id="-date_listed">Latest</a></li>
-                                <li><a href="{% url 'store-products-order-by' 'price' %}" id="price">Price: low to high</a></li>
-                                <li><a href="{% url 'store-products-order-by' '-price' %}" id="-price">Price: high to low</a></li>
+                                <!-- Check if previous GET has min_price -->
+                                {% if 'min_price' in request.GET %}
+                                <!-- Check if there is also a max_price -->
+                                {% if 'max_price' in request.GET %}
+                                <li><a href="{{ request.path }}?min_price={{ request.GET.min_price }}&max_price={{ request.GET.max_price }}&order_by=?" id="?">Default</a></li>
+                                <li><a href="{{ request.path }}?min_price={{ request.GET.min_price }}&max_price={{ request.GET.max_price }}&order_by=-date_listed" id="-date_listed">Latest</a></li>
+                                <li><a href="{{ request.path }}?min_price={{ request.GET.min_price }}&max_price={{ request.GET.max_price }}&order_by=price" id="price">Price: low to high</a></li>
+                                <li><a href="{{ request.path }}?min_price={{ request.GET.min_price }}&max_price={{ request.GET.max_price }}&order_by=-price" id="-price">Price: high to low</a></li>
+                                {% else %}
+                                <li><a href="{{ request.path }}?min_price={{ request.GET.min_price }}&order_by=?" id="?">Default</a></li>
+                                <li><a href="{{ request.path }}?min_price={{ request.GET.min_price }}&order_by=-date_listed" id="-date_listed">Latest</a></li>
+                                <li><a href="{{ request.path }}?min_price={{ request.GET.min_price }}&order_by=price" id="price">Price: low to high</a></li>
+                                <li><a href="{{ request.path }}?min_price={{ request.GET.min_price }}&order_by=-price" id="-price">Price: high to low</a></li>
+                                {% endif %}
+                                <!-- No price GET parameters to perserve -->
+                                {% else %}
+                                <li><a href="{{ request.path }}?order_by=?" id="?">Default</a></li>
+                                <li><a href="{{ request.path }}?order_by=-date_listed" id="-date_listed">Latest</a></li>
+                                <li><a href="{{ request.path }}?order_by=price" id="price">Price: low to high</a></li>
+                                <li><a href="{{ request.path }}?order_by=-price" id="-price">Price: high to low</a></li>
+                                {% endif %}
                             </ul>
                         </div>
                     </div>
@@ -103,9 +133,12 @@
                         </div>
                         <div id="categoriesCollapse" class="collapse mt-0" role="tabpanel" aria-labelledby="categoriesHeading" data-parent="#accordion">
                             <ul class="list-group text-left " id="category-menu-items">
+                                <li>
+                                    <a href="{% url 'store-products-page-filter-category' 'All' %}">All</a>
+                                </li>
                                 {% for category in categories %}
                                 <li>
-                                    <a id="{{category.slug}}" href="{% url 'store-products-page-filter-category' category.slug %}">{{ category.name }}</a>
+                                    <a href="{% url 'store-products-page-filter-category' category.slug %}">{{ category.name }}</a>
                                 </li>
                                 {% endfor %}
                             </ul>
@@ -127,9 +160,12 @@
                         </div>
                         <div id="sellersCollapse" class="collapse" role="tabpanel" aria-labelledby="sellerHeading" data-parent="#accordion">
                             <ul class="list-group text-left" id="category-menu-items">
+                                <li>
+                                    <a id="seller_All" href="{%  url 'store-products-page-filter-seller' 'All' %}">All Sellers</a>
+                                </li>
                                 {% for seller in sellers %}
                                 <li>
-                                    <a id="{{ seller.slug }}" href="{% url 'store-products-page-filter-seller' seller.slug %}">{{ seller.seller_listing_name | capfirst}}</a>
+                                    <a id="{{ seller.slug}}" href="{% url 'store-products-page-filter-seller' seller.slug %}">{{ seller.seller_listing_name | capfirst}}</a>
                                 </li>
                                 {% endfor %}
                             </ul>
@@ -151,10 +187,20 @@
                         </div>
                         <div id="pricesCollapse" class="collapse" role="tabpanel" aria-labelledby="pricesHeading" data-parent="#accordion">
                             <ul class="list-group text-left" id="category-menu-items">
-                                <li><a href="{% url 'store-products-page-filter-price' 0 5 %}" id="price_0-5">$0.00 - $5.00</a></li>
-                                <li><a href="{% url 'store-products-page-filter-price' 5 10 %}" id="price_5-10">$5.00 - $10.00</a></li>
-                                <li><a href="{% url 'store-products-page-filter-price' 10 15 %}" id="price_10-15">$10.00 - $15.00</a></li>
-                                <li><a href="{% url 'store-products-page-filter-price' 15 %}" id="price_15">$15.00+</a></li>
+                                <!-- Check if previous GET has order_by to preserve -->
+                                {% if 'order_by' in request.GET %}
+                                <li><a href="{{ request.path }}?order_by={{ request.GET.order_by }}&price=default" id="price_default">Default</a></li>
+                                <li><a href="{{ request.path }}?order_by={{ request.GET.order_by }}&min_price=0&max_price=5" id="price_0-5">$0.00 - $5.00</a></li>
+                                <li><a href="{{ request.path }}?order_by={{ request.GET.order_by }}&min_price=5&max_price=10" id="price_5-10">$5.00 - $10.00</a></li>
+                                <li><a href="{{ request.path }}?order_by={{ request.GET.order_by }}&min_price=10&max_price=15" id="price_10-15">$10.00 - $15.00</a></li>
+                                <li><a href="{{ request.path }}?order_by={{ request.GET.order_by }}&min_price=15" id="price_15">$15.00+</a></li>
+                                {% else %}
+                                <li><a href="{{ request.path }}?price=default" id="price_default">Default</a></li>
+                                <li><a href="{{ request.path }}?min_price=0&max_price=5" id="price_0-5">$0.00 - $5.00</a></li>
+                                <li><a href="{{ request.path }}?min_price=5&max_price=10" id="price_5-10">$5.00 - $10.00</a></li>
+                                <li><a href="{{ request.path }}?min_price=10&max_price=15" id="price_10-15">$10.00 - $15.00</a></li>
+                                <li><a href="{{ request.path }}?min_price=15" id="price_15">$15.00+</a></li>
+                                {% endif %}
                             </ul>
                         </div>
                     </div>
@@ -174,10 +220,27 @@
                         </div>
                         <div id="orderByCollapse" class="collapse" role="tabpanel" aria-labelledby="orderByHeading" data-parent="#accordion">
                             <ul class="list-group text-left" id="category-menu-items">
-                                <li><a href="{% url 'store-products-order-by' '?' %}" id="?">Default</a></li>
-                                <li><a href="{% url 'store-products-order-by' '-date_listed' %}" id="-date_listed">Latest</a></li>
-                                <li><a href="{% url 'store-products-order-by' 'price' %}" id="price">Price: low to high</a></li>
-                                <li><a href="{% url 'store-products-order-by' '-price' %}" id="-price">Price: high to low</a></li>
+                                <!-- Check if previous GET has min_price -->
+                                {% if 'min_price' in request.GET %}
+                                <!-- Check if there is also a max_price -->
+                                {% if 'max_price' in request.GET %}
+                                <li><a href="{{ request.path }}?min_price={{ request.GET.min_price }}&max_price={{ request.GET.max_price }}&order_by=?" id="?">Default</a></li>
+                                <li><a href="{{ request.path }}?min_price={{ request.GET.min_price }}&max_price={{ request.GET.max_price }}&order_by=-date_listed" id="-date_listed">Latest</a></li>
+                                <li><a href="{{ request.path }}?min_price={{ request.GET.min_price }}&max_price={{ request.GET.max_price }}&order_by=price" id="price">Price: low to high</a></li>
+                                <li><a href="{{ request.path }}?min_price={{ request.GET.min_price }}&max_price={{ request.GET.max_price }}&order_by=-price" id="-price">Price: high to low</a></li>
+                                {% else %}
+                                <li><a href="{{ request.path }}?min_price={{ request.GET.min_price }}&order_by=?" id="?">Default</a></li>
+                                <li><a href="{{ request.path }}?min_price={{ request.GET.min_price }}&order_by=-date_listed" id="-date_listed">Latest</a></li>
+                                <li><a href="{{ request.path }}?min_price={{ request.GET.min_price }}&order_by=price" id="price">Price: low to high</a></li>
+                                <li><a href="{{ request.path }}?min_price={{ request.GET.min_price }}&order_by=-price" id="-price">Price: high to low</a></li>
+                                {% endif %}
+                                <!-- No price GET parameters to perserve -->
+                                {% else %}
+                                <li><a href="{{ request.path }}?order_by=?" id="?">Default</a></li>
+                                <li><a href="{{ request.path }}?order_by=-date_listed" id="-date_listed">Latest</a></li>
+                                <li><a href="{{ request.path }}?order_by=price" id="price">Price: low to high</a></li>
+                                <li><a href="{{ request.path }}?order_by=-price" id="-price">Price: high to low</a></li>
+                                {% endif %}
                             </ul>
                         </div>
                     </div>
@@ -187,7 +250,8 @@
         <br>
     </div>
     <hr>
-    <h4 class="text-center"><b class="text-danger">{{ products.count }}</b> Products found | <a href="{% url 'store-products-page-all' %}" class="text-muted" id="clear-filters-btn"> Clear Filters</a></h4>
+    <h5 class="text-center text-muted my-0">{{ filterPath }}</h5>
+    <h4 class="text-center"><b class="text-danger">{{ products.count }}</b> Products found | <a href="{% url 'store-products-page-all-home' %}" class="text-muted" id="clear-filters-btn"> Clear Filters</a></h4>
     <br>
     <!-- If no products in query set display message -->
     {% if products.count == 0 %}
