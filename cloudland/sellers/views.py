@@ -9,7 +9,7 @@ from django.contrib.auth import authenticate, logout
 from django.contrib.auth.decorators import login_required
 
 from accounts.forms import UsersLoginForm
-from store.models import Product, Seller
+from store.models import Product, Seller, Category
 from .forms import ProductAddForm, ProductEditForm, SellerBioEditForm
 
 # Verifies the user is in Seller group
@@ -42,6 +42,15 @@ def add_product(request):
             form = form.save(commit=False)
             form.seller = seller
             form.save()
+
+            # Now we add the categies once the object exists
+            new_product = Product.objects.get(product_id=form.product_id) 
+            categories = [int(i) for i in request.POST.getlist('category')]
+            for c in categories:
+                addCategory = Category.objects.get(id=c)
+                new_product.category.add(addCategory)
+                new_product.save()
+
             return redirect(reverse('seller-dashboard'))
         args = {
             'form': form,

@@ -1,3 +1,15 @@
+#dashboard-menu a {
+    background: none!important;
+    border: none;
+    text-decoration: none;
+    color: rgb(123, 123, 123);
+}
+
+#dashboard-menu a:hover {
+    color: rgb(0, 0, 0) !important;
+    padding-left: 0.9rem;
+}
+
 .btn:active,
 button:active,
 .btn:focus,

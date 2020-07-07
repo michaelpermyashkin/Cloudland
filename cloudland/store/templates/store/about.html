@@ -16,37 +16,35 @@
 </header>
 <div class="container" style="min-height: 100vh;">
     <hr>
+
+
     <div class="card-columns">
         {% for seller in sellers %}
-        <div class="mb-2">
-            <div class="card border-0">
-                <img class="card-img-top" src="{{ seller.profile_picture.url }}" alt="{{ seller.seller_listing_name }} Profile Picture">
-                <div class="card-body text-left">
-                    <div class="text-center">
-                        <h3 class="card-title mb-0">{{ seller.seller_full_name }}</h3>
-                        <h5 class="card-text text-secondary">// {{ seller.seller_listing_name }} //</h5>
-                        <h5 class="card-text text-black-50"><i class="fas fa-envelope fa-xs"></i> {{ seller.email }}</h5>
-                    </div>
-                    <p class="p-2">{{ seller.bio_description }}</p>
+        <div class="card border-0 mb-2">
+            <img class="card-img-top" src="{{ seller.profile_picture.url }}" alt="{{ seller.seller_listing_name }} Profile Picture">
+            <div class="card-body text-left">
+                <div class="text-center">
+                    <h3 class="card-title mb-0">{{ seller.seller_full_name }}</h3>
+                    <h5 class="card-text text-secondary">// {{ seller.seller_listing_name }} //</h5>
+                    <h5 class="card-text text-black-50"><i class="fas fa-envelope fa-xs"></i> {{ seller.email }}</h5>
                 </div>
+                <p class="p-2">{{ seller.bio_description }}</p>
             </div>
         </div>
         {% endfor %}
-        <div class="mb-2">
-            <div class="card border-0">
-                <img class="card-img-top" src="{% static 'store/media/brand/michaelpermyashkin_profile.jpg' %}" alt="Michael Permyashkin Profile Picture">
-                <div class="card-body text-center">
-                    <div class="card-body text-left">
-                        <div class="text-center">
-                            <h3 class="card-title mb-0">Michael Permyashkin</h3>
-                            <h5 class="card-text text-secondary">// Designer and Developer //</h5>
-                            <h5 class="card-text text-black-50"><i class="fas fa-envelope fa-xs"></i> michael.permyashkin@gmail.com</h5>
-                        </div>
-                        <p class="p-2 text-left">
-                            I was born and raised in a small college town in central Pennsylvania called Lewisburg, the home of Bucknell University. I am the 8th of 13 children to parents who emmagrated from the Soviet Union. I am a senior at Shippensburg studying software engineering.
-                            I like to write code that works well and looks pretty. I write music, read books and worship Jesus.
-                        </p>
+        <div class="card border-0 mb-2">
+            <img class="card-img-top" src="{% static 'store/media/brand/michaelpermyashkin_profile.jpg' %}" alt="Michael Permyashkin Profile Picture">
+            <div class="card-body text-center">
+                <div class="card-body text-left">
+                    <div class="text-center">
+                        <h3 class="card-title mb-0">Michael Permyashkin</h3>
+                        <h5 class="card-text text-secondary">// Designer and Developer //</h5>
+                        <h5 class="card-text text-black-50"><i class="fas fa-envelope fa-xs"></i> michael.permyashkin@gmail.com</h5>
                     </div>
+                    <p class="p-2 text-left">
+                        I was born and raised in a small college town in central Pennsylvania called Lewisburg, the home of Bucknell University. I am the 8th of 13 children to parents who emmagrated from the Soviet Union. I am a senior at Shippensburg studying software engineering.
+                        I like to write code that works well and looks pretty. I write music, read books and worship Jesus.
+                    </p>
                 </div>
             </div>
         </div>

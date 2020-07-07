@@ -2,6 +2,11 @@
     transition: all .2s ease-in-out;
 }
 
+
+/* html {
+    scroll-behavior: smooth;
+} */
+
 body {
     font-family: 'Darker Grotesque' !important;
     /* font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif !important; */

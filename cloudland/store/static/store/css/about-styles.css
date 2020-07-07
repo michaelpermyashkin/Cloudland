@@ -1,4 +1,4 @@
-@media (max-width: 70em) {
+@media (max-width: 65em) {
     .card-columns {
         -webkit-column-count: 2;
         -moz-column-count: 2;
@@ -6,7 +6,7 @@
     }
 }
 
-@media (min-width: 70em) {
+@media (min-width: 65em) {
     .card-columns {
         -webkit-column-count: 3;
         -moz-column-count: 3;
