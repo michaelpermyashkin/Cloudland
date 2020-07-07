@@ -1,11 +1,13 @@
 import random # to shuffle product order for display
 from datetime import datetime
+from django.db.models import Count
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.shortcuts import render, HttpResponseRedirect, reverse
 from django.urls import reverse
 from store.models import Product, Seller, Category
+from carts.models import Cart, CartItem
 from .forms import ContactForm
 from django.core.mail import send_mail, BadHeaderError
 from django.contrib.auth.decorators import login_required
@@ -195,10 +197,28 @@ def getParamResolver(request):
 def view_item(request, id):
     product = Product.objects.get(product_id=id)
     qaunt_available = range(1, product.quantity+1)
-    args = {
-        'product': product,
-        'qaunt_available': qaunt_available,
-    }
+
+    total_carts_count = product.cartitem_set.count()
+    if total_carts_count == 0:
+        args = {
+            'product': product,
+            'qaunt_available': qaunt_available,
+        }
+    elif total_carts_count == 1:
+        total_carts_count = str(total_carts_count) + ' person has this item in their cart'
+        args = {
+            'product': product,
+            'qaunt_available': qaunt_available,
+            'total_carts_count': total_carts_count,
+        }
+    else:
+        total_carts_count = str(total_carts_count) + ' people have this item in their cart'
+        args = {
+            'product': product,
+            'qaunt_available': qaunt_available,
+            'total_carts_count': total_carts_count,
+        }
+
     return render(request, 'store/view-item.html', args)
 
 # About page
