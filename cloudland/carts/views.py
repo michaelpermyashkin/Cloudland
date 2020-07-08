@@ -18,6 +18,18 @@ def cart(request):
 
     if session_ID != None:
         cart = Cart.objects.get(id=session_ID) 
+        for item in cart.cartitem_set.all():
+            print(item.product.quantity)
+            if item.product.quantity == 0:
+                item.delete()
+                request.session['cart_items_total'] = cart.cartitem_set.count()
+                calcCartTotal(cart)
+                item.save()
+            if item.product.quantity < item.quantity:
+                item.quantity = item.product.quantity
+                request.session['cart_items_total'] = cart.cartitem_set.count()
+                calcCartTotal(cart)
+                item.save()
         args = {
             'cart': cart,
         }
@@ -42,7 +54,6 @@ def add_to_cart(request, id):
     # We try to add the product to the cart
     product = Product.objects.get(product_id=id)
     cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product) # return tuple (<model object>, true/false)
-
     quantity = request.POST['selected_quantity']
     if cart_item.quantity + int(quantity) <= product.quantity:
         try:
@@ -57,7 +68,8 @@ def add_to_cart(request, id):
         cart.save()
         return HttpResponseRedirect(reverse('store-cart'))
     else:
-        messages.warning(request, "Unable to add this quantity to your cart because the quantity of this item in your cart will exceed the available stock.")
+        cart_item.delete()
+        messages.warning(request, "Unable to add this quantity to your cart because the quantity of this item in your cart would exceed the available stock.")
         return HttpResponseRedirect(reverse('store-cart'))
 
 

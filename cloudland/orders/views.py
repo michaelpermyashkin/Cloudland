@@ -117,8 +117,8 @@ def checkout(request):
         cartID = request.session['cart_id'] 
         cart = Cart.objects.get(id=cartID)
         for item in cart.cartitem_set.all():
-            print("Before: "+ str(item.product.quantity))
-            item.product.quantity -= 1
+            item.product.quantity -= item.quantity
+            item.product.total_purchases += item.quantity
             item.product.save()
             print("After: "+ str(item.product.quantity))
         del request.session['cart_id']
@@ -138,15 +138,4 @@ def checkout(request):
     return render(request, 'orders/checkout.html', context)
 
 def billing(request):
-    try:
-        cartID = request.session['cart_id'] 
-        cart = Cart.objects.get(id=cartID)
-    except:
-        cartID = None
-        return HttpResponseRedirect(reverse('store-cart'))
-
-    cart = Cart.objects.get(id=cartID) 
-    args = {
-        'cart': cart,
-    }
-    return render(request, 'orders/billing.html', args)
+    return render(request, 'orders/billing.html')

@@ -17,7 +17,8 @@
         <h2>Edit My Bio</h2>
         <hr>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-6 order-2">
+                <h3 class="text-muted text-center">Preview</h3>
                 <div class="card border-0">
                     <img id="profile_picture" class="card-img-top" src="{{ seller.profile_picture.url }}" alt="{{ seller.seller_listing_name }} Profile Picture">
                     <div class="card-body text-left">
@@ -30,18 +31,22 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 order-1">
                 <form method="POST" enctype='multipart/form-data'>
                     {% csrf_token %}
                     <div class="form-group" onkeyup="func('seller_full_name')">
                         <!-- Full name -->
-                        {{ form.seller_full_name|as_crispy_field }}
+                        <label for="id_seller_full_name" class="requiredField">
+                            Full Name<span class="asteriskField">*</span>
+                        </label> {{ form.seller_full_name }}
                     </div>
                     <div class="form-group" onkeyup="func('seller_listing_name')">
                         <!-- Listing name -->
-                        {{ form.seller_listing_name|as_crispy_field }}
+                        <label for="id_seller_full_name" class="requiredField">
+                            Listing Name<span class="asteriskField">*</span>
+                        </label> {{ form.seller_listing_name }}
                     </div>
-                    <div class="form-group" onkeyup="func('profile_picture')">
+                    <div class="form-group" onkeyup="func('profile_picture')" style="font-size: 1.1rem;">
                         <!-- Profile Picture -->
                         {{ form.profile_picture }}
                     </div>
@@ -53,7 +58,7 @@
                         <!-- Email -->
                         {{ form.email|as_crispy_field }}
                     </div>
-                    <div class="text-right">
+                    <div class="text-right my-2">
                         <a href="{% url 'seller-dashboard' %}" class="btn btn-danger">Cancel</a>
                         <button class="btn btn-success px-5" type="submit">Save</button>
                     </div>

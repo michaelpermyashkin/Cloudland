@@ -4,7 +4,7 @@ body {
     padding: 0;
 }
 
-.container {
+.container:not(footer .container) {
     font-size: 1.2rem;
 }
 
@@ -69,4 +69,8 @@ dl,
 .btn:hover {
     color: #FFF;
     background: #545454;
+}
+
+.footer * {
+    font-size: 1em;
 }

@@ -5,3 +5,11 @@
 .card {
     font-size: 1rem;
 }
+
+#profile_picture-clear_id {
+    display: none;
+}
+
+label[for="profile_picture-clear_id"] {
+    display: none;
+}

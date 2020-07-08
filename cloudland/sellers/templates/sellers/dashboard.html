@@ -61,78 +61,80 @@
                     <a class="btn btn-success btn-sm" href="{% url 'add-product' %}">Add New Product</a>
                 </h5>
             </div>
-            <table class="table">
-                <thead class="thead thead-dark">
-                    <tr>
-                        <th scope="col"></th>
-                        <th scope="col"><b>Name</b></th>
-                        <th scope="col"><b>Price</b></th>
-                        <th scope="col"><b>Shipping</b></th>
-                        <th scope="col"><b>Quantity</b></th>
-                        <th scope="col"><b>Total Orders</b></th>
-                        <th scope="col"><b>Actions</b></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for product in products %}
-                    <tr>
-                        <td id="image-col">
-                            <div class="product-image text-center my-2">
-                                <img src="{{ product.product_image.url }}" />
-                            </div>
-                        </td>
-                        <td>
-                            <a href="{% url 'edit-product' product.product_id %}">
-                                <b class="product-name">{{ product.product_name }}</b>
-                            </a>
-                        </td>
-                        <td class="product-price">${{ product.price }}</td>
-                        <td class="product-shipping">${{ product.shipping_cost }}</td>
-                        <td class="">
-                            <div class="text-left pl-4">
-                                {{ product.quantity }}
-                            </div>
-                        </td>
-                        <td class="">
-                            <div class="text-left pl-4">
-                                {{ product.total_purchases }}
-                            </div>
-                        </td>
-                        <td>
-                            <a id="actions" href="{% url 'edit-product' product.product_id %}">Edit</a>
-                            <br>
-                            <a id="actions" target="_blank" href="{% url 'store-view-item' product.product_id %}">View</a>
-                            <br>
-                            <a href="" id="actions" class="remove-product text-danger" data-toggle="modal" data-target="#confirm-{{ product.product_id }}">
-                                <i class="fas fa-trash-alt"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    <!-- modals to confirm deleting -->
-                    <div class="modal fade" id="confirm-{{ product.product_id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h3 class="modal-title text-uppercase text-danger" id="exampleModalLabel">Confirm deleting this item</h3>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <div class="table-responsive border-0">
+                <table class="table border-0">
+                    <thead class="thead thead-light border-0 sticky-top">
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col"><b>Name</b></th>
+                            <th scope="col"><b>Price</b></th>
+                            <th scope="col"><b>Shipping</b></th>
+                            <th scope="col"><b>Quantity</b></th>
+                            <th scope="col"><b>Sold</b></th>
+                            <th scope="col"><b>Actions</b></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for product in products %}
+                        <tr>
+                            <td id="image-col">
+                                <div class="product-image text-center my-2">
+                                    <img src="{{ product.product_image.url }}" />
+                                </div>
+                            </td>
+                            <td>
+                                <a href="{% url 'edit-product' product.product_id %}">
+                                    <b class="product-name">{{ product.product_name }}</b>
+                                </a>
+                            </td>
+                            <td class="product-price">${{ product.price }}</td>
+                            <td class="product-shipping">${{ product.shipping_cost }}</td>
+                            <td class="">
+                                <div class="pl-3">
+                                    {{ product.quantity }}
+                                </div>
+                            </td>
+                            <td class="">
+                                <div class="pl-2">
+                                    {{ product.total_purchases }}
+                                </div>
+                            </td>
+                            <td>
+                                <a id="actions" href="{% url 'edit-product' product.product_id %}">Edit</a>
+                                <br>
+                                <a id="actions" target="_blank" href="{% url 'store-view-item' product.product_id %}">View</a>
+                                <br>
+                                <a href="" id="actions" class="remove-product text-danger" data-toggle="modal" data-target="#confirm-{{ product.product_id }}">
+                                    <i class="fas fa-trash-alt"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        <!-- modals to confirm deleting -->
+                        <div class="modal fade" id="confirm-{{ product.product_id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h3 class="modal-title text-uppercase text-danger" id="exampleModalLabel">Confirm deleting this item</h3>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true" style="font-size: 2rem;">&times;</span>
                                   </button>
-                                </div>
-                                <div class="modal-body">
-                                    <h5>
-                                        Are you sure you want to delete {{ product.product_name }}? This cannot be undone.
-                                    </h5>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                    <a href="{% url 'delete-product' product.product_id %}" class="btn btn-danger">Delete</a>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h5>
+                                            Are you sure you want to delete {{ product.product_name }}? This cannot be undone.
+                                        </h5>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                        <a href="{% url 'delete-product' product.product_id %}" class="btn btn-danger">Delete</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    {% endfor %}
-                </tbody>
-            </table>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
 
             <hr class="my-5">
 

@@ -15,7 +15,8 @@
     <h2>Add a New Product</h2>
     <hr>
     <div class="row">
-        <div class="col-md-6" style="font-size: 1.2rem;">
+        <div class="col-md-6 order-2" style="font-size: 1.2rem;">
+            <h3 class="text-muted text-center">Preview</h3>
             <a class="card rounded-0 border-0 product-card">
                 <div class="img-wrapper">
                     <div class="image">
@@ -51,19 +52,19 @@
                 </tbody>
             </table>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6 order-1">
             <form method="POST" enctype='multipart/form-data'>
                 {% csrf_token %}
                 <div class="form-group" onkeyup="func('product_name')">
-                    <!-- Full name -->
+                    <!-- Product name -->
                     {{ form.product_name|as_crispy_field }}
                 </div>
                 <div class="form-group" onkeyup="func('category')">
-                    <!-- Listing name -->
+                    <!-- Category -->
                     {{ form.category|as_crispy_field }}
                 </div>
                 <div class="form-row justify-content-center">
-                    <div class="form-group col-3" onkeyup="func('price')">
+                    <div class="form-group col-6" onkeyup="func('price')">
                         <!-- Price -->
                         <label for="id_price" class="requiredField">
                                 Price<span class="asteriskField">*</span>
@@ -75,11 +76,11 @@
                             {{ form.price }}
                         </div>
                     </div>
-                    <div class="form-group col-3">
+                    <div class="form-group col-6">
                         <div class="form-group" onkeyup="func('shipping_cost')">
                             <!-- Shipping -->
                             <label for="id_price" class="requiredField">
-                                    Price<span class="asteriskField">*</span>
+                                    Shipping Price<span class="asteriskField">*</span>
                                 </label>
                             <div class="input-group mb-2">
                                 <div class="input-group-prepend">
@@ -91,23 +92,30 @@
                     </div>
                 </div>
                 <div class="form-group" onkeyup="func('description_short')">
-                    <!-- Email -->
+                    <!-- Short Description -->
                     {{ form.description_short|as_crispy_field }}
                 </div>
                 <div class="form-group" onkeyup="func('description_full')">
-                    <!-- Email -->
+                    <!-- Full Description -->
                     {{ form.description_full|as_crispy_field }}
                 </div>
                 <div class="form-group" onkeyup="func('product_image')">
-                    <!-- Email -->
+                    <!-- Image -->
                     {{ form.product_image}}
                     <small id="hint_id_description_full" class="form-text text-muted">We do not restrict image upload dimensions. To prevent cropping, we recommend a square image or a 2:3 (w:h) aspect ratio.</small>
                 </div>
-                <div class="form-group" onkeyup="func('quantity')">
-                    <!-- Email -->
-                    {{ form.quantity|as_crispy_field }}
+
+                <!-- Quantity -->
+                <div class="form-group col-3 pl-0" onkeyup="func('quantity')">
+                    <label for="id_quantity" class="requiredField">
+                            Quantity<span class="asteriskField">*</span>
+                        </label>
+                    <div class="input-group mb-2">
+                        {{ form.quantity }}
+                    </div>
                 </div>
-                <div class="text-right">
+
+                <div class="text-right my-3">
                     <a href="{% url 'seller-dashboard' %}" class="btn btn-danger">Cancel</a>
                     <button class="btn btn-success px-5" type="submit">Save</button>
                 </div>
