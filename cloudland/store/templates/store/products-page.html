@@ -6,30 +6,40 @@
 {% block page %}Shop{% endblock page%}
 <!-- Custom page styles -->
 {% block styles %}
-<link href="{% static 'store/css/products-page-styles.css' %}" rel="stylesheet">{% endblock styles %}
+<link href="{% static 'store/css/products-page-styles.css' %}?123" rel="stylesheet">{% endblock styles %}
 <!-- fills content block in base template -->
 {% block content %}
 <div class="container body-content-buffer">
-    <div class="col-md-10 m-auto text-center mt-0">
+    <div class="col-md-10 m-auto px-1 text-center mt-0">
         <form action="{% url 'store-products-search' %}" id="search_form" method="get">
             <div class="row">
-                <div class="col-11 px-0">
+                <div class="col-11 mx-0 px-0">
                     <!-- If previous search in get, set value to input -->
                     {% if 'q' in request.GET %}
-                    <input class="form-control mb-3 mx-0" value="{{ request.GET.q }}" type="search" name="q" autocomplete="off" placeholder="What can we help you find?">
+                    <input class="form-control mb-3 mx-0" value="{{ request.GET.q }}" type="search" id="search-box" name="q" autocomplete="off" placeholder="What can we help you find?">
                     <!--  -->
                     {% else %}
                     <!--  -->
-                    <input class="form-control mb-3 mx-0" type="search" name="q" autocomplete="off" placeholder="What can we help you find?">
+                    <input class="form-control mb-3 mx-0" type="search" id="search-box" name="q" autocomplete="off" placeholder="What can we help you find?">
                     <!--  -->
                     {% endif %}
                 </div>
-                <div class="col-1 px-0">
-                    <button type="submit" id="search-button" class="btn rounded-circle"><i class="fa fa-search" aria-hidden="true"></i></button>
+                <div class="col-1 mx-0 px-0 text-left">
+                    <button type="submit" id="search-button" class="btn pr-3"><i class="fa fa-search" aria-hidden="true"></i></button>
                 </div>
             </div>
         </form>
     </div>
+
+    <script>
+        $("#search-box").on('focus', function() {
+            $("#search-button").addClass("search-button-focus");
+        })
+
+        $("#search-box").on('focusout', function() {
+            $("#search-button").removeClass("search-button-focus");
+        })
+    </script>
 
     <!-- Filter display when window is wide and nothing is collapsed -->
     <div id="category-menu-list">
@@ -271,7 +281,7 @@
         <br>
     </div>
     <hr>
-    <h5 class="text-center text-muted my-0">{{ filterPath }}</h5>
+    <h6 class="text-center text-muted my-0">{{ filterPath }}</h6>
     <h4 class="text-center"><b class="text-danger">{{ products.count }}</b> Products found | <a href="{% url 'store-products-page-all-home' %}" class="text-muted" id="clear-filters-btn"> Clear Filters</a></h4>
     <br>
     <!-- If no products in query set display message -->
