@@ -1,10 +1,11 @@
 import random # to shuffle product order for display
+
 from datetime import datetime
 from django.db.models import Count
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
-from django.shortcuts import render, HttpResponseRedirect, reverse
+from django.shortcuts import render, HttpResponseRedirect, reverse, redirect
 from django.urls import reverse
 from store.models import Product, Seller, Category
 from carts.models import Cart, CartItem
@@ -38,6 +39,7 @@ def resetDefaultFilters():
         'order_by': '?',
     }
     getActiveList()
+    buildFilterPath
 
 # builds array of all currently set filters
 def getActiveList():
@@ -122,10 +124,24 @@ def products_page_all(request):
 
     args = {
         'products': products,
-        'sellers': sellers,
-        'categories': categories,
         'active': active,
         'filterPath': filterPath
+    }
+    return render(request, 'store/products-page.html', args)
+
+def products_search(request):
+    words = request.GET.get('q').split(' ')
+    matched = []
+    for word in words:
+        matched += Product.objects.filter(product_name__icontains=word)
+        matched += Product.objects.filter(seller__seller_listing_name__icontains=word)
+        matched += Product.objects.filter(description_full__icontains=word)
+        matched += Product.objects.filter(description_short__icontains=word)
+        matched += Product.objects.filter(category__name__icontains=word)
+    args = {
+        'products': matched,
+        'active': active,
+        'filterPath': 'Products matching: ' + request.GET.get('q')
     }
     return render(request, 'store/products-page.html', args)
 
@@ -139,8 +155,6 @@ def products_by_seller(request, slug):
     products = getProductsWithActiveFilters()
     args = {
         'products': products,
-        'sellers': sellers,
-        'categories': categories,
         'active': active,
         'filterPath': filterPath
     }
@@ -156,8 +170,6 @@ def products_by_category(request, slug):
     products = getProductsWithActiveFilters()
     args = {
         'products': products,
-        'sellers': sellers,
-        'categories': categories,
         'active': active,
         'filterPath': filterPath
     }

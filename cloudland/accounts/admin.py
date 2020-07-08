@@ -1,13 +1,21 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.models import User
 
-# Register your models here.
-from .models import UserStripe, EmailConfirmed, UserAddress
-
-class UserAddressAdmin(admin.ModelAdmin):
-    class Meta:
-        model = UserAddress
-
-admin.site.register(UserAddress, UserAddressAdmin)
+from .models import UserStripe
+from accounts.forms import RegisterForm
 
 admin.site.register(UserStripe)
-admin.site.register(EmailConfirmed)
+
+class MyUserAdmin(UserAdmin):
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('username', 'first_name', 'last_name', 'email', 'password1', 'password2')}
+        ),
+    )
+
+admin.site.unregister(User)
+admin.site.register(User, MyUserAdmin)
+
+
