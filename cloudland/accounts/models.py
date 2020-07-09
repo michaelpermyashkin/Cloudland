@@ -8,7 +8,6 @@ from django.template.loader import render_to_string
 
 from localflavor.us.us_states import US_STATES
 
-
 class UserDefaultAddresses(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     shipping = models.ForeignKey("UserAddress", null=True, blank=True, on_delete=models.CASCADE)
