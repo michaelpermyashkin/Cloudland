@@ -100,9 +100,9 @@
                                 </div>
                             </td>
                             <td>
-                                <a id="actions" href="{% url 'edit-product' product.product_id %}">Edit</a>
+                                <a id="actions" href="{% url 'edit-product' product.slug %}">Edit</a>
                                 <br>
-                                <a id="actions" target="_blank" href="{% url 'store-view-item' product.product_id %}">View</a>
+                                <a id="actions" target="_blank" href="{% url 'store-view-item' product.slug %}">View</a>
                                 <br>
                                 <a href="" id="actions" class="remove-product text-danger" data-toggle="modal" data-target="#confirm-{{ product.product_id }}">
                                     <i class="fas fa-trash-alt"></i>

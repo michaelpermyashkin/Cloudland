@@ -206,8 +206,8 @@ def getParamResolver(request):
     return
 
 # View when an item is selected to display item detail
-def view_item(request, id):
-    product = Product.objects.get(product_id=id)
+def view_item(request, slug):
+    product = Product.objects.get(slug=slug)
     qaunt_available = range(1, product.quantity+1)
 
     total_carts_count = product.cartitem_set.count()

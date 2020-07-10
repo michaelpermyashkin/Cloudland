@@ -4,6 +4,8 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.datetime_safe import datetime
 
+from .utils import unique_slugify
+
 class Seller(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     profile_picture = models.ImageField(upload_to='seller_profiles', help_text="Upload your profile picture for our about page", blank=True, null=True)
@@ -34,6 +36,7 @@ class Category(models.Model):
 class Product(models.Model):
     product_id = models.AutoField(primary_key=True)
     product_name = models.CharField(max_length=30, help_text="Limit 30 characters")
+    slug = models.SlugField(unique=True, null=True)
     seller = models.ForeignKey(Seller, on_delete=models.CASCADE, null=True, blank=True)
     category = models.ManyToManyField(Category, help_text="Hold down “Control”, or “Command” on a Mac, to select more than one.")
     price = models.DecimalField(max_digits=6, decimal_places=2)
@@ -47,3 +50,8 @@ class Product(models.Model):
 
     def __str__(self):
         return self.product_name
+
+    def save(self, **kwargs):
+        slug_str = "%s" % (self.product_name) 
+        unique_slugify(self, slug_str) 
+        super(Product, self).save(**kwargs)

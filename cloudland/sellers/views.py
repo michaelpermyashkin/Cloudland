@@ -70,12 +70,12 @@ def delete_product(request, id):
             instance.delete()
         return redirect(reverse('seller-dashboard'))
 
-def edit_product(request, id):
+def edit_product(request, slug):
     if not test_request(request):
         raise Http404
     else:
         seller = Seller.objects.get(user=request.user)
-        instance = get_object_or_404(Product, product_id=id)
+        instance = get_object_or_404(Product, slug=slug)
         if instance.seller.id != seller.id:
             raise Http404
         form = ProductEditForm(request.POST or None, request.FILES or None, instance=instance)
