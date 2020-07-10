@@ -1,20 +1,21 @@
 import time
-from decimal import Decimal
-
 import stripe
+from decimal import Decimal
 from django.conf import settings
+from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, HttpResponseRedirect
+from django.template.loader import render_to_string
 from django.urls import reverse
+
+from .models import Order
+from .utils import orderIdGenerator
 
 from store.models import Product, Seller, Category
 from carts.models import CartItem, Cart
 
 from accounts.models import UserAddress, UserBillingAddress
 from accounts.forms import UserAddressForm, UserBillingAddressForm
-
-from .models import Order
-from .utils import orderIdGenerator
 
 try: 
     stripe_pub = settings.STRIPE_PUBLISHABLE_KEY
@@ -78,7 +79,6 @@ def checkout(request):
                     customer.id,
                     source=token,
                 )
-
             try:
                 billing_address_instance = UserBillingAddress.objects.get(id=billing_address)
             except:
@@ -110,8 +110,6 @@ def checkout(request):
                 new_order.billing_address = billing_address_instance
                 new_order.order_receipt_link = charge["receipt_url"]
                 new_order.save()
-            # print(card)
-            # print(charge)
 
     if new_order.status == 'Complete':
         cartID = request.session['cart_id'] 
@@ -120,9 +118,14 @@ def checkout(request):
             item.product.quantity -= item.quantity
             item.product.total_purchases += item.quantity
             item.product.save()
-            print("After: "+ str(item.product.quantity))
+            # Email Sellers about their product being ordered
         del request.session['cart_id']
         del request.session['cart_items_total']
+        # email_customer(new_order)
+        email_sellers(new_order)
+        email_customer(new_order)
+        cart.active = False
+        cart.save()
         return HttpResponseRedirect(reverse('accounts-dashboard'))
 
 
@@ -136,6 +139,58 @@ def checkout(request):
         'stripe_pub': stripe_pub,
     }
     return render(request, 'orders/checkout.html', context)
+
+
+def email_sellers(order):
+    cart = order.cart
+    sellers = []
+    for item in cart.cartitem_set.all():
+        seller = item.product.seller
+        if seller not in sellers:
+            sellers.append(seller)
+
+    for seller in sellers:
+        products = []
+        for item in cart.cartitem_set.all():
+            if item.product.seller == seller:
+                products.append(item)
+        
+        if len(products) == 1:
+            subject = 'New order on Cloudland for 1 item!'
+        else:
+            subject = 'New order on Cloudland for {} items!'.format(len(products))
+
+        context = {
+            'seller_listing_name': seller.user.first_name,
+            'products': products,
+            'order_id': order.order_id,
+            'order_total': order.order_total,
+            'customer_name': '{} {}'.format(order.user.first_name, order.user.last_name), 
+            'customer_shipping': order.shipping_address
+        }
+        message = render_to_string('orders/seller_order_email.txt', context)
+        from_email = settings.DEFAULT_FROM_EMAIL
+        send_mail(subject, message, from_email, [seller.email])
+
+def email_customer(order):
+    cart = order.cart
+    products = []
+    for item in cart.cartitem_set.all():
+        products.append(item)
+
+    subject = 'Cloudland order #{}'.format(order.order_id)
+
+    context = {
+        'products': products,
+        'order_total': order.order_total,
+        'order_id': order.order_id,
+        'customer_name': '{} {}'.format(order.user.first_name, order.user.last_name), 
+        'customer_shipping': order.shipping_address,
+        'customer_billing': order.billing_address,
+    }
+    message = render_to_string('orders/customer_order_email.txt', context)
+    from_email = settings.DEFAULT_FROM_EMAIL
+    send_mail(subject, message, from_email, [order.user.email])
 
 def billing(request):
     return render(request, 'orders/billing.html')

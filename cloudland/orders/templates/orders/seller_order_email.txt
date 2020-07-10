@@ -1,0 +1,16 @@
+Hello {{ seller_listing_name }},
+
+You have a new order from Cloudland!! 
+
+Order #: {{ order_id }}
+Products Sold:{% for item in products %}
+    - {{ item.product.product_name }} x {{ item.quantity }}{% endfor %}
+
+Shipping Details:
+    {{ customer_name }}
+    {{ customer_shipping }}
+
+You can view the order on your dashboard! Please contact us if there is something wrong.
+
+Thank you and congratulations,
+Cloudland

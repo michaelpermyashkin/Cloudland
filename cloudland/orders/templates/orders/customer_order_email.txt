@@ -1,0 +1,23 @@
+Hello {{ customer_name }},
+
+
+Order Confirmation Summary:
+    Order #: {{ order_id }}
+    {% for item in products %}
+    - {{ item.product.product_name }} x {{ item.quantity }}{% endfor %}
+    ----------------------------
+    Order Total: ${{ order_total }}
+
+    Shipping Details:
+        {{ customer_name }}
+        {{ customer_shipping }}
+
+    Billing Details:
+        {{ customer_name }}
+        {{ customer_billing }}
+
+
+Our sellers ship items individually. Products will ship individually and delievery time may vary.
+You can view the order on your dashboard! Please contact us if there is something wrong.
+
+Thank you for shopping with Cloudland!

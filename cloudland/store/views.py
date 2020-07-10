@@ -210,7 +210,7 @@ def view_item(request, slug):
     product = Product.objects.get(slug=slug)
     qaunt_available = range(1, product.quantity+1)
 
-    total_carts_count = product.cartitem_set.count()
+    total_carts_count = product.cartitem_set.filter(cart__active=True).count()
     if total_carts_count == 0:
         args = {
             'product': product,
@@ -255,6 +255,66 @@ def contact(request):
             return render(request, 'store/contact-success.html')
     return render(request, 'store/contact.html', {'form': form})
 
+
+# from django.template.loader import render_to_string
+# from orders.models import Order
+# from django.core.mail import send_mail
+
+# order = Order.objects.get(order_id='I9ECGH7Z2R2AGYNMBYWCVJXOU1ONKRPTLNE')
+# cart = order.cart
+# # Sellers Email
+# sellers = []
+# for item in cart.cartitem_set.all():
+#     seller = item.product.seller
+#     if seller not in sellers:
+#         sellers.append(seller)
+
+# for seller in sellers:
+#     products = []
+#     for item in cart.cartitem_set.all():
+#         if item.product.seller == seller:
+#             products.append(item)
+    
+#     if len(products) == 1:
+#         subject = 'New order on Cloudland for 1 item!'
+#     else:
+#         subject = 'New order on Cloudland for {} items!'.format(len(products))
+
+#     context = {
+#         'seller_listing_name': seller.user.first_name,
+#         'products': products,
+#         'order_total': order.order_total,
+#         'customer_name': '{} {}'.format(order.user.first_name, order.user.last_name), 
+#         'customer_shipping': order.shipping_address
+#     }
+#     message = render_to_string('orders/seller_order_email.txt', context)
+#     from_email = settings.DEFAULT_FROM_EMAIL
+#     # seller.email_seller(subject, message, from_email)
+#     print(subject)
+#     print(message)
+#     print('\n\n\n')
+
+# # Customer Email
+# products = []
+# for item in cart.cartitem_set.all():
+#     if item.product.seller == seller:
+#         products.append(item)
+
+# subject = 'Cloudland order #{} confirmation'.format(order.order_id)
+
+# context = {
+#     'products': products,
+#     'order_total': order.order_total,
+#     'order_id': order.order_id,
+#     'customer_name': '{} {}'.format(order.user.first_name, order.user.last_name), 
+#     'customer_shipping': order.shipping_address,
+#     'customer_billing': order.billing_address,
+# }
+# message = render_to_string('orders/customer_order_email.txt', context)
+# from_email = settings.DEFAULT_FROM_EMAIL
+# print(subject)
+# print(message)
+# print('\n\n\n')
 
 # products = [
 #     {

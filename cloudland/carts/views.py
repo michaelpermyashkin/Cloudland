@@ -19,7 +19,6 @@ def cart(request):
     if session_ID != None:
         cart = Cart.objects.get(id=session_ID) 
         for item in cart.cartitem_set.all():
-            print(item.product.quantity)
             if item.product.quantity == 0:
                 item.delete()
                 request.session['cart_items_total'] = cart.cartitem_set.count()

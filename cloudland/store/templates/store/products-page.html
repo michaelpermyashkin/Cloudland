@@ -258,7 +258,7 @@
 
         <div class="col-lg-9 col-md-9 col-12">
             <h6 class="text-center text-muted my-0">{{ filterPath }}</h6>
-            <h4 class="text-center mb-0"><b class="text-danger">{{ products.count }}</b> Products found | <a href="{% url 'store-products-page-all-home' %}" class="text-muted" id="clear-filters-btn"> Clear Filters</a></h4>
+            <h4 class="text-center mb-0"><b class="text-danger">{{ products.count }}</b> Products found | <a href="{% url 'store-products-page-all-home-home' %}" class="text-muted" id="clear-filters-btn"> Clear Filters</a></h4>
 
             <!-- If no products in query set display message -->
             {% if products.count == 0 %}
