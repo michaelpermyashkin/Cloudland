@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Product, Seller, Category
+from .models import Product, Seller, Category, ProductReview
 
 admin.site.site_header = "Cloudland Admininstration"
 
@@ -18,3 +18,5 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name',)
     prepopulated_fields = {'slug': ('name',)}
 admin.site.register(Category, CategoryAdmin)
+
+admin.site.register(ProductReview)

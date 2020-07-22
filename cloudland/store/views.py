@@ -7,9 +7,9 @@ from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.shortcuts import render, HttpResponseRedirect, reverse, redirect
 from django.urls import reverse
-from store.models import Product, Seller, Category
+from store.models import Product, Seller, Category, ProductReview
 from carts.models import Cart, CartItem
-from .forms import ContactForm
+from .forms import ContactForm, ProductReviewForm
 from django.core.mail import send_mail, BadHeaderError
 from django.contrib.auth.decorators import login_required
 
@@ -207,7 +207,22 @@ def getParamResolver(request):
 
 # View when an item is selected to display item detail
 def view_item(request, slug):
+    if request.method == 'POST':
+        form = ProductReviewForm(request.POST)
+        if form.is_valid():
+            form = form.save(commit=False)
+            form.product = Product.objects.get(slug=slug)
+            form.user = request.user
+            form.rating = request.POST.get('rating')
+            form.save()
+        else:
+            print(form.errors)
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+    form = ProductReviewForm()
     product = Product.objects.get(slug=slug)
+    reviews = ProductReview.objects.filter(product = product)
+    n = range(5)
     qaunt_available = range(1, product.quantity+1)
 
     total_carts_count = product.cartitem_set.filter(cart__active=True).count()
@@ -215,6 +230,9 @@ def view_item(request, slug):
         args = {
             'product': product,
             'qaunt_available': qaunt_available,
+            'reviews': reviews,
+            'n': n,
+            'form': form,
         }
     elif total_carts_count == 1:
         total_carts_count = str(total_carts_count) + ' person has this item in their cart'
@@ -222,6 +240,9 @@ def view_item(request, slug):
             'product': product,
             'qaunt_available': qaunt_available,
             'total_carts_count': total_carts_count,
+            'reviews': reviews,
+            'n': n,
+            'form': form,
         }
     else:
         total_carts_count = str(total_carts_count) + ' people have this item in their cart'
@@ -229,9 +250,28 @@ def view_item(request, slug):
             'product': product,
             'qaunt_available': qaunt_available,
             'total_carts_count': total_carts_count,
+            'reviews': reviews,
+            'n': n,
+            'form': form,
         }
 
     return render(request, 'store/view-item.html', args)
+
+def post_review(request, id):
+    if request.method == 'POST':
+        product = Product.objects.get(product_id=id)
+        user = request.user
+        form = ProductReviewForm(request.POST)
+        if form.is_valid():
+            form = form.save(commit=False)
+            form.product = product
+            form.user = user
+            print('VALID')
+            print(new_review) 
+            new_review.save()
+        else:
+            print(form.errors)
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 # About page
 def about(request):

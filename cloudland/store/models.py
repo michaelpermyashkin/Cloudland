@@ -55,3 +55,12 @@ class Product(models.Model):
         slug_str = "%s" % (self.product_name) 
         unique_slugify(self, slug_str) 
         super(Product, self).save(**kwargs)
+
+
+class ProductReview(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    rating = models.PositiveIntegerField(default=5)
+    subject = models.CharField(max_length=75, null=True, blank=True)
+    comment = models.TextField(max_length=500, null=True, blank=True)
+    timestamp = models.DateField(auto_now_add=True)
